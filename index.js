@@ -6,11 +6,11 @@ client.on('ready', () => {
 });
 
 
-// Reply to every "ping" message with a "pong"
-// hello ***REMOVED*** am big fan x)
+// Set up event listener for new messages being posted
 client.on('message', msg => {
-  if (msg.content === 'ping') {
-    msg.reply('pong');
+  var content = msg.content
+  if (content.startsWith('%')) {
+    msg.reply("That's my queue!");
   }
 });
 
