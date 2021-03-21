@@ -1,0 +1,24 @@
+{
+  "name": "creativebot",
+  "version": "1.0.0",
+  "description": "Creative Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheCreator69/CreativeBot.git"
+  },
+  "keywords": [
+    "creative",
+    "skeleton",
+    "bot"
+  ],
+  "author": "TheCreator, SomeVeryEpicSkeleton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheCreator69/CreativeBot/issues"
+  },
+  "homepage": "https://github.com/TheCreator69/CreativeBot#readme"
+}
