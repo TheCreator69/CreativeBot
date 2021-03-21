@@ -28,8 +28,10 @@ client.on('message', message => {
     for(const possibleCommand of client.commands) {
         if(command == possibleCommand.commandName) {
             client.commands.get(possibleCommand.commandName).execute(message, args);
+            return;
         }
     }
+    message.channel.send('Sorry, but this command is invalid :frowning:');
 });
 
 client.login('ODIzMjA0MDg2ODgzMTU1OTY5.YFdajA.JWPdu-j0BSzd9tzZuRSSeSwEB7o');
