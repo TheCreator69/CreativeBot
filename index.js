@@ -5,6 +5,8 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
 
+
+// Reply to every "ping" message with a "pong"
 client.on('message', msg => {
   if (msg.content === 'ping') {
     msg.reply('pong');
