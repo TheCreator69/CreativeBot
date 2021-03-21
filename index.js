@@ -30,9 +30,6 @@ client.on('message', message => {
             client.commands.get(possibleCommand.commandName).execute(message, args);
         }
     }
-    //if(command === 'ping') {
-        //client.commands.get('ping').execute(message, args);
-    //}
 });
 
 client.login('***REMOVED***');
