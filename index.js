@@ -11,5 +11,4 @@ client.on('message', msg => {
   }
 });
 
-client.login('***REMOVED***
-');
+client.login('***REMOVED***');
