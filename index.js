@@ -26,8 +26,8 @@ client.on('message', message => {
     const command = args.shift().toLowerCase();
 
     for(const possibleCommand of client.commands) {
-        if(command == possibleCommand.commandName) {
-            client.commands.get(possibleCommand.commandName).execute(message, args);
+        if(command == possibleCommand.name) {
+            client.commands.get(possibleCommand.name).execute(message, args);
             return;
         }
     }
