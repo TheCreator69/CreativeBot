@@ -27,9 +27,10 @@ client.on('message', message => {
     if(client.commands.has(command)) {
         commandMap = client.commands.get(command);
         commandMap.execute(message, args);
-        return;
     }
-    message.channel.send('Sorry, but this command is invalid :frowning:');
+    else {
+        message.channel.send('Sorry, but this command is invalid :frowning:');
+    }
 });
 
 client.login('***REMOVED***');
