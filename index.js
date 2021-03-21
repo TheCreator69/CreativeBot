@@ -3,9 +3,8 @@ const client = new Discord.Client();
 
 const prefix = '%';
 
-const fs = require('fs');
-
 client.commands = new Discord.Collection();
+const fs = require('fs');
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for(const file of commandFiles) {
@@ -25,11 +24,10 @@ client.on('message', message => {
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
 
-    for(const possibleCommand of client.commands) {
-        if(command == possibleCommand.name) {
-            client.commands.get(possibleCommand.name).execute(message, args);
-            return;
-        }
+    if(client.commands.has(command)) {
+        commandMap = client.commands.get(command);
+        commandMap.execute(message, args);
+        return;
     }
     message.channel.send('Sorry, but this command is invalid :frowning:');
 });
