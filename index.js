@@ -7,6 +7,7 @@ client.on('ready', () => {
 
 
 // Reply to every "ping" message with a "pong"
+// hello ***REMOVED*** am big fan x)
 client.on('message', msg => {
   if (msg.content === 'ping') {
     msg.reply('pong');
