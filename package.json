@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/TheCreator69/CreativeBot/issues"
   },
-  "homepage": "https://github.com/TheCreator69/CreativeBot#readme"
+  "homepage": "https://github.com/TheCreator69/CreativeBot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.1"
+  }
 }
