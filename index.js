@@ -38,3 +38,5 @@ client.on('message', message => {
 });
 
 client.login('***REMOVED***');
+
+exports.commandMap = client.commands;
