@@ -29,8 +29,8 @@ client.on('message', message => {
     const command = args.shift().toLowerCase();
 
     if(client.commands.has(command)) {
-        commandMap = client.commands.get(command);
-        commandMap.execute(message, args);
+        commandMapEntry = client.commands.get(command);
+        commandMapEntry.execute(message, args);
     }
     else {
         message.channel.send('Sorry, but this command is invalid :frowning:');
