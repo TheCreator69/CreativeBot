@@ -38,3 +38,5 @@ client.on('message', message => {
 });
 
 client.login('ODIzMjA0MDg2ODgzMTU1OTY5.YFdajA.JWPdu-j0BSzd9tzZuRSSeSwEB7o');
+
+exports.commandMap = client.commands;
