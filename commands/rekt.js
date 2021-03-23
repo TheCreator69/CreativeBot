@@ -1,3 +1,5 @@
+const { MessageAttachment } = require("discord.js");
+
 module.exports = {
     name: 'rekt',
     description: "Force the bot to send a wonderful image.",
