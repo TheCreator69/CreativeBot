@@ -1,3 +1,3 @@
 git add *
-git commit -m "Message"
+git commit
 git push origin master

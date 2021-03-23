@@ -3,9 +3,8 @@ const client = new Discord.Client();
 
 const prefix = '%';
 
-const fs = require('fs');
-
 client.commands = new Discord.Collection();
+const fs = require('fs');
 
 const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
 for(const file of commandFiles) {
@@ -17,6 +16,10 @@ for(const file of commandFiles) {
 
 client.once('ready', () => {
     console.log("I'm online now!");
+    client.user.setPresence({
+        status: "online",
+        activity: {name: "Use '%' to talk to me!"}
+    });
 });
 
 client.on('message', message => {
@@ -25,14 +28,15 @@ client.on('message', message => {
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
 
-    for(const possibleCommand of client.commands) {
-        if(command == possibleCommand.commandName) {
-            client.commands.get(possibleCommand.commandName).execute(message, args);
-        }
+    if(client.commands.has(command)) {
+        commandMapEntry = client.commands.get(command);
+        commandMapEntry.execute(message, args);
     }
-    //if(command === 'ping') {
-        //client.commands.get('ping').execute(message, args);
-    //}
+    else {
+        message.channel.send('Sorry, but this command is invalid :frowning:');
+    }
 });
 
 client.login('ODIzMjA0MDg2ODgzMTU1OTY5.YFdajA.JWPdu-j0BSzd9tzZuRSSeSwEB7o');
+
+exports.commandMap = client.commands;
