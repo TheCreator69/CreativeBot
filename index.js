@@ -1,7 +1,8 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-const prefix = "%";
+const config = require("./config.json");
+const prefix = config.prefix;
 
 client.commands = new Discord.Collection();
 const fs = require("fs");
@@ -37,6 +38,6 @@ client.on("message", message => {
     }
 });
 
-client.login("***REMOVED***");
+client.login(config.token);
 
 exports.commandMap = client.commands;
