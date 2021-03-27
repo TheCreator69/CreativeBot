@@ -1,12 +1,13 @@
-const Discord = require('discord.js');
+const Discord = require("discord.js");
 const client = new Discord.Client();
 
-const prefix = '%';
+const config = require("./config.json");
+const prefix = config.prefix;
 
 client.commands = new Discord.Collection();
-const fs = require('fs');
+const fs = require("fs");
 
-const commandFiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync("./commands/").filter(file => file.endsWith(".js"));
 for(const file of commandFiles) {
     const command = require(`./commands/${file}`);
 
@@ -14,7 +15,7 @@ for(const file of commandFiles) {
 }
 
 
-client.once('ready', () => {
+client.once("ready", () => {
     console.log("I'm online now!");
     client.user.setPresence({
         status: "online",
@@ -22,7 +23,7 @@ client.once('ready', () => {
     });
 });
 
-client.on('message', message => {
+client.on("message", message => {
     if(!message.content.startsWith(prefix) || message.author.bot) return;
 
     const args = message.content.slice(prefix.length).split(/ +/);
@@ -33,10 +34,14 @@ client.on('message', message => {
         commandMapEntry.execute(message, args);
     }
     else {
-        message.channel.send('Sorry, but this command is invalid :frowning:');
+        message.channel.send("Sorry, but this command is invalid :frowning:");
     }
 });
 
-client.login('***REMOVED***');
+process.on("unhandledRejection", error => {
+    console.error("Unhandled rejection: ", error);
+});
+
+client.login(config.token);
 
 exports.commandMap = client.commands;
