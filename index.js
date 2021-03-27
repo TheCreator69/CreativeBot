@@ -38,6 +38,10 @@ client.on("message", message => {
     }
 });
 
+process.on("unhandledRejection", error => {
+    console.error("Unhandled rejection: ", error);
+});
+
 client.login(config.token);
 
 exports.commandMap = client.commands;
