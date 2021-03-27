@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 module.exports = {
-    name: "embed",
+    name: "socials",
     description: "Tests the embed.",
     execute(message, args) {
         const testEmbed = new Discord.MessageEmbed()
