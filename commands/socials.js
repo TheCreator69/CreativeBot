@@ -2,10 +2,11 @@ const Discord = require("discord.js");
 
 module.exports = {
     name: "socials",
-    description: "Tests the embed.",
+    description: "Lists ***REMOVED***'s socials in an embed.",
+    syntax: "socials",
     execute(message, args) {
         const testEmbed = new Discord.MessageEmbed()
-        testEmbed.setColor("#ff0000")
+        testEmbed.setColor("#ff0000");
         testEmbed.setTitle("Follow me on social media!");
         testEmbed.setDescription("I post little to nothing, but seeing my follower count increase is incredibly satisfying.");
         testEmbed.setAuthor("***REMOVED***", "https://lh3.googleusercontent.com/a-/AOh14GgyWf-iAzQRRgAVsacRifDpMN6_IOkV7w9Q1Lqu=s600-k-no-rp-mo", "https://www.youtube.com/channel/UC1U-tRxYC7sr1kd-Q92iyHA");
