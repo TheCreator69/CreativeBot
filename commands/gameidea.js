@@ -10,7 +10,7 @@ module.exports = {
 
 function generateGameIdea() {
     var format = Math.floor(Math.random() * 4);
-    //var format = 0;
+    //var format = 1;
     //Format #0: A mix of GENRE and GENRE set in a LOCATION
     //Format #1: A GENRE set in LOCATION
     //Format #2: A GENRE where MODIFIER
@@ -22,18 +22,17 @@ function generateGameIdea() {
             ideaString = formatZero(ideaString);
             break;
         case 1:
-            //FIX: Sometimes, "A" needs to be "An" to be gramatically correct (applies to formats 0, 1, 2 and 4)
-            ideaString = ideaString.concat("A ", getRandomArrayElement(genres), " set ", getRandomArrayElement(locations));
+            ideaString = formatOne(ideaString);
             break;
         case 2:
-            ideaString = ideaString.concat("A ", getRandomArrayElement(genres), " where ", getRandomArrayElement(modifiers));
+            ideaString = formatTwo(ideaString);
             break;
         case 3:
             //FIX: Capitalize the first letter of the theme
             ideaString = ideaString.concat(getRandomArrayElement(themes), ", but ", getRandomArrayElement(modifiers));
             break;
         case 4:
-            ideaString = ideaString.concat("A ", getRandomArrayElement(genres), " about ", getRandomArrayElement(themes));
+            ideaString = formatFour(ideaString);
             break;
         default:
             ideaString = "Just make GTA 6 lol";
@@ -47,7 +46,7 @@ function formatZero(ideaString) {
     var genre1 = getRandomArrayElement(genres);
 
     if(genre1 == genre0) {
-        modifiedGenreArray = genres.slice();
+        var modifiedGenreArray = genres.slice();
         var genre0Index = modifiedGenreArray.indexOf(genre0);
         modifiedGenreArray.splice(genre0Index, 1);
         genre1 = getRandomArrayElement(modifiedGenreArray);
@@ -56,9 +55,36 @@ function formatZero(ideaString) {
     return ideaString.concat("A mix of ", genre0, " and ", genre1, " set ", getRandomArrayElement(locations));
 }
 
+function formatOne(ideaString) {
+    var genre = getRandomArrayElement(genres);
+    return ideaString.concat(getCorrectFormOfArticle(genre), genre, " set ", getRandomArrayElement(locations));
+}
+
+function formatTwo(ideaString) {
+    var genre = getRandomArrayElement(genres);
+    return ideaString.concat(getCorrectFormOfArticle(genre), genre, " where ", getRandomArrayElement(modifiers));
+}
+
+function formatFour(ideaString) {
+    var genre = getRandomArrayElement(genres);
+    return ideaString.concat(getCorrectFormOfArticle(genre), genre, " about ", getRandomArrayElement(themes));
+}
+
+function getCorrectFormOfArticle(nextWord) {
+    nextWord = nextWord.toLowerCase();
+    var vowels = ["a", "e", "i", "o", "u"];
+    for(let vowel of vowels) {
+        if(nextWord.startsWith(vowel)) {
+            return "An ";
+        }
+    }
+    return "A ";
+}
+
 function getRandomArrayElement(array) {
     return array[Math.floor(Math.random() * array.length)];
 }
+
 
 var genres = [
     "Stealth game",
