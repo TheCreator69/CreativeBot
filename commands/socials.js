@@ -5,7 +5,7 @@ module.exports = {
     description: "Lists ***REMOVED***'s socials in an embed.",
     syntax: "socials",
     execute(message, args) {
-        const testEmbed = new Discord.MessageEmbed()
+        const testEmbed = new Discord.MessageEmbed();
         testEmbed.setColor("#ff0000");
         testEmbed.setTitle("Follow me on social media!");
         testEmbed.setDescription("I post little to nothing, but seeing my follower count increase is incredibly satisfying.");
