@@ -10,11 +10,11 @@ module.exports = {
 
 function generateGameIdea() {
     var format = Math.floor(Math.random() * 4);
-    //Format #0: A mix of GENRE and GENRE set in a LOCATION
-    //Format #1: A GENRE set in LOCATION
+    //Format #0: A mix of GENRE and GENRE set (in) LOCATION
+    //Format #1: A GENRE set (in) LOCATION
     //Format #2: A GENRE where MODIFIER
     //Format #3: THEME, but MODIFIER
-    //Format #4: A GENRE about a THEME
+    //Format #4: A GENRE about (a) THEME
     var ideaString = "**Game Idea:** \n";
     switch(format) {
         case 0:
@@ -34,7 +34,7 @@ function generateGameIdea() {
             ideaString = formatFour(ideaString);
             break;
         default:
-            ideaString = "Just make GTA 6 lol";
+            ideaString = ideaString.concat("Just make GTA 6 lol");
             break;
     }
     return ideaString;
@@ -101,26 +101,46 @@ var genres = [
     "Survival game",
     "Rhythm game",
     "Horror game",
-    "Visual Novel"
+    "Visual Novel",
+    "Real-time strategy game",
+    "Role-playing game",
+    "MMORPG",
+    "MOBA",
+    "Fighting game",
+    "Text-based adventure game",
+    "Sandbox game",
+    "Simulator",
+    "City builder",
+    "Party game",
+    "Puzzle game",
+    "Sports game",
+    "Educational game"
 ];
-var themes = [
+var themes = [ //Come after "about" and at the start of a sentence
     "an ambush",
     "an escort mission",
-    "a chase",
-    "a boss battle",
+    "an intense chase",
+    "an AI-controlled giant creature",
     "alternating perspectives",
     "a rainy night",
-    "house cleaning"
+    "house cleaning",
+    "busting your brothers",
+    "fighting mythical creatures",
+    "exploring old castle ruins",
+    "cooking the ultimate meal",
+    ""
 ];
-var modifiers = [ //Needs to fit gramatically with "where" and "but"
+var modifiers = [ //Come after "where" and "but"
     "gravity is inverted",
     "keys are rebound every few seconds",
     "the player is blind",
     "dying is part of the progression",
     "the player and the enemies are controlled at the same time",
     "you can walk on walls",
+    "the only move is jumping",
+    "the player manipulates the environment instead of the main character"
 ];
-var locations = [ //Needs to fit gramatically with "set"
+var locations = [ //Come after "set"
     "in a haunted house",
     "in a narrow subway tunnel",
     "on a small, peaceful island",
@@ -129,5 +149,11 @@ var locations = [ //Needs to fit gramatically with "set"
     "under the ocean",
     "on a small river with a strong current",
     "inside of a delicious cake",
-    "inside a treehouse"
+    "inside a treehouse",
+    "inside the ruins of an old castle",
+    "in an abandoned amusement park",
+    "inside an active volcano",
+    "after the Second World War",
+    "in a post-apocalyptic world",
+    "on top of an airship"
 ];
