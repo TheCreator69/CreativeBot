@@ -19,7 +19,7 @@ client.once("ready", () => {
     console.log("I'm online now!");
     client.user.setPresence({
         status: "online",
-        activity: {name: "Use '%' to talk to me!"}
+        activity: {name: "Use \'" + config.prefix + "\' to talk to me!"}
     });
 });
 
