@@ -27,7 +27,6 @@ function generateGameIdea() {
             ideaString = formatTwo(ideaString);
             break;
         case 3:
-            //FIX: Capitalize the first letter of the theme
             ideaString = formatThree(ideaString);
             break;
         case 4:
@@ -128,7 +127,7 @@ var themes = [ //Come after "about" and at the start of a sentence
     "fighting mythical creatures",
     "exploring old castle ruins",
     "cooking the ultimate meal",
-    ""
+    "infiltrating a cult"
 ];
 var modifiers = [ //Come after "where" and "but"
     "gravity is inverted",
@@ -138,7 +137,8 @@ var modifiers = [ //Come after "where" and "but"
     "the player and the enemies are controlled at the same time",
     "you can walk on walls",
     "the only move is jumping",
-    "the player manipulates the environment instead of the main character"
+    "the player manipulates the environment instead of the main character",
+    "the world is in 4D"
 ];
 var locations = [ //Come after "set"
     "in a haunted house",
@@ -152,7 +152,7 @@ var locations = [ //Come after "set"
     "inside a treehouse",
     "inside the ruins of an old castle",
     "in an abandoned amusement park",
-    "inside an active volcano",
+    "inside of an active volcano",
     "after the Second World War",
     "in a post-apocalyptic world",
     "on top of an airship"
