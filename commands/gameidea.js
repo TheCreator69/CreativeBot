@@ -10,7 +10,6 @@ module.exports = {
 
 function generateGameIdea() {
     var format = Math.floor(Math.random() * 4);
-    //var format = 1;
     //Format #0: A mix of GENRE and GENRE set in a LOCATION
     //Format #1: A GENRE set in LOCATION
     //Format #2: A GENRE where MODIFIER
@@ -29,7 +28,7 @@ function generateGameIdea() {
             break;
         case 3:
             //FIX: Capitalize the first letter of the theme
-            ideaString = ideaString.concat(getRandomArrayElement(themes), ", but ", getRandomArrayElement(modifiers));
+            ideaString = formatThree(ideaString);
             break;
         case 4:
             ideaString = formatFour(ideaString);
@@ -63,6 +62,12 @@ function formatOne(ideaString) {
 function formatTwo(ideaString) {
     var genre = getRandomArrayElement(genres);
     return ideaString.concat(getCorrectFormOfArticle(genre), genre, " where ", getRandomArrayElement(modifiers));
+}
+
+function formatThree(ideaString) {
+    var theme = getRandomArrayElement(themes);
+    theme = theme.replace(/^\w/, (c) => c.toUpperCase());
+    return ideaString.concat(theme, ", but ", getRandomArrayElement(modifiers));
 }
 
 function formatFour(ideaString) {
