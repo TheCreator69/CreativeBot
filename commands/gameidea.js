@@ -10,7 +10,7 @@ module.exports = {
 
 function generateGameIdea() {
     var format = Math.floor(Math.random() * 4);
-    //var format = 4;
+    //var format = 0;
     //Format #0: A mix of GENRE and GENRE set in a LOCATION
     //Format #1: A GENRE set in LOCATION
     //Format #2: A GENRE where MODIFIER
@@ -19,8 +19,7 @@ function generateGameIdea() {
     var ideaString = "**Game Idea:** \n";
     switch(format) {
         case 0:
-            //FIX: two identical genres
-            ideaString = ideaString.concat("A mix of ", getRandomArrayElement(genres), " and ", getRandomArrayElement(genres), " set ", getRandomArrayElement(locations));
+            ideaString = formatZero(ideaString);
             break;
         case 1:
             //FIX: Sometimes, "A" needs to be "An" to be gramatically correct (applies to formats 0, 1, 2 and 4)
@@ -41,6 +40,20 @@ function generateGameIdea() {
             break;
     }
     return ideaString;
+}
+
+function formatZero(ideaString) {
+    var genre0 = getRandomArrayElement(genres);
+    var genre1 = getRandomArrayElement(genres);
+
+    if(genre1 == genre0) {
+        modifiedGenreArray = genres.slice();
+        var genre0Index = modifiedGenreArray.indexOf(genre0);
+        modifiedGenreArray.splice(genre0Index, 1);
+        genre1 = getRandomArrayElement(modifiedGenreArray);
+    }
+
+    return ideaString.concat("A mix of ", genre0, " and ", genre1, " set ", getRandomArrayElement(locations));
 }
 
 function getRandomArrayElement(array) {
