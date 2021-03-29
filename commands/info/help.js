@@ -5,7 +5,7 @@ module.exports = {
     description: "Sends a list of possible commands via DMs.",
     syntax: "help [command]",
     execute(message, args) {
-        const Index = require("../index.js");
+        const Index = require("../../index.js");
         const commandMap = Index.commandMap;
 
         var helpMessage = "";
@@ -55,7 +55,7 @@ function displayCommandInfo(commandMap, args) {
         commandInfo = "Sorry, but this command doesn't exist :frowning:";
     }
     else {
-        commandInfo = commandInfo.concat("**Description:** ", commandObject.description, "\n", "**Syntax:** ", commandObject.syntax);
+        commandInfo = commandInfo.concat("**Description:** ", commandObject.description, "\n", "**Syntax:** ", commandObject.syntax, "\n", "**Category:** ", commandObject.category);
     }
     return commandInfo;
 }
