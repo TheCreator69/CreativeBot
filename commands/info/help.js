@@ -42,7 +42,7 @@ function listAllCommands(commandMap) {
     var commandList = "";
     for(const [key, value] of commandMap) {
         var commandObject = commandMap.get(key);
-        commandList = commandList.concat("`", commandObject.name, "`, ");
+        commandList = commandList + "`" + commandObject.name + "`, ";
     }
     return commandList;
 }
@@ -55,7 +55,7 @@ function displayCommandInfo(commandMap, args) {
         commandInfo = "Sorry, but this command doesn't exist :frowning:";
     }
     else {
-        commandInfo = commandInfo.concat("**Description:** ", commandObject.description, "\n", "**Syntax:** ", commandObject.syntax, "\n", "**Category:** ", commandObject.category);
+        commandInfo = commandInfo + "**Description:** " + commandObject.description + "\n" + "**Syntax:** " + commandObject.syntax + "\n" + "**Category:** " + commandObject.category;
     }
     return commandInfo;
 }

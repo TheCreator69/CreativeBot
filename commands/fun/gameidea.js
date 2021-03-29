@@ -33,7 +33,7 @@ function generateGameIdea() {
             ideaString = formatFour(ideaString);
             break;
         default:
-            ideaString = ideaString.concat("Just make GTA 6 lol");
+            ideaString = ideaString + "Just make GTA 6 lol";
             break;
     }
     return ideaString;
@@ -50,28 +50,28 @@ function formatZero(ideaString) {
         genre1 = getRandomArrayElement(modifiedGenreArray);
     }
 
-    return ideaString.concat("A mix of ", genre0, " and ", genre1, " set ", getRandomArrayElement(locations));
+    return ideaString = ideaString + "A mix of " + genre0 + " and " + genre1 + " set " + getRandomArrayElement(locations);
 }
 
 function formatOne(ideaString) {
     var genre = getRandomArrayElement(genres);
-    return ideaString.concat(getCorrectFormOfArticle(genre), genre, " set ", getRandomArrayElement(locations));
+    return ideaString = ideaString + getCorrectFormOfArticle(genre) + genre + " set " + getRandomArrayElement(locations);
 }
 
 function formatTwo(ideaString) {
     var genre = getRandomArrayElement(genres);
-    return ideaString.concat(getCorrectFormOfArticle(genre), genre, " where ", getRandomArrayElement(modifiers));
+    return ideaString = ideaString + getCorrectFormOfArticle(genre) + genre + " where " + getRandomArrayElement(modifiers);
 }
 
 function formatThree(ideaString) {
     var theme = getRandomArrayElement(themes);
     theme = theme.replace(/^\w/, (c) => c.toUpperCase());
-    return ideaString.concat(theme, ", but ", getRandomArrayElement(modifiers));
+    return ideaString = ideaString + theme + ", but " + getRandomArrayElement(modifiers);
 }
 
 function formatFour(ideaString) {
     var genre = getRandomArrayElement(genres);
-    return ideaString.concat(getCorrectFormOfArticle(genre), genre, " about ", getRandomArrayElement(themes));
+    return ideaString = ideaString + getCorrectFormOfArticle(genre) + genre + " about " + getRandomArrayElement(themes);
 }
 
 function getCorrectFormOfArticle(nextWord) {
