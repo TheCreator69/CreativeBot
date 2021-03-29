@@ -14,6 +14,11 @@ module.exports = {
         setTimeout(() => sentMessage.then(function(message) {message.edit(rollingMessage + "." + slotMachineText)}), 1000);
         setTimeout(() => sentMessage.then(function(message) {message.edit(rollingMessage + ".." + slotMachineText)}), 2000);
         setTimeout(() => sentMessage.then(function(message) {message.edit(rollingMessage + "..." + slotMachineText)}), 3000);
-        setTimeout(() => sentMessage.then(function(message) {message.edit(doneMessage + coinsWon + " coins!" + slotMachineText)}), 4000);
+        setTimeout(() => sentMessage.then(function(message) {
+            for(let i = 0; i < 3; i++) {
+                slotMachineText = slotMachineText.replace("X", i);
+            }
+            message.edit(doneMessage + coinsWon + " coins!" + slotMachineText)
+        }), 4000);
     }
 };
