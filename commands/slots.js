@@ -10,9 +10,9 @@ module.exports = {
     execute(message, args) {
         var coinsWon = Math.floor(Math.random() * 2000);
 
-        sentMessage = message.channel.send(rollingMessage + slotMachineText);
-        animateRollingMessage(sentMessage);
-        setTimeout(() => sentMessage.then(function(message) {
+        sentMessagePromise = message.channel.send(rollingMessage + slotMachineText);
+        animateRollingMessage(sentMessagePromise);
+        setTimeout(() => sentMessagePromise.then(function(message) {
             for(let i = 0; i < 3; i++) {
                 slotMachineText = slotMachineText.replace("X", i);
             }
@@ -21,13 +21,17 @@ module.exports = {
     }
 };
 
-async function animateRollingMessage(sentMessage) {
-    await sleep(1000);
-    sentMessage.then(function(message) {message.edit(rollingMessage + "." + slotMachineText)});
-    await sleep(1000);
-    sentMessage.then(function(message) {message.edit(rollingMessage + ".." + slotMachineText)});
-    await sleep(1000);
-    sentMessage.then(function(message) {message.edit(rollingMessage + "..." + slotMachineText)});
+async function animateRollingMessage(sentMessagePromise) {
+    for(let i = 0; i < 3; i++) {
+        await sleep(1000);
+        sentMessagePromise.then(function(message) {message.edit(rollingMessage + "." + slotMachineText)});
+        await sleep(1000);
+        sentMessagePromise.then(function(message) {message.edit(rollingMessage + ".." + slotMachineText)});
+        await sleep(1000);
+        sentMessagePromise.then(function(message) {message.edit(rollingMessage + "..." + slotMachineText)});
+        await sleep(1000);
+        sentMessagePromise.then(function(message) {message.edit(rollingMessage + slotMachineText)});
+    }
 }
 
 function sleep(delay) {
