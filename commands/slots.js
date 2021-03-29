@@ -16,32 +16,35 @@ module.exports = {
         var slotMessagePromise = message.channel.send(rollingMessage + slotMachineText).then(function(message) {return message});
         const waitForMessage = () => {
             slotMessagePromise.then((slotMessage) => {
-
+                animateRollingMessage(slotMessage);
             });
         };
         waitForMessage();
-        animateRollingMessage(slotMessagePromise);
         setTimeout(() => slotMessagePromise.then(function(slotMessage) {
-            for(let i = 0; i < 3; i++) {
-                slotMachineText = slotMachineText.replace("X", i);
-            }
-            var finalSlotMessage = editLineInString(slotMessage.content, 0, doneMessage + coinsWon + " coins!");
-            slotMessage.edit(finalSlotMessage);
+            finishAnimation(slotMessage, coinsWon);
         }), rollCycles * 4000 + 1000);
     }
 };
 
-async function animateRollingMessage(sentMessagePromise) {
+async function animateRollingMessage(slotMessage) {
     for(let i = 0; i < rollCycles; i++) {
         await sleep(1000);
-        sentMessagePromise.then(function(message) {message.edit(rollingMessage + "." + slotMachineText)});
+        slotMessage.edit(rollingMessage + "." + slotMachineText);
         await sleep(1000);
-        sentMessagePromise.then(function(message) {message.edit(rollingMessage + ".." + slotMachineText)});
+        slotMessage.edit(rollingMessage + ".." + slotMachineText);
         await sleep(1000);
-        sentMessagePromise.then(function(message) {message.edit(rollingMessage + "..." + slotMachineText)});
+        slotMessage.edit(rollingMessage + "..." + slotMachineText);
         await sleep(1000);
-        sentMessagePromise.then(function(message) {message.edit(rollingMessage + slotMachineText)});
+        slotMessage.edit(rollingMessage + slotMachineText);
     }
+}
+
+function finishAnimation(slotMessage, coinsWon) {
+    for(let i = 0; i < 3; i++) {
+        slotMachineText = slotMachineText.replace("X", i);
+    }
+    var finalSlotMessage = editLineInString(slotMessage.content, 0, doneMessage + coinsWon + " coins!");
+    slotMessage.edit(finalSlotMessage);
 }
 
 function editLineInString(stringToEdit, lineIndex, newLineString) {
