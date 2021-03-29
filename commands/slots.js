@@ -13,7 +13,7 @@ module.exports = {
     execute(message, args) {
         var coinsWon = Math.floor(Math.random() * 2000);
 
-        var slotMessagePromise = message.channel.send(rollingMessage + slotMachineText).then(function(message) {return message});
+        var slotMessagePromise = message.channel.send(rollingMessage).then(function(message) {return message});
         const waitForMessage = () => {
             slotMessagePromise.then((slotMessage) => {
                 animateRollingMessage(slotMessage);
@@ -29,37 +29,18 @@ module.exports = {
 async function animateRollingMessage(slotMessage) {
     for(let i = 0; i < rollCycles; i++) {
         await sleep(1000);
-        slotMessage.edit(editLineInString(slotMessage.content, 0, rollingMessage + "."));
+        slotMessage.edit(rollingMessage + ".");
         await sleep(1000);
-        slotMessage.edit(editLineInString(slotMessage.content, 0, rollingMessage + ".."));
+        slotMessage.edit(rollingMessage + "..");
         await sleep(1000);
-        slotMessage.edit(editLineInString(slotMessage.content, 0, rollingMessage + "..."));
+        slotMessage.edit(rollingMessage + "...");
         await sleep(1000);
-        slotMessage.edit(editLineInString(slotMessage.content, 0, rollingMessage));
+        slotMessage.edit(rollingMessage);
     }
 }
 
 function finishAnimation(slotMessage, coinsWon) {
-    for(let i = 0; i < 3; i++) {
-        slotMachineText = slotMachineText.replace("X", i);
-    }
-    slotMessage.edit(editLineInString(slotMessage.content, 0, doneMessage + coinsWon + " coins!"));
-}
-
-function editLineInString(stringToEdit, lineIndex, newLineString) {
-    var editedString = "";
-    var lineArray = stringToEdit.split("\n");
-
-    if(lineIndex >= lineArray.length) {
-        console.error("lineIndex is too large!");
-    }
-    else {
-        lineArray[lineIndex] = newLineString;
-        for(let line of lineArray) {
-            editedString = editedString + line + "\n";
-        }
-    }
-    return editedString;
+    slotMessage.edit(doneMessage + coinsWon + " coins!");
 }
 
 function sleep(delay) {
