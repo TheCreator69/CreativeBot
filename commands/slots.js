@@ -29,13 +29,13 @@ module.exports = {
 async function animateRollingMessage(slotMessage) {
     for(let i = 0; i < rollCycles; i++) {
         await sleep(1000);
-        slotMessage.edit(rollingMessage + "." + slotMachineText);
+        slotMessage.edit(editLineInString(slotMessage.content, 0, rollingMessage + "."));
         await sleep(1000);
-        slotMessage.edit(rollingMessage + ".." + slotMachineText);
+        slotMessage.edit(editLineInString(slotMessage.content, 0, rollingMessage + ".."));
         await sleep(1000);
-        slotMessage.edit(rollingMessage + "..." + slotMachineText);
+        slotMessage.edit(editLineInString(slotMessage.content, 0, rollingMessage + "..."));
         await sleep(1000);
-        slotMessage.edit(rollingMessage + slotMachineText);
+        slotMessage.edit(editLineInString(slotMessage.content, 0, rollingMessage));
     }
 }
 
@@ -43,8 +43,7 @@ function finishAnimation(slotMessage, coinsWon) {
     for(let i = 0; i < 3; i++) {
         slotMachineText = slotMachineText.replace("X", i);
     }
-    var finalSlotMessage = editLineInString(slotMessage.content, 0, doneMessage + coinsWon + " coins!");
-    slotMessage.edit(finalSlotMessage);
+    slotMessage.edit(editLineInString(slotMessage.content, 0, doneMessage + coinsWon + " coins!"));
 }
 
 function editLineInString(stringToEdit, lineIndex, newLineString) {
