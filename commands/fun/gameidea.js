@@ -17,24 +17,24 @@ function generateGameIdea() {
     //Format #4: A GENRE about (a) THEME
     var ideaString = "**Game Idea:** \n";
     switch(format) {
-    case 0:
-        ideaString = formatZero(ideaString);
-        break;
-    case 1:
-        ideaString = formatOne(ideaString);
-        break;
-    case 2:
-        ideaString = formatTwo(ideaString);
-        break;
-    case 3:
-        ideaString = formatThree(ideaString);
-        break;
-    case 4:
-        ideaString = formatFour(ideaString);
-        break;
-    default:
-        ideaString = ideaString + "Just make GTA 6 lol";
-        break;
+        case 0:
+            ideaString = formatZero(ideaString);
+            break;
+        case 1:
+            ideaString = formatOne(ideaString);
+            break;
+        case 2:
+            ideaString = formatTwo(ideaString);
+            break;
+        case 3:
+            ideaString = formatThree(ideaString);
+            break;
+        case 4:
+            ideaString = formatFour(ideaString);
+            break;
+        default:
+            ideaString = ideaString + "Just make GTA 6 lol";
+            break;
     }
     return ideaString;
 }
@@ -166,6 +166,15 @@ var modifiers = [ //Come after "where" and "but"
     "you can draw too create something",
     "the player is scared of the mouse",
     "the world is turned upside down",
+    "you have to kill people too progress",
+    "you can only move a certain direction for a certain amount of time",
+    "the player is blind for a few seconds each time",
+    "blinking is the main mechanic",
+    "you need too do tasks to beat the game",
+    "you use the second player too guide you",
+    "someone is always watching",
+    "your actions cause changes"
+
 
 ];
 var locations = [ //Come after "set"
@@ -183,5 +192,18 @@ var locations = [ //Come after "set"
     "inside of an active volcano",
     "after the Second World War",
     "in a post-apocalyptic world",
-    "on top of an airship"
+    "on top of an airship",
+    "on a giant map",
+    "on a giant",
+    "on a boat",
+    "in a car",
+    "in a airplane",
+    "on a spaceship",
+    "on a new planet",
+    "on a alien spaceship",
+    "on a keyboard",
+    "in a school",
+    "in a japanese highschool",
+    "in a submarine"
+    
 ];
