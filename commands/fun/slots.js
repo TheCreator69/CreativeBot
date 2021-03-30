@@ -6,7 +6,10 @@ module.exports = {
     description: "Simulates a slot machine, but without the monetary losses...and gains.",
     syntax: "slots",
     execute(message, args) {
-        var slotMessagePromise = message.channel.send("Rolling").then(function(message) {return message});
+        var slotMessagePromise = message.channel.send("Rolling").then(function(messageObject) {
+            return messageObject;
+        }
+        );
         const waitForMessage = () => {
             slotMessagePromise.then((slotMessage) => {
                 animateRollingMessage(slotMessage);
@@ -75,7 +78,7 @@ function finishAnimation(slotMessage, randomSymbols, coinsWon) {
         finishedSlotText = "You've won " + coinsWon + " coins! Hooray!\n" + slotMachineBorder;
     }
     for(let i = 0; i <= 8; i = i + 3) {
-        var slotMachineRow = "  " + randomSymbols[i] + " " + randomSymbols[i+1] + " " + randomSymbols[i + 2] + "  \n";
+        var slotMachineRow = "  " + randomSymbols[i] + " " + randomSymbols[i + 1] + " " + randomSymbols[i + 2] + "  \n";
         finishedSlotText = finishedSlotText + slotMachineRow;
     }
     finishedSlotText = finishedSlotText + slotMachineBorder;

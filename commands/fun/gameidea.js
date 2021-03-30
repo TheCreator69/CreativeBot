@@ -17,24 +17,24 @@ function generateGameIdea() {
     //Format #4: A GENRE about (a) THEME
     var ideaString = "**Game Idea:** \n";
     switch(format) {
-        case 0:
-            ideaString = formatZero(ideaString);
-            break;
-        case 1:
-            ideaString = formatOne(ideaString);
-            break;
-        case 2:
-            ideaString = formatTwo(ideaString);
-            break;
-        case 3:
-            ideaString = formatThree(ideaString);
-            break;
-        case 4:
-            ideaString = formatFour(ideaString);
-            break;
-        default:
-            ideaString = ideaString + "Just make GTA 6 lol";
-            break;
+    case 0:
+        ideaString = formatZero(ideaString);
+        break;
+    case 1:
+        ideaString = formatOne(ideaString);
+        break;
+    case 2:
+        ideaString = formatTwo(ideaString);
+        break;
+    case 3:
+        ideaString = formatThree(ideaString);
+        break;
+    case 4:
+        ideaString = formatFour(ideaString);
+        break;
+    default:
+        ideaString = ideaString + "Just make GTA 6 lol";
+        break;
     }
     return ideaString;
 }
