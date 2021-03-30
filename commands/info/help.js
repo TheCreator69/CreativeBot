@@ -14,7 +14,7 @@ module.exports = {
 
         if(args.length == 0) {
             helpMessage = listAllCommands(commandMap);
-            helpMessage = helpMessage.substr(0, helpMessage.length-2);
+            helpMessage = helpMessage.substr(0, helpMessage.length - 2);
 
             helpEmbed.setTitle("List of possible commands:");
             helpEmbed.setDescription(helpMessage);
@@ -23,7 +23,7 @@ module.exports = {
         else {
             helpMessage = displayCommandInfo(commandMap, args);
 
-            commandObject = getRequestedCommandObject(commandMap, args);
+            var commandObject = getRequestedCommandObject(commandMap, args);
             if(commandObject === undefined) {
                 helpEmbed.setTitle("Invalid command!");
             }
