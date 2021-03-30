@@ -149,7 +149,6 @@ var modifiers = [ //Come after "where" and "but"
     "The world can switch between two places mid match",
     "You can draw too create something",
     "The player is scared of the mouse",
-    
 ];
 var locations = [ //Come after "set"
     "in a haunted house",
