@@ -21,7 +21,7 @@ client.once("ready", () => {
     console.log("I'm online now!");
     client.user.setPresence({
         status: "online",
-        activity: {name: "Use \'" + config.prefix + "\' to talk to me!"}
+        activity: {name: "Use '" + config.prefix + "' to talk to me!"}
     });
 });
 
@@ -32,7 +32,7 @@ client.on("message", message => {
     const command = args.shift().toLowerCase();
 
     if(client.commands.has(command)) {
-        commandMapEntry = client.commands.get(command);
+        var commandMapEntry = client.commands.get(command);
         commandMapEntry.execute(message, args);
     }
     else {
