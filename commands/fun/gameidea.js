@@ -17,24 +17,24 @@ function generateGameIdea() {
     //Format #4: A GENRE about (a) THEME
     var ideaString = "**Game Idea:** \n";
     switch(format) {
-    case 0:
-        ideaString = formatZero(ideaString);
-        break;
-    case 1:
-        ideaString = formatOne(ideaString);
-        break;
-    case 2:
-        ideaString = formatTwo(ideaString);
-        break;
-    case 3:
-        ideaString = formatThree(ideaString);
-        break;
-    case 4:
-        ideaString = formatFour(ideaString);
-        break;
-    default:
-        ideaString = ideaString + "Just make GTA 6 lol";
-        break;
+        case 0:
+            ideaString = formatZero(ideaString);
+            break;
+        case 1:
+            ideaString = formatOne(ideaString);
+            break;
+        case 2:
+            ideaString = formatTwo(ideaString);
+            break;
+        case 3:
+            ideaString = formatThree(ideaString);
+            break;
+        case 4:
+            ideaString = formatFour(ideaString);
+            break;
+        default:
+            ideaString = ideaString + "Just make GTA 6 lol";
+            break;
     }
     return ideaString;
 }
@@ -119,7 +119,15 @@ var genres = [
     "Browser Based Game",
     "Card Game",
     "Webcam/Mic Game",
-    "VR Game"
+    "VR Game",
+    "Flying Game",
+    "Sound based game",
+    "Sound based horror game",
+    "Mouse only game",
+    "keyboard only game",
+    "Midi instrument game",
+    "Real life object game (eg, skylanders, amiibo etc.)",
+    "Gacha Game"
 ];
 var themes = [ //Come after "about" and at the start of a sentence
     "an ambush",
@@ -134,7 +142,15 @@ var themes = [ //Come after "about" and at the start of a sentence
     "exploring old castle ruins",
     "cooking the ultimate meal",
     "infiltrating a cult",
-    "A cat brewing up spells"
+    "a cat brewing up spells",
+    "a car chase",
+    "robbing a bank",
+    "re-uniting a friendship",
+    "hiding in a bunker",
+    "summoning something",
+    "buying upgrades too get better",
+    "Slicing objects",
+    "possesed puppets"
 ];
 var modifiers = [ //Come after "where" and "but"
     "gravity is inverted",
@@ -146,9 +162,11 @@ var modifiers = [ //Come after "where" and "but"
     "the only move is jumping",
     "the player manipulates the environment instead of the main character",
     "the world is in 4D",
-    "The world can switch between two places mid match",
-    "You can draw too create something",
-    "The player is scared of the mouse",
+    "the world can switch between two places mid match",
+    "you can draw too create something",
+    "the player is scared of the mouse",
+    "the world is turned upside down",
+
 ];
 var locations = [ //Come after "set"
     "in a haunted house",
