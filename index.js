@@ -17,33 +17,18 @@ for(const folder of commandFolders) {
     }
 }
 
-client.once("ready", () => {
-    console.log("I'm online now!");
-    client.user.setPresence({
-        status: "online",
-        activity: {name: "Use '" + config.prefix + "' to talk to me!"}
-    });
-});
-
-client.on("message", message => {
-    if(!message.content.startsWith(prefix) || message.author.bot) return;
-
-    const args = message.content.slice(prefix.length).split(/ +/);
-    const command = args.shift().toLowerCase();
-
-    if(client.commands.has(command)) {
-        var commandMapEntry = client.commands.get(command);
-        commandMapEntry.execute(message, args);
+const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
+for(const file of eventFiles) {
+    const eventInstance = require(`./events/${file}`);
+    if(eventInstance.once) {
+        client.once(eventInstance.name, (...args) => eventInstance.execute(...args, client));
     }
     else {
-        message.channel.send("Sorry, but this command is invalid :frowning:");
+        client.on(eventInstance.name, (...args) => eventInstance.execute(...args, client));
     }
-});
-
-process.on("unhandledRejection", error => {
-    console.error("Unhandled rejection: ", error);
-});
+}
 
 client.login(config.token);
 
+exports.client = client;
 exports.commandMap = client.commands;
