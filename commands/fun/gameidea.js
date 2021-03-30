@@ -113,7 +113,13 @@ var genres = [
     "Party game",
     "Puzzle game",
     "Sports game",
-    "Educational game"
+    "Educational game",
+    "Psychological horror game",
+    "Drawing Game",
+    "Browser Based Game",
+    "Card Game",
+    "Webcam/Mic Game",
+    "VR Game"
 ];
 var themes = [ //Come after "about" and at the start of a sentence
     "an ambush",
@@ -127,7 +133,8 @@ var themes = [ //Come after "about" and at the start of a sentence
     "fighting mythical creatures",
     "exploring old castle ruins",
     "cooking the ultimate meal",
-    "infiltrating a cult"
+    "infiltrating a cult",
+    "A cat brewing up spells"
 ];
 var modifiers = [ //Come after "where" and "but"
     "gravity is inverted",
@@ -138,7 +145,11 @@ var modifiers = [ //Come after "where" and "but"
     "you can walk on walls",
     "the only move is jumping",
     "the player manipulates the environment instead of the main character",
-    "the world is in 4D"
+    "the world is in 4D",
+    "The world can switch between two places mid match",
+    "You can draw too create something",
+    "The player is scared of the mouse",
+    
 ];
 var locations = [ //Come after "set"
     "in a haunted house",
