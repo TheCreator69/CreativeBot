@@ -1,46 +1,63 @@
 const {MessageAttachment} = require("discord.js");
 const Canvas = require("canvas");
-const noMessageEntered = "I see you didn't enter a message, shame on YOU!";
-//TODO: Center the string
 
 module.exports = {
     name: "obama",
     description: "Sends an inspiring Obama picture with an equally inspiring message (hopefully).",
     syntax: "obama <message>",
     async execute(message, args) {
-        const canvas = Canvas.createCanvas(1200, 800);
-        const ctx = canvas.getContext("2d");
-
-        var obamaImage = await Canvas.loadImage("./obama.png");
-        ctx.drawImage(obamaImage, 0, 0, canvas.width, canvas.height);
-
-        ctx.fillStyle = "#ffffff";
-        ctx.textAlign = "center";
-        if(!args.length) {
-            ctx.font = getFittingFontSize(canvas, noMessageEntered);
-            ctx.fillText(noMessageEntered, canvas.width / 2, 150);
-        }
-        else {
-            var imageText = "";
-            for(var arg of args) {
-                imageText = imageText + arg + " ";
-            }
-            ctx.font = getFittingFontSize(canvas, imageText);
-            ctx.fillText(imageText, canvas.width / 2, 150);
-        }
-
-        var attachment = new MessageAttachment(canvas.toBuffer(), "obama-is-very-inspiring.png");
+        var obamaImageBuffer = await createObamaImageBuffer(args);
+        var attachment = new MessageAttachment(obamaImageBuffer, "obama-is-very-inspiring.png");
         message.channel.send(attachment);
     }
 };
 
-function getFittingFontSize(canvas, text) {
-    const ctx = canvas.getContext("2d");
+async function createObamaImageBuffer(args) {
+    const canvas = Canvas.createCanvas(1200, 800);
+    const context = canvas.getContext("2d");
+
+    await drawImage(canvas, context);
+    drawText(canvas, context, args);
+
+    return canvas.toBuffer();
+}
+
+async function drawImage(canvas, context) {
+    var obamaImage = await Canvas.loadImage("./media/obama.png");
+    context.drawImage(obamaImage, 0, 0, canvas.width, canvas.height);
+}
+
+function drawText(canvas, context, args) {
+    var imageText = constructTextFromArgs(args);
+
+    context.fillStyle = "#ffffff";
+    context.textAlign = "center";
+    context.font = getFittingFontSize(canvas, context, imageText);
+    context.fillText(imageText, canvas.width / 2, 150);
+}
+
+function constructTextFromArgs(args) {
+    var imageText = "";
+    const noMessageEntered = "I see you didn't enter a message, shame on YOU!";
+
+    if(!args.length) {
+        imageText = noMessageEntered;
+    }
+    else {
+        for(var arg of args) {
+            imageText = imageText + arg + " ";
+        }
+    }
+
+    return imageText;
+}
+
+function getFittingFontSize(canvas, context, text) {
     let fontSize = 70;
 
     do {
-        ctx.font = `${fontSize -= 5}px Arial`;
-    } while(ctx.measureText(text).width > canvas.width - 100);
+        context.font = `${fontSize -= 5}px Arial`;
+    } while(context.measureText(text).width > canvas.width - 100);
 
-    return ctx.font;
+    return context.font;
 }
