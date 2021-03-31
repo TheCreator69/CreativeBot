@@ -6,23 +6,23 @@ module.exports = {
     description: "Simulates a slot machine, but without the monetary losses...and gains.",
     syntax: "slots",
     execute(message, args) {
-        var slotMessagePromise = message.channel.send("Rolling").then(function(messageObject) {
-            return messageObject;
-        }
-        );
-        const waitForMessage = () => {
-            slotMessagePromise.then((slotMessage) => {
-                animateRollingMessage(slotMessage);
-            });
-        };
-        waitForMessage();
-        setTimeout(() => slotMessagePromise.then(function(slotMessage) {
-            var randomSymbols = selectRandomSymbols();
-            var coinsWon = calculateWin();
-            finishAnimation(slotMessage, randomSymbols, coinsWon);
-        }), rollCycles * 4000 + 1000);
+        editMessageOverTime(message);
     }
 };
+
+function editMessageOverTime(message) {
+    var slotMessagePromise = message.channel.send("Rolling").then(function(messageObject) {
+        return messageObject;
+    });
+    animateMessageWhenReady(slotMessagePromise);
+    finishAnimation(slotMessagePromise);
+}
+
+function animateMessageWhenReady(slotMessagePromise) {
+    slotMessagePromise.then((slotMessage) => {
+        animateRollingMessage(slotMessage);
+    });
+}
 
 async function animateRollingMessage(slotMessage) {
     for(let i = 0; i < rollCycles; i++) {
@@ -39,6 +39,14 @@ async function animateRollingMessage(slotMessage) {
 
 function sleep(delay) {
     return new Promise((resolve) => setTimeout(resolve, delay));
+}
+
+function finishAnimation(slotMessagePromise) {
+    setTimeout(() => slotMessagePromise.then(function(slotMessage) {
+        var randomSymbols = selectRandomSymbols();
+        var coinsWon = calculateWin();
+        finishEditingMessage(slotMessage, randomSymbols, coinsWon);
+    }), rollCycles * 4000 + 1000);
 }
 
 function selectRandomSymbols() {
@@ -68,7 +76,7 @@ function calculateWin() {
     }
 }
 
-function finishAnimation(slotMessage, randomSymbols, coinsWon) {
+function finishEditingMessage(slotMessage, randomSymbols, coinsWon) {
     var slotMachineBorder = " - - - - - - - - -\n";
     var finishedSlotText = "";
     if(coinsWon == 0) {
