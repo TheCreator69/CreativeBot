@@ -7,7 +7,7 @@ module.exports = {
         console.log("Creative Bot has been started!");
         client.user.setPresence({
             status: "online",
-            activity: {name: "Use '" + config.prefix + "' to talk to me!"}
+            activity: {name: "Use ''" + config.prefix + "help' to learn what I can do!"}
         });
     }
 };
