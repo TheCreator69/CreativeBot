@@ -1,42 +1,42 @@
-const Discord = require("discord.js");
+const {MessageEmbed} = require("discord.js");
+const Index = require("../../index.js");
 
 module.exports = {
     name: "help",
-    description: "Sends a list of possible commands via DMs.",
+    description: "Lists all possible commands or info about a specific command.",
     syntax: "help [command]",
     execute(message, args) {
-        const Index = require("../../index.js");
         const commandMap = Index.commandMap;
+        var helpEmbed = undefined;
 
-        var helpMessage = "";
-        const helpEmbed = new Discord.MessageEmbed();
-        helpEmbed.setColor("#0000ff");
-
-        if(args.length == 0) {
-            helpMessage = listAllCommands(commandMap);
-            helpMessage = helpMessage.substr(0, helpMessage.length - 2);
-
-            helpEmbed.setTitle("List of possible commands:");
-            helpEmbed.setDescription(helpMessage);
-            helpEmbed.setFooter("To learn more about individual commands, use %help [command]!");
+        if(!args.length) {
+            helpEmbed = createHelpEmbed("List of possible commands:", listAllCommands(commandMap), "To learn more about individual commands, use %help [command]!");
         }
         else {
-            helpMessage = displayCommandInfo(commandMap, args);
-
-            var commandObject = getRequestedCommandObject(commandMap, args);
-            if(commandObject === undefined) {
-                helpEmbed.setTitle("Invalid command!");
+            if(doesCommandExist(commandMap, args)) {
+                helpEmbed = createHelpEmbed("Help for: ", getCommandInfo(commandMap, args), "");
             }
             else {
-                helpEmbed.setTitle("Help for: " + commandObject.name);
+                helpEmbed = createHelpEmbed("Invalid command!", "Sorry, but this command doesn't exist :frowning:", "");
             }
-            helpEmbed.setDescription(helpMessage);
         }
-
-        message.author.send(helpEmbed);
+        message.channel.send(helpEmbed);
     }
 };
 
+
+function doesCommandExist(commandMap, args) {
+    return commandMap.has(args[0]);
+}
+
+function createHelpEmbed(title, description, footer) {
+    var helpEmbed = new MessageEmbed();
+    helpEmbed.setColor("#0000ff");
+    helpEmbed.setTitle(title);
+    helpEmbed.setDescription(description);
+    helpEmbed.setFooter(footer);
+    return helpEmbed;
+}
 
 function listAllCommands(commandMap) {
     var commandList = "";
@@ -44,10 +44,11 @@ function listAllCommands(commandMap) {
         var commandObject = commandMap.get(key);
         commandList = commandList + "`" + commandObject.name + "`, ";
     }
+    commandList = commandList.substr(0, commandList.length - 2);
     return commandList;
 }
 
-function displayCommandInfo(commandMap, args) {
+function getCommandInfo(commandMap, args) {
     var commandInfo = "";
     var commandObject = getRequestedCommandObject(commandMap, args);
 
