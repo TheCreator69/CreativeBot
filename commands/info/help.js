@@ -6,27 +6,24 @@ module.exports = {
     description: "Lists all possible commands or info about a specific command.",
     syntax: "help [command]",
     execute(message, args) {
-        const commandMap = Index.commandMap;
-        var helpEmbed = undefined;
-
-        if(!args.length) {
-            helpEmbed = createHelpEmbed("List of possible commands:", listAllCommands(commandMap), "To learn more about individual commands, use %help [command]!");
-        }
-        else {
-            if(doesCommandExist(commandMap, args)) {
-                helpEmbed = createHelpEmbed("Help for: ", getCommandInfo(commandMap, args), "");
-            }
-            else {
-                helpEmbed = createHelpEmbed("Invalid command!", "Sorry, but this command doesn't exist :frowning:", "");
-            }
-        }
+        var helpEmbed = createCorrectHelpEmbed(Index.commandMap, args);
         message.channel.send(helpEmbed);
     }
 };
 
 
-function doesCommandExist(commandMap, args) {
-    return commandMap.has(args[0]);
+function createCorrectHelpEmbed(commandMap, args) {
+    if(!args.length) {
+        return createHelpEmbed("List of possible commands:", listAllCommands(commandMap), "To learn more about individual commands, use %help [command]!");
+    }
+    else {
+        if(doesCommandExist(commandMap, args)) {
+            return createHelpEmbed("Help for: " + getCommandInstance(commandMap, args).name, createCommandInfoString(commandMap, args), "");
+        }
+        else {
+            return createHelpEmbed("Invalid command!", "Sorry, but this command doesn't exist :frowning:", "");
+        }
+    }
 }
 
 function createHelpEmbed(title, description, footer) {
@@ -48,17 +45,18 @@ function listAllCommands(commandMap) {
     return commandList;
 }
 
-function getCommandInfo(commandMap, args) {
-    var commandInfo = "";
+function doesCommandExist(commandMap, args) {
+    return commandMap.has(args[0]);
+}
+
+function getCommandInstance(commandMap, args) {
+    return commandMap.get(args[0]);
+}
+
+function createCommandInfoString(commandMap, args) {
     var commandObject = getRequestedCommandObject(commandMap, args);
 
-    if(commandObject === undefined) {
-        commandInfo = "Sorry, but this command doesn't exist :frowning:";
-    }
-    else {
-        commandInfo = commandInfo + "**Description:** " + commandObject.description + "\n" + "**Syntax:** " + commandObject.syntax + "\n" + "**Category:** " + commandObject.category;
-    }
-    return commandInfo;
+    return "**Description:** " + commandObject.description + "\n" + "**Syntax:** " + commandObject.syntax + "\n" + "**Category:** " + commandObject.category;
 }
 
 function getRequestedCommandObject(commandMap, args) {
