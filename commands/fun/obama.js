@@ -1,6 +1,7 @@
 const {MessageAttachment} = require("discord.js");
 const Canvas = require("canvas");
-//TODO: Center the string, adaptive text size
+const noMessageEntered = "I see you didn't enter a message, shame on YOU!";
+//TODO: Center the string
 
 module.exports = {
     name: "obama",
@@ -13,16 +14,17 @@ module.exports = {
         var obamaImage = await Canvas.loadImage("./obama.png");
         ctx.drawImage(obamaImage, 0, 0, canvas.width, canvas.height);
 
-        ctx.font = "50px Arial";
         ctx.fillStyle = "#000000";
         if(!args.length) {
-            ctx.fillText("I see you didn't enter a message, shame on YOU!", 50, 100);
+            ctx.font = getFittingFontSize(canvas, noMessageEntered);
+            ctx.fillText(noMessageEntered, 50, 100);
         }
         else {
             var imageText = "";
             for(var arg of args) {
                 imageText = imageText + arg + " ";
             }
+            ctx.font = getFittingFontSize(canvas, imageText);
             ctx.fillText(imageText, 50, 100);
         }
 
@@ -30,3 +32,14 @@ module.exports = {
         message.channel.send(attachment);
     }
 };
+
+function getFittingFontSize(canvas, text) {
+    const ctx = canvas.getContext("2d");
+    let fontSize = 50;
+
+    do {
+        ctx.font = `${fontSize -= 10}px Arial`;
+    } while(ctx.measureText(text).width > canvas.width - 100);
+
+    return ctx.font;
+}
