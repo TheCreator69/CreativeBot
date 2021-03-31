@@ -14,10 +14,11 @@ module.exports = {
         var obamaImage = await Canvas.loadImage("./obama.png");
         ctx.drawImage(obamaImage, 0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = "#000000";
+        ctx.fillStyle = "#ffffff";
+        ctx.textAlign = "center";
         if(!args.length) {
             ctx.font = getFittingFontSize(canvas, noMessageEntered);
-            ctx.fillText(noMessageEntered, 50, 100);
+            ctx.fillText(noMessageEntered, canvas.width / 2, 150);
         }
         else {
             var imageText = "";
@@ -25,7 +26,7 @@ module.exports = {
                 imageText = imageText + arg + " ";
             }
             ctx.font = getFittingFontSize(canvas, imageText);
-            ctx.fillText(imageText, 50, 100);
+            ctx.fillText(imageText, canvas.width / 2, 150);
         }
 
         var attachment = new MessageAttachment(canvas.toBuffer(), "obama-is-very-inspiring.png");
@@ -35,10 +36,10 @@ module.exports = {
 
 function getFittingFontSize(canvas, text) {
     const ctx = canvas.getContext("2d");
-    let fontSize = 50;
+    let fontSize = 70;
 
     do {
-        ctx.font = `${fontSize -= 10}px Arial`;
+        ctx.font = `${fontSize -= 5}px Arial`;
     } while(ctx.measureText(text).width > canvas.width - 100);
 
     return ctx.font;
