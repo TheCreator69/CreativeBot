@@ -5,6 +5,7 @@ module.exports = {
     name: "obama",
     description: "Sends an inspiring Obama picture with an equally inspiring message (hopefully).",
     syntax: "obama <message>",
+    admin_only: false,
     async execute(message, args) {
         var obamaImageBuffer = await createObamaImageBuffer(args);
         var attachment = new MessageAttachment(obamaImageBuffer, "obama-is-very-inspiring.png");

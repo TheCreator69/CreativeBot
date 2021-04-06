@@ -2,6 +2,7 @@ module.exports = {
     name: "math",
     description: "Tests your math skills by giving an exercise and waiting for a quick response.",
     syntax: "math",
+    admin_only: false,
     execute(message, args) {
         var question = generateMathQuestion();
         message.channel.send(createMathMessage(question));

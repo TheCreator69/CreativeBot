@@ -5,6 +5,7 @@ module.exports = {
     name: "slots",
     description: "Simulates a slot machine, but without the monetary losses...and gains.",
     syntax: "slots",
+    admin_only: false,
     execute(message, args) {
         editMessageOverTime(message);
     }

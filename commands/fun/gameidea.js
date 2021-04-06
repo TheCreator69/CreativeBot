@@ -2,6 +2,7 @@ module.exports = {
     name: "gameidea",
     description: "Generates a random game idea.",
     syntax: "gameidea",
+    admin_only: false,
     execute(message, args) {
         var gameIdea = generateGameIdea();
         message.channel.send(gameIdea);

@@ -4,6 +4,7 @@ module.exports = {
     name: "socials",
     description: "Lists ***REMOVED***'s socials in an embed.",
     syntax: "socials",
+    admin_only: false,
     execute(message, args) {
         message.channel.send(constructEmbed());
     }

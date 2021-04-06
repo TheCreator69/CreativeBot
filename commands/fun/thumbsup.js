@@ -4,6 +4,7 @@ module.exports = {
     name: "thumbsup",
     description: "Mention a user whose last message will get a thumbs up reaction from the bot :thumbsup:",
     syntax: "thumbsup <user mention>",
+    admin_only: false,
     execute(message, args) {
         if(!args[0]) {
             message.channel.send("You need to specifiy a user I can react to!");
