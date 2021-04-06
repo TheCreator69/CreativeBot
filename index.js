@@ -2,7 +2,6 @@ const Discord = require("discord.js");
 const client = new Discord.Client({ws:{intents:["GUILD_MESSAGES", "DIRECT_MESSAGES"]}});
 
 const config = require("./config.json");
-const prefix = config.prefix;
 
 client.commands = new Discord.Collection();
 const fs = require("fs");
