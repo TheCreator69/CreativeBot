@@ -10,6 +10,9 @@ module.exports = {
             return;
         }
         var mentionedUser = getUserFromMention(args[0]);
+        if(mentionedUser === undefined) {
+            message.channel.send("You just specified an invalid user! Who am I supposed to react to? :frowning:");
+        }
         reactToLastMessageFromMentionedUser(message, mentionedUser);
     }
 };
