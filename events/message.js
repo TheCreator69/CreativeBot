@@ -12,7 +12,21 @@ module.exports = {
             message.channel.send("Sorry, but this command is invalid :frowning:");
             return;
         }
+        
         var commandMapEntry = client.commands.get(command);
+        if(commandMapEntry.admin_only && !isCommandSenderAdmin(message)) {
+            message.channel.send("Sorry, but this command is invalid :frowning:");
+            return;
+        }
         commandMapEntry.execute(message, args);
     }
 };
+
+function isCommandSenderAdmin(message) {
+    for(let i in config.admin_ids) {
+        if(config.admin_ids[i] == message.author.id) {
+            return true;
+        }
+    }
+    return false;
+}
