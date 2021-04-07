@@ -16,7 +16,7 @@ module.exports = {
 
 function createCorrectHelpEmbed(message, commandMap, args) {
     if(!args.length) {
-        return createHelpEmbed("#52ce7b", ":page_facing_up: List of possible commands:", listAllCommands(message, commandMap), "To learn more about individual commands, use %help [command]!");
+        return createHelpEmbed("#52ce7b", ":page_facing_up: List of possible commands:", listAllCommands(message, commandMap), "To learn more about individual commands, use " + config.prefix + "help [command]!");
     }
     else {
         if(doesCommandExist(commandMap, args)) {
