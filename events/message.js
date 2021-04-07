@@ -12,10 +12,14 @@ module.exports = {
             message.channel.send("Sorry, but this command is invalid :frowning:");
             return;
         }
-        
+
         var commandMapEntry = client.commands.get(command);
         if(commandMapEntry.admin_only && !isCommandSenderAdmin(message)) {
             message.channel.send("Sorry, but this command is invalid :frowning:");
+            return;
+        }
+        if(args.length < commandMapEntry.min_args) {
+            message.channel.send("You need to provide the require arguments for the command to work! See `%help " + commandMapEntry.name + "` for details!");
             return;
         }
         commandMapEntry.execute(message, args);
