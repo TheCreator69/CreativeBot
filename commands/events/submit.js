@@ -6,14 +6,11 @@ module.exports = {
     name: "submit",
     description: "Submits an entry for the current event in the event channel.",
     syntax: "submit <link> <description>",
+    min_args: 2,
     admin_only: false,
     execute(message, args) {
         if(!config.event_channel_id) {
             message.channel.send("There is no event running currently, so you can't submit anything!");
-            return;
-        }
-        if(args.length < 2) {
-            message.channel.send("You need to enter a link and a description of at least one word!");
             return;
         }
         constructAndSendSubmissionEmbed(message, args);
