@@ -16,17 +16,26 @@ module.exports = {
             message.channel.send("You need to enter a link and a description of at least one word!");
             return;
         }
-        const eventChannel = Index.client.channels.cache.get(config.event_channel_id);
-        var description = "";
-        for(var i = 1; i < args.length; i++) {
-            description += args[i] + " ";
-        }
-        const submissionEmbed = createSubmissionEmbed("__**Submission by " + message.author.username + ":**__", "*Link to Content:* " + args[0] + "\n*Description:* " + description, message.author);
-        eventChannel.send(submissionEmbed);
+        constructAndSendSubmissionEmbed(message, args);
     }
 };
 
-function createSubmissionEmbed(title, description, author) {
+function constructAndSendSubmissionEmbed(message, args) {
+    var description = constructSubmissionDescription(args);
+    const submissionEmbed = constructSubmissionEmbed("__**Submission by " + message.author.username + ":**__", "*Link to Content:* " + args[0] + "\n*Description:* " + description, message.author);
+    const eventChannel = Index.client.channels.cache.get(config.event_channel_id);
+    eventChannel.send(submissionEmbed);
+}
+
+function constructSubmissionDescription(args) {
+    var description = "";
+    for(var i = 1; i < args.length; i++) {
+        description += args[i] + " ";
+    }
+    return description;
+}
+
+function constructSubmissionEmbed(title, description, author) {
     var submissionEmbed = new MessageEmbed();
     submissionEmbed.setColor("#4444ff");
     submissionEmbed.setTitle(title);

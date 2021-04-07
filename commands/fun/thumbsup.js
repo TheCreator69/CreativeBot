@@ -10,13 +10,17 @@ module.exports = {
             message.channel.send("You need to specifiy a user I can react to!");
             return;
         }
-        var mentionedUser = getUserFromMention(args[0]);
-        if(mentionedUser === undefined) {
-            message.channel.send("You just specified an invalid user! Who am I supposed to react to? :frowning:");
-        }
-        reactToLastMessageFromMentionedUser(message, mentionedUser);
+        reactToMentionedUserIfValid(message, args);
     }
 };
+
+function reactToMentionedUserIfValid(message, args) {
+    var mentionedUser = getUserFromMention(args[0]);
+    if(mentionedUser === undefined) {
+        message.channel.send("You just specified an invalid user! Who am I supposed to react to? :frowning:");
+    }
+    reactToLastMessageFromMentionedUser(message, mentionedUser);
+}
 
 function getUserFromMention(mention) {
     const matches = mention.match(/^<@!?(\d+)>$/);
