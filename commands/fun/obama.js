@@ -5,6 +5,7 @@ module.exports = {
     name: "obama",
     description: "Sends an inspiring Obama picture with an equally inspiring message (hopefully).",
     syntax: "obama <message>",
+    min_args: 1,
     admin_only: false,
     async execute(message, args) {
         var obamaImageBuffer = await createObamaImageBuffer(args);
@@ -39,17 +40,9 @@ function drawText(canvas, context, args) {
 
 function constructTextFromArgs(args) {
     var imageText = "";
-    const noMessageEntered = "I see you didn't enter a message, shame on YOU!";
-
-    if(!args.length) {
-        imageText = noMessageEntered;
+    for(var arg of args) {
+        imageText = imageText + arg + " ";
     }
-    else {
-        for(var arg of args) {
-            imageText = imageText + arg + " ";
-        }
-    }
-
     return imageText;
 }
 
