@@ -53,12 +53,19 @@ function listAllCommands(message, commandMap) {
 }
 
 function listAdminCommandForAdminsOnly(message, commandList, commandObject) {
-    for(let i in config.admin_ids) {
-        if(config.admin_ids[i] == message.author.id && message.channel.type == "dm") {
-            return commandList + "`" + commandObject.name + "`, ";
-        }
+    if(isCommandSenderAdmin(message) && message.channel.type == "dm") {
+        return commandList + "`" + commandObject.name + "`, ";
     }
     return commandList;
+}
+
+function isCommandSenderAdmin(message) {
+    for(let i in config.admin_ids) {
+        if(config.admin_ids[i] == message.author.id) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function doesCommandExist(commandMap, args) {
