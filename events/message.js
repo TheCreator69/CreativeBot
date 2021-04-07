@@ -8,12 +8,11 @@ module.exports = {
         const args = message.content.slice(config.prefix.length).split(/ +/);
         const command = args.shift().toLowerCase();
 
-        if(client.commands.has(command)) {
-            var commandMapEntry = client.commands.get(command);
-            commandMapEntry.execute(message, args);
-        }
-        else {
+        if(!client.commands.has(command)) {
             message.channel.send("Sorry, but this command is invalid :frowning:");
+            return;
         }
+        var commandMapEntry = client.commands.get(command);
+        commandMapEntry.execute(message, args);
     }
 };
