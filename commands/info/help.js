@@ -1,20 +1,22 @@
 const {MessageEmbed} = require("discord.js");
 const Index = require("../../index.js");
+const config = require("../../config.json");
 
 module.exports = {
     name: "help",
     description: "Lists all possible commands or info about a specific command.",
     syntax: "help [command]",
+    admin_only: false,
     execute(message, args) {
-        var helpEmbed = createCorrectHelpEmbed(Index.commandMap, args);
+        var helpEmbed = createCorrectHelpEmbed(message, Index.commandMap, args);
         message.channel.send(helpEmbed);
     }
 };
 
 
-function createCorrectHelpEmbed(commandMap, args) {
+function createCorrectHelpEmbed(message, commandMap, args) {
     if(!args.length) {
-        return createHelpEmbed("#52ce7b", ":page_facing_up: List of possible commands:", listAllCommands(commandMap), "To learn more about individual commands, use %help [command]!");
+        return createHelpEmbed("#52ce7b", ":page_facing_up: List of possible commands:", listAllCommands(message, commandMap), "To learn more about individual commands, use %help [command]!");
     }
     else {
         if(doesCommandExist(commandMap, args)) {
@@ -35,13 +37,27 @@ function createHelpEmbed(color, title, description, footer) {
     return helpEmbed;
 }
 
-function listAllCommands(commandMap) {
+function listAllCommands(message, commandMap) {
     var commandList = "";
     for(const [key, value] of commandMap) {
         var commandObject = commandMap.get(key);
-        commandList = commandList + "`" + commandObject.name + "`, ";
+        if(commandObject.admin_only) {
+            commandList = listAdminCommandForAdminsOnly(message, commandList, commandObject);
+        }
+        else {
+            commandList = commandList + "`" + commandObject.name + "`, ";
+        }
     }
     commandList = commandList.substr(0, commandList.length - 2);
+    return commandList;
+}
+
+function listAdminCommandForAdminsOnly(message, commandList, commandObject) {
+    for(let i in config.admin_ids) {
+        if(config.admin_ids[i] == message.author.id && message.channel.type == "dm") {
+            return commandList + "`" + commandObject.name + "`, ";
+        }
+    }
     return commandList;
 }
 
