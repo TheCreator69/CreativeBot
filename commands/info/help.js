@@ -19,7 +19,7 @@ function createCorrectHelpEmbed(message, commandMap, args) {
         return createHelpEmbed("#52ce7b", ":page_facing_up: List of possible commands:", listAllCommands(message, commandMap), "To learn more about individual commands, use " + config.prefix + "help [command]!");
     }
     else {
-        if(doesCommandExist(commandMap, args)) {
+        if(doesCommandExist(message, commandMap, args)) {
             return createHelpEmbed("#499fff", ":ledger: Help for: " + getCommandInstance(commandMap, args).name, createCommandInfoString(commandMap, args), "");
         }
         else {
@@ -42,7 +42,7 @@ function listAllCommands(message, commandMap) {
     for(const [key, value] of commandMap) {
         var commandObject = commandMap.get(key);
         if(commandObject.admin_only) {
-            commandList = listAdminCommandForAdminsOnly(message, commandList, commandObject);
+            commandList = listAdminCommandForAdminsOnly(message, commandList, commandObject); //Change = to =+, remove additional "commandList" in function
         }
         else {
             commandList = commandList + "`" + commandObject.name + "`, ";
@@ -68,8 +68,22 @@ function isCommandSenderAdmin(message) {
     return false;
 }
 
-function doesCommandExist(commandMap, args) {
-    return commandMap.has(args[0]);
+function doesCommandExist(message, commandMap, args) {
+    if(!commandMap.has(args[0])) {
+        return false;
+    }
+    var commandObject = getCommandInstance(commandMap, args);
+    if(commandObject.admin_only) {
+        if(isCommandSenderAdmin(message)) {
+            return commandObject;
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        return commandObject;
+    }
 }
 
 function getCommandInstance(commandMap, args) {
