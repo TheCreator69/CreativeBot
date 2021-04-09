@@ -58,7 +58,7 @@ function collectAndResolveAnswer(message, question) {
         replyBasedOnValidityOfAnswer(collectedMessage, question);
     });
     collector.on("end", collectedMessages => {
-        replyBasedOnQuantityOfMessages(message, question, collectedMessages);
+        replyIfNoMessagesWereSent(message, question, collectedMessages);
     });
 }
 
@@ -71,7 +71,7 @@ function replyBasedOnValidityOfAnswer(message, question) {
     }
 }
 
-function replyBasedOnQuantityOfMessages(message, question, collectedMessages) {
+function replyIfNoMessagesWereSent(message, question, collectedMessages) {
     if(collectedMessages.size == 0) {
         message.channel.send("You didn't answer in time! The correct answer would have been " + question.result + "! :sweat:");
     }
