@@ -19,7 +19,9 @@ module.exports = {
 
 function constructAndSendSubmissionEmbed(message, args) {
     var description = constructSubmissionDescription(args);
-    const submissionEmbed = constructSubmissionEmbed("__**Submission by " + message.author.username + ":**__", "*Link to Content:* " + args[0] + "\n*Description:* " + description, message.author);
+    const submissionTitle = "__**Submission by " + message.author.username + ":**__";
+    const submissionDescription = "*Link to Content:* " + args[0] + "\n*Description:* " + description;
+    const submissionEmbed = constructSubmissionEmbed(submissionTitle, submissionDescription, message.author);
     const eventChannel = Index.client.channels.cache.get(config.event_channel_id);
     eventChannel.send(submissionEmbed);
 }
