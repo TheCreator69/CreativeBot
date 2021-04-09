@@ -73,13 +73,8 @@ function doesCommandExist(message, commandMap, args) {
         return false;
     }
     var commandObject = getCommandInstance(commandMap, args);
-    if(commandObject.admin_only) {
-        if(isCommandSenderAdmin(message)) {
-            return commandObject;
-        }
-        else {
-            return false;
-        }
+    if(commandObject.admin_only && !isCommandSenderAdmin(message)) {
+        return false;
     }
     else {
         return commandObject;
