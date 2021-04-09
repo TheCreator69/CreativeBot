@@ -6,6 +6,7 @@ module.exports = {
     name: "help",
     description: "Lists all possible commands or info about a specific command.",
     syntax: "help [command]",
+    min_args: 0,
     admin_only: false,
     execute(message, args) {
         var helpEmbed = createCorrectHelpEmbed(message, Index.commandMap, args);

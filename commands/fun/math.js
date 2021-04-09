@@ -2,6 +2,7 @@ module.exports = {
     name: "math",
     description: "Tests your math skills by giving an exercise and waiting for a quick response.",
     syntax: "math",
+    min_args: 0,
     admin_only: false,
     execute(message, args) {
         var question = generateMathQuestion();
