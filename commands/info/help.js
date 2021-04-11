@@ -1,6 +1,9 @@
 const {MessageEmbed} = require("discord.js");
 const Index = require("../../index.js");
 const config = require("../../config.json");
+const Sequelize = require("sequelize");
+
+var isCommandSenderAdmin = false;
 
 module.exports = {
     name: "help",
@@ -8,20 +11,54 @@ module.exports = {
     syntax: "help [command]",
     min_args: 0,
     admin_only: false,
-    execute(message, args) {
-        var helpEmbed = createCorrectHelpEmbed(message, Index.commandMap, args);
+    async execute(message, args) {
+        await findOutIfUserIsAdmin(message);
+        var helpEmbed = createCorrectHelpEmbed(message, args);
         message.channel.send(helpEmbed);
     }
 };
 
+async function findOutIfUserIsAdmin(message) {
+    const sequelize = establishDatabaseConnection();
+    const Admins = await defineAndSyncAdminTableModel(sequelize);
+    await checkIfUserIsAdmin(message, Admins);
+}
 
-function createCorrectHelpEmbed(message, commandMap, args) {
+function establishDatabaseConnection() {
+    return new Sequelize("***REMOVED***", "***REMOVED***", "***REMOVED***", {
+        host: "localhost",
+        dialect: "mysql",
+        logging: false
+    });
+}
+
+async function defineAndSyncAdminTableModel(sequelize) {
+    const Admins = sequelize.define("admins", {
+        id: {
+            type: Sequelize.BIGINT,
+            primaryKey: true
+        }
+    }, {
+        timestamps: false
+    });
+    await Admins.sync();
+    return Admins;
+}
+
+async function checkIfUserIsAdmin(message, Admins) {
+    const adminEntry = await Admins.findOne({where: {id: message.author.id}});
+    if(adminEntry !== null) {
+        isCommandSenderAdmin = true;
+    }
+}
+
+function createCorrectHelpEmbed(message, args) {
     if(!args.length) {
-        return createHelpEmbed("#52ce7b", ":page_facing_up: List of possible commands:", listAllCommands(message, commandMap), "To learn more about individual commands, use " + config.prefix + "help [command]!");
+        return createHelpEmbed("#52ce7b", ":page_facing_up: List of possible commands:", listAllCommands(message), "To learn more about individual commands, use " + config.prefix + "help [command]!");
     }
     else {
-        if(doesCommandExist(message, commandMap, args)) {
-            return createHelpEmbed("#499fff", ":ledger: Help for: " + getCommandInstance(commandMap, args).name, createCommandInfoString(commandMap, args), "");
+        if(doesCommandExist(message, args)) {
+            return createHelpEmbed("#499fff", ":ledger: Help for: " + getCommandInstance(args).name, createCommandInfoString(args), "");
         }
         else {
             return createHelpEmbed("#ff0000", ":interrobang: Invalid command!", "Sorry, but this command doesn't exist :frowning:", "");
@@ -38,10 +75,10 @@ function createHelpEmbed(color, title, description, footer) {
     return helpEmbed;
 }
 
-function listAllCommands(message, commandMap) {
+function listAllCommands(message) {
     var commandList = "";
-    for(const [key, value] of commandMap) {
-        var commandObject = commandMap.get(key);
+    for(const [key, value] of Index.commandMap) {
+        var commandObject = Index.commandMap.get(key);
         if(commandObject.admin_only) {
             commandList = listAdminCommandForAdminsOnly(message, commandList, commandObject); //Change = to =+, remove additional "commandList" in function
         }
@@ -54,26 +91,17 @@ function listAllCommands(message, commandMap) {
 }
 
 function listAdminCommandForAdminsOnly(message, commandList, commandObject) {
-    if(isCommandSenderAdmin(message) && message.channel.type == "dm") {
+    if(isCommandSenderAdmin && message.channel.type == "dm") {
         return commandList + "`" + commandObject.name + "`, ";
     }
     return commandList;
 }
 
-function isCommandSenderAdmin(message) {
-    for(let i in config.admin_ids) {
-        if(config.admin_ids[i] == message.author.id) {
-            return true;
-        }
-    }
-    return false;
-}
-
-function doesCommandExist(message, commandMap, args) {
-    if(!commandMap.has(args[0])) {
+function doesCommandExist(message, args) {
+    if(!Index.commandMap.has(args[0])) {
         return false;
     }
-    var commandObject = getCommandInstance(commandMap, args);
+    var commandObject = getCommandInstance(args);
     if(commandObject.admin_only && !isCommandSenderAdmin(message)) {
         return false;
     }
@@ -82,20 +110,20 @@ function doesCommandExist(message, commandMap, args) {
     }
 }
 
-function getCommandInstance(commandMap, args) {
-    return commandMap.get(args[0]);
+function getCommandInstance(args) {
+    return Index.commandMap.get(args[0]);
 }
 
-function createCommandInfoString(commandMap, args) {
-    var commandObject = getRequestedCommandObject(commandMap, args);
+function createCommandInfoString(args) {
+    var commandObject = getRequestedCommandObject(args);
 
     return "**Description:** " + commandObject.description + "\n" + "**Syntax:** *" + commandObject.syntax + "*\n" + "**Category:** " + commandObject.category.replace(/^\w/, (c) => c.toUpperCase());
 }
 
-function getRequestedCommandObject(commandMap, args) {
+function getRequestedCommandObject(args) {
     var requestedCommand = args[0];
 
-    if(commandMap.has(requestedCommand)) {
-        return commandMap.get(requestedCommand);
+    if(Index.commandMap.has(requestedCommand)) {
+        return Index.commandMap.get(requestedCommand);
     }
 }
