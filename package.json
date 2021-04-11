@@ -23,7 +23,8 @@
   "homepage": "https://github.com/***REMOVED***69/CreativeBot#readme",
   "dependencies": {
     "canvas": "^2.7.0",
-    "discord.js": "^12.5.1"
+    "discord.js": "^12.5.1",
+    "sequelize": "^6.6.2"
   },
   "devDependencies": {
     "eslint": "^7.23.0",
