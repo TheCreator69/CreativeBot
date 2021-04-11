@@ -102,7 +102,7 @@ function doesCommandExist(message, args) {
         return false;
     }
     var commandObject = getCommandInstance(args);
-    if(commandObject.admin_only && !isCommandSenderAdmin(message)) {
+    if(commandObject.admin_only && !isCommandSenderAdmin) {
         return false;
     }
     else {
