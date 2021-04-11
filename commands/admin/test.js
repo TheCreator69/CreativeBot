@@ -12,12 +12,21 @@ module.exports = {
             dialect: "mysql",
             logging: false
         });
-        try {
-            await sequelize.authenticate();
-            console.log("Connection successful!");
+        const Admins = sequelize.define("admins", {
+            id: {
+                type: Sequelize.BIGINT,
+                primaryKey: true
+            }
+        }, {
+            timestamps: false
+        });
+        await Admins.sync();
+        const adminEntry = await Admins.findOne({where: {id: message.author.id}});
+        if(adminEntry === null) {
+            console.log("Couldn't find ID in database!");
         }
-        catch(error) {
-            console.error("Unable to connect: " + error);
+        else {
+            console.log("Found ID in database!");
         }
     }
 };
