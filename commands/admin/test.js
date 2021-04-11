@@ -10,7 +10,7 @@ module.exports = {
         const sequelize = new Sequelize("***REMOVED***", "***REMOVED***", "***REMOVED***", {
             host: "localhost",
             dialect: "mysql",
-            logging: "false"
+            logging: false
         });
         try {
             await sequelize.authenticate();
