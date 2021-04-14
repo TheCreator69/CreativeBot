@@ -2,6 +2,7 @@ const {MessageEmbed} = require("discord.js");
 const Index = require("../../index.js");
 const config = require("../../config.json");
 const Sequelize = require("sequelize");
+const AdminCheck = require("../../scripts/admincheck.js");
 
 var isCommandSenderAdmin = false;
 
@@ -12,45 +13,11 @@ module.exports = {
     min_args: 0,
     admin_only: false,
     async execute(message, args) {
-        await findOutIfUserIsAdmin(message);
+        isCommandSenderAdmin = await AdminCheck.findOutIfUserIsAdmin(message.author.id);
         var helpEmbed = createCorrectHelpEmbed(message, args);
         message.channel.send(helpEmbed);
     }
 };
-
-async function findOutIfUserIsAdmin(message) {
-    const sequelize = establishDatabaseConnection();
-    const Admins = await defineAndSyncAdminTableModel(sequelize);
-    await checkIfUserIsAdmin(message, Admins);
-}
-
-function establishDatabaseConnection() {
-    return new Sequelize("***REMOVED***", "***REMOVED***", "***REMOVED***", {
-        host: "localhost",
-        dialect: "mysql",
-        logging: false
-    });
-}
-
-async function defineAndSyncAdminTableModel(sequelize) {
-    const Admins = sequelize.define("admins", {
-        id: {
-            type: Sequelize.BIGINT,
-            primaryKey: true
-        }
-    }, {
-        timestamps: false
-    });
-    await Admins.sync();
-    return Admins;
-}
-
-async function checkIfUserIsAdmin(message, Admins) {
-    const adminEntry = await Admins.findOne({where: {id: message.author.id}});
-    if(adminEntry !== null) {
-        isCommandSenderAdmin = true;
-    }
-}
 
 function createCorrectHelpEmbed(message, args) {
     if(!args.length) {

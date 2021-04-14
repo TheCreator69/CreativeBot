@@ -1,5 +1,6 @@
 const config = require("../config.json");
 const Sequelize = require("sequelize");
+const AdminCheck = require("../scripts/admincheck.js");
 
 module.exports = {
     name: "message",
@@ -15,7 +16,7 @@ module.exports = {
         }
 
         var commandMapEntry = client.commands.get(command);
-        if(commandMapEntry.admin_only && !await findOutIfUserIsAdmin(message)) {
+        if(commandMapEntry.admin_only && !await AdminCheck.findOutIfUserIsAdmin(message.author.id)) {
             message.channel.send("Sorry, but this command is invalid :frowning:");
             return;
         }
@@ -26,37 +27,3 @@ module.exports = {
         commandMapEntry.execute(message, args);
     }
 };
-
-async function findOutIfUserIsAdmin(message) {
-    const sequelize = establishDatabaseConnection();
-    const Admins = await defineAndSyncAdminTableModel(sequelize);
-    return await checkIfUserIsAdmin(message, Admins);
-}
-
-function establishDatabaseConnection() {
-    return new Sequelize("***REMOVED***", "***REMOVED***", "***REMOVED***", {
-        host: "localhost",
-        dialect: "mysql",
-        logging: false
-    });
-}
-
-async function defineAndSyncAdminTableModel(sequelize) {
-    const Admins = sequelize.define("admins", {
-        id: {
-            type: Sequelize.BIGINT,
-            primaryKey: true
-        }
-    }, {
-        timestamps: false
-    });
-    await Admins.sync();
-    return Admins;
-}
-
-async function checkIfUserIsAdmin(message, Admins) {
-    const adminEntry = await Admins.findOne({where: {id: message.author.id}});
-    if(adminEntry !== null) {
-        return true;
-    }
-}
