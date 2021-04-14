@@ -1,8 +1,9 @@
 const config = require("../config.json");
+const Sequelize = require("sequelize");
 
 module.exports = {
     name: "message",
-    execute(message, client) {
+    async execute(message, client) {
         if(!message.content.startsWith(config.prefix) || message.author.bot) return;
 
         const args = message.content.slice(config.prefix.length).split(/ +/);
@@ -14,7 +15,7 @@ module.exports = {
         }
 
         var commandMapEntry = client.commands.get(command);
-        if(commandMapEntry.admin_only && !isCommandSenderAdmin(message)) {
+        if(commandMapEntry.admin_only && !await findOutIfUserIsAdmin(message)) {
             message.channel.send("Sorry, but this command is invalid :frowning:");
             return;
         }
@@ -26,11 +27,36 @@ module.exports = {
     }
 };
 
-function isCommandSenderAdmin(message) {
-    for(let i in config.admin_ids) {
-        if(config.admin_ids[i] == message.author.id) {
-            return true;
+async function findOutIfUserIsAdmin(message) {
+    const sequelize = establishDatabaseConnection();
+    const Admins = await defineAndSyncAdminTableModel(sequelize);
+    return await checkIfUserIsAdmin(message, Admins);
+}
+
+function establishDatabaseConnection() {
+    return new Sequelize("***REMOVED***", "***REMOVED***", "***REMOVED***", {
+        host: "localhost",
+        dialect: "mysql",
+        logging: false
+    });
+}
+
+async function defineAndSyncAdminTableModel(sequelize) {
+    const Admins = sequelize.define("admins", {
+        id: {
+            type: Sequelize.BIGINT,
+            primaryKey: true
         }
+    }, {
+        timestamps: false
+    });
+    await Admins.sync();
+    return Admins;
+}
+
+async function checkIfUserIsAdmin(message, Admins) {
+    const adminEntry = await Admins.findOne({where: {id: message.author.id}});
+    if(adminEntry !== null) {
+        return true;
     }
-    return false;
 }
