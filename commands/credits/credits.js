@@ -8,9 +8,9 @@ module.exports = {
     min_args: 0,
     admin_only: false,
     async execute(message, args) {
-        var creditsImage = await drawCreditsBadge(message);
+        var creditsBadge = await drawCreditsBadge(message);
 
-        const attachment = new MessageAttachment(creditsImage, message.author.username + "_credits.png");
+        const attachment = new MessageAttachment(creditsBadge, message.author.username + "_credits.png");
         message.channel.send(attachment);
     }
 };
