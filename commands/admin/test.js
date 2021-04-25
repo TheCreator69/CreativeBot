@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const AdminScript = require("../../scripts/admincheck.js");
+const CreditsHandler = require("../../scripts/creditshandler.js");
 
 module.exports = {
     name: "test",
@@ -8,6 +8,10 @@ module.exports = {
     min_args: 0,
     admin_only: true,
     async execute(message, args) {
-        message.channel.send("Nothing to test right now...");
+        var userCredits = await CreditsHandler.getCreditsForUser(message.author.id);
+        console.log("User's credits: " + userCredits);
+        await CreditsHandler.updateCreditsForUser(message.author.id, userCredits + 5);
+        userCredits = await CreditsHandler.getCreditsForUser(message.author.id);
+        console.log("User's credits: " + userCredits);
     }
 };
