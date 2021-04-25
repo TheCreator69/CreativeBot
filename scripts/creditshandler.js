@@ -7,11 +7,11 @@ module.exports = {
         const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
         return userEntry.credits;
     },
-    async updateCreditsForUser(userID, newCredits) {
+    async updateCreditsForUser(userID, incrementAmount) {
         const sequelize = establishDatabaseConnection();
         const Credits = await defineAndSyncCreditsTableModel(sequelize);
-        await returnExistingEntryOrCreateNewOne(userID, Credits);
-        await updateUserCredits(userID, newCredits, Credits);
+        const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
+        await updateUserCredits(userID, userEntry.credits + incrementAmount, Credits);
     }
 };
 
