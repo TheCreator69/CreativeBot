@@ -1,5 +1,6 @@
 const {MessageAttachment} = require("discord.js");
 const Canvas = require("canvas");
+const CreditsHandler = require("../../scripts/creditshandler.js");
 
 module.exports = {
     name: "credits",
@@ -8,14 +9,15 @@ module.exports = {
     min_args: 0,
     admin_only: false,
     async execute(message, args) {
-        var creditsBadge = await drawCreditsBadge(message);
+        var userCredits = await CreditsHandler.getCreditsForUser(message.author.id);
+        var creditsBadge = await drawCreditsBadge(message, userCredits);
 
         const attachment = new MessageAttachment(creditsBadge, message.author.username + "_credits.png");
         message.channel.send(attachment);
     }
 };
 
-async function drawCreditsBadge(message) {
+async function drawCreditsBadge(message, credits) {
     const canvas = Canvas.createCanvas(750, 200);
     const context = canvas.getContext("2d");
 
@@ -35,9 +37,9 @@ async function drawCreditsBadge(message) {
     context.fillText(message.author.username, 225, 75);
     context.font = "40px Arial";
     context.fillStyle = "#ffff00";
-    context.fillText("Creative Credits: 0", 225, 125);
+    context.fillText("Creative Credits: " + credits, 225, 125);
     context.fillStyle = "#ff0000";
-    context.fillText("Credits Rank: #1 out of 1", 225, 175);
+    context.fillText("Credits Rank: #1 out of 1", 225, 175); //TODO: Implement ranking system
 
     return canvas.toBuffer();
 }
