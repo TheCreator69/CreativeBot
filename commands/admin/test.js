@@ -10,7 +10,7 @@ module.exports = {
     async execute(message, args) {
         var userCredits = await CreditsHandler.getCreditsForUser(message.author.id);
         console.log("User's credits: " + userCredits);
-        await CreditsHandler.updateCreditsForUser(message.author.id, 5);
+        await CreditsHandler.incrementCreditsForUser(message.author.id, 5);
         userCredits = await CreditsHandler.getCreditsForUser(message.author.id);
         console.log("User's credits: " + userCredits);
     }
