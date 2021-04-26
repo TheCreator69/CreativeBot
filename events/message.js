@@ -7,12 +7,19 @@ const invalidCommandMessage = "Sorry, but this command is invalid :frowning:";
 module.exports = {
     name: "message",
     async execute(message, client) {
-        if(!message.content.startsWith(config.prefix) || message.author.bot) {
-            await handleCreativeCredits(message);
-            return;
+        if(process.env.NODE_ENV == "production") {
+            if(message.content.startsWith(config.prefix) && !message.author.bot) {
+                executeCommand(message, client);
+            }
+            else {
+                await handleCreativeCredits(message);
+            }
         }
-
-        executeCommand(message, client);
+        else if(process.env.NODE_ENV == "development") {
+            if(message.content.startsWith(config.prefix) && !message.author.bot && await AdminCheck.findOutIfUserIsAdmin(message.author.id)) {
+                executeCommand(message, client);
+            }
+        }
     }
 };
 
