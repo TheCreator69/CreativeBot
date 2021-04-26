@@ -1,5 +1,4 @@
-const Sequelize = require("sequelize");
-const CreditsHandler = require("../../scripts/creditshandler.js");
+const process = require("process");
 
 module.exports = {
     name: "test",
@@ -7,11 +6,7 @@ module.exports = {
     syntax: "test",
     min_args: 0,
     admin_only: true,
-    async execute(message, args) {
-        var userCredits = await CreditsHandler.getCreditsForUser(message.author.id);
-        console.log("User's credits: " + userCredits);
-        await CreditsHandler.incrementCreditsForUser(message.author.id, 5);
-        userCredits = await CreditsHandler.getCreditsForUser(message.author.id);
-        console.log("User's credits: " + userCredits);
+    execute(message, args) {
+        //Nothing to test here right now...
     }
 };
