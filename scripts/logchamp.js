@@ -26,8 +26,10 @@ module.exports = {
 };
 
 function log(level, message) {
-    logger.log({
-        level: level,
-        message: message
-    });
+    if(process.env.NODE_ENV !== "production") {
+        logger.log({
+            level: level,
+            message: message
+        });
+    }
 }
