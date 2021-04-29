@@ -2,7 +2,6 @@ const config = require("../config.json");
 const Sequelize = require("sequelize");
 const AdminCheck = require("../scripts/admincheck.js");
 const CreditsHandler = require("../scripts/creditshandler.js");
-const invalidCommandMessage = "Sorry, but this command is invalid :frowning:";
 
 module.exports = {
     name: "message",
@@ -32,12 +31,10 @@ async function executeCommand(message, client) {
     const command = args.shift().toLowerCase();
 
     if(!client.commands.has(command)) {
-        message.channel.send(invalidCommandMessage);
         return;
     }
     var commandMapEntry = client.commands.get(command);
     if(commandMapEntry.admin_only && !await AdminCheck.findOutIfUserIsAdmin(message.author.id)) {
-        message.channel.send(invalidCommandMessage);
         return;
     }
     if(args.length < commandMapEntry.min_args) {
