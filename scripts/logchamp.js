@@ -7,7 +7,7 @@ const logFormat = Winston.format.printf(({level, message, timestamp}) => {
 const logger = Winston.createLogger({
     transports: [new Winston.transports.Console()],
     format: Winston.format.combine(
-        Winston.format.timestamp(),
+        Winston.format.timestamp({format: "DD.MM.YYYY, HH:mm:ss"}),
         Winston.format.colorize({all: true, colors: {"info": "white", "warn": "yellow", "error": "red"}}),
         logFormat),
     exitOnError: false
