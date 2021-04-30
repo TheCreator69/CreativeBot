@@ -17,12 +17,12 @@ module.exports = {
             return;
         }
         if(args[0] === "enable") {
-            EventHandler.toggleEventChannel(message.guild.id, true);
+            EventHandler.setEventChannelActivity(message.guild.id, true);
             message.channel.send("Event channel has been enabled!");
             return;
         }
         else if(args[0] === "disable") {
-            EventHandler.toggleEventChannel(message.guild.id, false);
+            EventHandler.setEventChannelActivity(message.guild.id, false);
             message.channel.send("Event channel has been disabled!");
             return;
         }
