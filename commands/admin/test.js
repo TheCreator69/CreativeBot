@@ -1,4 +1,4 @@
-const process = require("process");
+const LogChamp = require("../../scripts/logchamp.js");
 
 module.exports = {
     name: "test",
