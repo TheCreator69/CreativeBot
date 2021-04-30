@@ -1,6 +1,7 @@
 const Index = require("../../index.js");
 const config = require("../../config.json");
 const {MessageEmbed} = require("discord.js");
+const EventHandler = require("../../scripts/eventhandler.js");
 
 module.exports = {
     name: "submit",
@@ -8,9 +9,18 @@ module.exports = {
     syntax: "submit <link> <description>",
     min_args: 2,
     admin_only: false,
-    execute(message, args) {
-        if(!config.event_channel_id) {
-            message.channel.send("There is no event running currently, so you can't submit anything!");
+    async execute(message, args) {
+        if(!message.guild) {
+            message.channel.send("Please send this command in a server with an active event channel!");
+            return;
+        }
+        const channelEntry = await EventHandler.getEventChannelForGuild(message.guild.id);
+        if(channelEntry === null) {
+            message.channel.send("This Discord doesn't have an event channel!");
+            return;
+        }
+        if(!await EventHandler.getIfEventChannelIsActive(channelEntry)) {
+            message.channel.send("There is currently no active event. Please return later.");
             return;
         }
         constructAndSendSubmissionEmbed(message, args);
