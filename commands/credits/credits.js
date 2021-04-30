@@ -10,14 +10,15 @@ module.exports = {
     admin_only: false,
     async execute(message, args) {
         var userCredits = await CreditsHandler.getCreditsForUser(message.author.id);
-        var creditsBadge = await drawCreditsBadge(message, userCredits);
+        var creditsRank = await CreditsHandler.getCreditsRankForUser(message.author.id);
+        var creditsBadge = await drawCreditsBadge(message, userCredits, creditsRank);
 
         const attachment = new MessageAttachment(creditsBadge, message.author.username + "_credits.png");
         message.channel.send(attachment);
     }
 };
 
-async function drawCreditsBadge(message, credits) {
+async function drawCreditsBadge(message, credits, creditsRank) {
     const canvas = Canvas.createCanvas(750, 200);
     const context = canvas.getContext("2d");
 
@@ -39,7 +40,7 @@ async function drawCreditsBadge(message, credits) {
     context.fillStyle = "#ffff00";
     context.fillText("Creative Credits: " + credits, 225, 125);
     context.fillStyle = "#ff0000";
-    context.fillText("Credits Rank: #1 out of 1", 225, 175); //TODO: Implement ranking system
+    context.fillText("Credits Rank: #" + creditsRank.position + " out of " + creditsRank.max, 225, 175); //TODO: Implement ranking system
 
     return canvas.toBuffer();
 }
