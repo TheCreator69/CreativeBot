@@ -9,12 +9,14 @@ module.exports = {
     async getIfEventChannelIsActive(channelEntry) {
         return checkIfEventChannelIsActive(channelEntry);
     },
-    async toggleEventChannel(guildID, active) {
+    async setEventChannelActivity(guildID, active) {
         const sequelize = establishDatabaseConnection();
         const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
         const channelEntry = await getGuildEventChannel(guildID, EventChannels);
-        await toggleEventChannelInternal(EventChannels, channelEntry, active);
+        await toggleEventChannel(EventChannels, channelEntry, active);
     }
+    //Function for creating/setting an event channel in a server
+    //Function for deleting an event channel in a server
 };
 
 function establishDatabaseConnection() {
@@ -53,7 +55,7 @@ async function checkIfEventChannelIsActive(channelEntry) {
     return channelEntry.channelActive;
 }
 
-async function toggleEventChannelInternal(EventChannels, channelEntry, active) {
+async function toggleEventChannel(EventChannels, channelEntry, active) {
     active = active.toString();
     await EventChannels.update({
         channelActive: active
