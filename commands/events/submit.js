@@ -10,8 +10,8 @@ module.exports = {
     min_args: 2,
     admin_only: false,
     async execute(message, args) {
-        if(!message.guild) {
-            message.channel.send("Please send this command in a server with an active event channel!");
+        if(!message.guild || !message.guild.available) {
+            message.channel.send("Please send this command in an available server with an active event channel!");
             return;
         }
         const channelEntry = await EventHandler.getEventChannel(message.guild.id);
@@ -23,16 +23,16 @@ module.exports = {
             message.channel.send("There is currently no active event. Please return later.");
             return;
         }
-        constructAndSendSubmissionEmbed(message, args);
+        constructAndSendSubmissionEmbed(message, args, channelEntry.eventChannelID);
     }
 };
 
-function constructAndSendSubmissionEmbed(message, args) {
+function constructAndSendSubmissionEmbed(message, args, channelID) {
     var description = constructSubmissionDescription(args);
     const submissionTitle = "__**Submission by " + message.author.username + ":**__";
     const submissionDescription = "*Link to Content:* " + args[0] + "\n*Description:* " + description;
     const submissionEmbed = constructSubmissionEmbed(submissionTitle, submissionDescription, message.author);
-    const eventChannel = Index.client.channels.cache.get(config.event_channel_id);
+    const eventChannel = Index.client.channels.cache.get(channelID);
     eventChannel.send(submissionEmbed);
 }
 
