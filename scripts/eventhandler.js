@@ -1,22 +1,31 @@
 const Sequelize = require("sequelize");
 
 module.exports = {
-    async getEventChannelForGuild(guildID) {
+    async getEventChannel(guildID) {
         const sequelize = establishDatabaseConnection();
         const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
-        return await getGuildEventChannel(guildID, EventChannels);
+        return await getEventChannelEntry(guildID, EventChannels);
     },
-    async getIfEventChannelIsActive(channelEntry) {
-        return checkIfEventChannelIsActive(channelEntry);
+    async checkIfEventChannelIsActive(channelEntry) {
+        return checkEventChannelEntryForActivity(channelEntry);
     },
     async setEventChannelActivity(guildID, active) {
         const sequelize = establishDatabaseConnection();
         const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
-        const channelEntry = await getGuildEventChannel(guildID, EventChannels);
-        await toggleEventChannel(EventChannels, channelEntry, active);
+        const channelEntry = await getEventChannelEntry(guildID, EventChannels);
+        await toggleEventChannelEntry(EventChannels, channelEntry, active);
+    },
+    //Function for creating an event channel in a server
+    async createEventChannel(guildID, channelID) {
+        const sequelize = establishDatabaseConnection();
+        const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
+    },
+    async setEventChannel(guildID, channelID) {
+        //Function for changing an event channel in a server
+    },
+    async deleteEventChannel(guildID) {
+        //Function for deleting an event channel in a server
     }
-    //Function for creating/setting an event channel in a server
-    //Function for deleting an event channel in a server
 };
 
 function establishDatabaseConnection() {
@@ -47,15 +56,15 @@ async function defineAndSyncEventChannelTableModel(sequelize) {
     return EventChannels;
 }
 
-async function getGuildEventChannel(guildID, EventChannels) {
+async function getEventChannelEntry(guildID, EventChannels) {
     return await EventChannels.findOne({where: {serverID: guildID}});
 }
 
-async function checkIfEventChannelIsActive(channelEntry) {
+async function checkEventChannelEntryForActivity(channelEntry) {
     return channelEntry.channelActive;
 }
 
-async function toggleEventChannel(EventChannels, channelEntry, active) {
+async function toggleEventChannelEntry(EventChannels, channelEntry, active) {
     active = active.toString();
     await EventChannels.update({
         channelActive: active

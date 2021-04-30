@@ -14,12 +14,12 @@ module.exports = {
             message.channel.send("Please send this command in a server with an active event channel!");
             return;
         }
-        const channelEntry = await EventHandler.getEventChannelForGuild(message.guild.id);
+        const channelEntry = await EventHandler.getEventChannel(message.guild.id);
         if(channelEntry === null) {
             message.channel.send("This Discord doesn't have an event channel!");
             return;
         }
-        if(!await EventHandler.getIfEventChannelIsActive(channelEntry)) {
+        if(!await EventHandler.checkIfEventChannelIsActive(channelEntry)) {
             message.channel.send("There is currently no active event. Please return later.");
             return;
         }
