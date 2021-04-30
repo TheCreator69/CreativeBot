@@ -1,6 +1,6 @@
 # Creative Bot
 
-This discord bot is being created by @***REMOVED***69 with discord.js.
+This discord bot is being created by @***REMOVED***69 with JavaScript, and more precisely, discord.js.\n
 **It is intended for my personal use only.**
 That's why it can only do the things I want it to do.
 But I have still added support for multiple servers, just in case (even though I just own one).
@@ -10,7 +10,7 @@ But I have still added support for multiple servers, just in case (even though I
 - [x] Creative Credits System: every time you're active on the Creative Discord, the bot will award you a few credits
 - [x] Event System: I'd like to host regular events on my Discord and my bot will help me with this :smile:
 
-### Node Libraries used
+### Node Modules used
 - [discord.js](https://discord.js.org/#/) (interaction with the Discord Bot API via JavaScript)
 - [canvas](https://nodecanvas.paradoxnotion.com/documentation/) (image manipulation)
 - [pm2](https://pm2.keymetrics.io/docs/usage/quick-start/) (more ways of running my bot processes)
