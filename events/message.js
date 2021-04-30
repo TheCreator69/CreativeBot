@@ -10,7 +10,7 @@ module.exports = {
             if(message.content.startsWith(config.prefix) && !message.author.bot) {
                 executeCommand(message, client);
             }
-            else {
+            else if(!message.author.bot) {
                 await handleCreativeCredits(message);
             }
         }
