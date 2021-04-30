@@ -12,6 +12,11 @@ module.exports = {
         const Credits = await defineAndSyncCreditsTableModel(sequelize);
         const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
         await updateUserCredits(userID, userEntry.credits + incrementAmount, Credits);
+    },
+    async getCreditsRankForUser(userID) {
+        const sequelize = establishDatabaseConnection();
+        const Credits = await defineAndSyncCreditsTableModel(sequelize);
+        return await sortTableEntriesAndReturnPosition(Credits, userID);
     }
 };
 
@@ -57,4 +62,23 @@ async function updateUserCredits(userID, newCredits, Credits) {
     }, {
         where: {userID: userID}
     });
+}
+
+async function sortTableEntriesAndReturnPosition(Credits, userID) {
+    const sortedEntries = await Credits.findAll({
+        order: [
+            ["credits", "DESC"]
+        ]
+    });
+    var position = 0;
+    for(var i = 0; i < sortedEntries.length; i++) {
+        if(userID === sortedEntries[i].userID) {
+            position = i + 1;
+        }
+    }
+    var rankObject = {
+        position: position,
+        max: sortedEntries.length
+    };
+    return rankObject;
 }
