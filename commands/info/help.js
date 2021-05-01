@@ -25,7 +25,7 @@ function createCorrectHelpEmbed(message, args) {
     }
     else {
         if(doesCommandExist(message, args)) {
-            return createHelpEmbed("#499fff", ":ledger: Help for: " + getCommandInstance(args).name, createCommandInfoString(args), "");
+            return createHelpEmbed("#499fff", ":ledger: Help for: " + getCommandInstance(args).name, createCommandInfoString(args), "Arguments wrapped with \"<>\" are required, others wrapped with \"[]\" are optional.");
         }
         else {
             return createHelpEmbed("#ff0000", ":interrobang: Invalid command!", "Sorry, but this command doesn't exist :frowning:", "");
