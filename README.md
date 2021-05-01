@@ -1,6 +1,6 @@
 # Creative Bot
 
-This discord bot is being created by ***REMOVED*** with JavaScript, and more precisely, discord.js.\
+This discord bot is being created by TheCreator with JavaScript, and more precisely, discord.js.\
 **It is intended for my personal use only.**\
 That's why it can only do the things I want it to do.
 But I have still added support for multiple servers, just in case (even though I just own one).

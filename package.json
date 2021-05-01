@@ -8,19 +8,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/***REMOVED***69/CreativeBot.git"
+    "url": "git+https://github.com/TheCreator69/CreativeBot.git"
   },
   "keywords": [
     "creative",
     "skeleton",
     "bot"
   ],
-  "author": "***REMOVED***, SomeVeryEpicSkeleton",
+  "author": "TheCreator, SomeVeryEpicSkeleton",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/***REMOVED***69/CreativeBot/issues"
+    "url": "https://github.com/TheCreator69/CreativeBot/issues"
   },
-  "homepage": "https://github.com/***REMOVED***69/CreativeBot#readme",
+  "homepage": "https://github.com/TheCreator69/CreativeBot#readme",
   "dependencies": {
     "canvas": "^2.7.0",
     "discord.js": "^12.5.3",

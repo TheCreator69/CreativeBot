@@ -1,6 +1,6 @@
 module.exports = {
     apps : [{
-        name: "***REMOVED***",
+        name: "cbot",
         script: "index.js",
         watch: true,
         env: {

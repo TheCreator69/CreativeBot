@@ -1,4 +1,5 @@
 const Sequelize = require("sequelize");
+const credentials = require("../credentials.json");
 
 module.exports = {
     async getEventChannel(serverID) {
@@ -32,7 +33,7 @@ module.exports = {
 };
 
 function establishDatabaseConnection() {
-    return new Sequelize("***REMOVED***", "***REMOVED***", "***REMOVED***", {
+    return new Sequelize(credentials.db_name, credentials.db_username, credentials.db_password, {
         host: "localhost",
         dialect: "mysql",
         logging: false

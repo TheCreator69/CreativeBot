@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-const config = require("./config.json");
+const credentials = require("./credentials.json");
 
 client.commands = new Discord.Collection();
 const fs = require("fs");
@@ -27,7 +27,7 @@ for(const file of eventFiles) {
     }
 }
 
-client.login(config.token);
+client.login(credentials.token);
 
 exports.client = client;
 exports.commandMap = client.commands;
