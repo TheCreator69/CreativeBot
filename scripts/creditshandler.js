@@ -13,6 +13,12 @@ module.exports = {
         const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
         await updateUserCredits(userID, userEntry.credits + incrementAmount, Credits);
     },
+    async setCreditsForUser(userID, amount) {
+        const sequelize = establishDatabaseConnection();
+        const Credits = await defineAndSyncCreditsTableModel(sequelize);
+        const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
+        await updateUserCredits(userID, amount, Credits);
+    },
     async getCreditsRankForUser(userID) {
         const sequelize = establishDatabaseConnection();
         const Credits = await defineAndSyncCreditsTableModel(sequelize);
