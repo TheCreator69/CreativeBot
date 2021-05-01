@@ -62,6 +62,9 @@ async function returnExistingEntryOrCreateNewOne(userID, Credits) {
 }
 
 async function updateUserCredits(userID, newCredits, Credits) {
+    if(newCredits < 0) {
+        newCredits = 0;
+    }
     newCredits = newCredits.toString();
     await Credits.update({
         credits: newCredits
