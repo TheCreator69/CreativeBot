@@ -17,6 +17,7 @@ But I have still added support for multiple servers, just in case (even though I
 - [eslint](https://eslint.org/docs/user-guide/getting-started) (checking my code for style inconsistencies)
 - [winston](https://github.com/winstonjs/winston) (more sophisticated logging)
 - [sequelize](https://sequelize.org/master/) (accessing databases in an easier to read way)
+- [jest](https://jestjs.io/) (automated code testing)
 
 ### Other Credits
 Obama Picture: http://www.acclaimimages.com/_gallery/_free_images/0519-0906-1522-3927_president_barack_obama_points_at_you_o.jpg
