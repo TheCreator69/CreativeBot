@@ -13,7 +13,7 @@ module.exports = {
     min_args: 0,
     admin_only: false,
     async execute(message, args) {
-        isCommandSenderAdmin = await AdminCheck.findOutIfUserIsAdmin(message.author.id);
+        isCommandSenderAdmin = await AdminCheck.checkIfUserIsAdmin(message.author.id);
         var helpEmbed = createCorrectHelpEmbed(message, args);
         message.channel.send(helpEmbed);
     }

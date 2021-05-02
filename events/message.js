@@ -15,7 +15,7 @@ module.exports = {
             }
         }
         else if(process.env.NODE_ENV == "development") {
-            if(message.content.startsWith(config.prefix) && !message.author.bot && await AdminCheck.findOutIfUserIsAdmin(message.author.id)) {
+            if(message.content.startsWith(config.prefix) && !message.author.bot && await AdminCheck.checkIfUserIsAdmin(message.author.id)) {
                 executeCommand(message, client);
             }
         }
@@ -34,7 +34,7 @@ async function executeCommand(message, client) {
         return;
     }
     var commandMapEntry = client.commands.get(command);
-    if(commandMapEntry.admin_only && !await AdminCheck.findOutIfUserIsAdmin(message.author.id)) {
+    if(commandMapEntry.admin_only && !await AdminCheck.checkIfUserIsAdmin(message.author.id)) {
         return;
     }
     if(args.length < commandMapEntry.min_args) {

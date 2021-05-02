@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const credentials = require("../credentials.json");
 
 module.exports = {
-    async findOutIfUserIsAdmin(userID) {
+    async checkIfUserIsAdmin(userID) {
         const sequelize = establishDatabaseConnection();
         const Admins = await defineAndSyncAdminTableModel(sequelize);
         return await checkIfUserIsAdmin(userID, Admins);
