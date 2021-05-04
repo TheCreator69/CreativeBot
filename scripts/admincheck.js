@@ -2,12 +2,14 @@ const Sequelize = require("sequelize");
 const credentials = require("../credentials.json");
 
 module.exports = {
-    async checkIfUserIsAdmin(userID) {
-        const sequelize = establishDatabaseConnection();
-        const Admins = await defineAndSyncAdminTableModel(sequelize);
-        return await checkIfUserIsAdmin(userID, Admins);
-    }
+    checkIfUserIsAdmin
 };
+
+async function checkIfUserIsAdmin(userID) {
+    const sequelize = establishDatabaseConnection();
+    const Admins = await defineAndSyncAdminTableModel(sequelize);
+    return await checkTableForAdminEntry(userID, Admins);
+}
 
 function establishDatabaseConnection() {
     return new Sequelize(credentials.db_name, credentials.db_username, credentials.db_password, {
@@ -30,7 +32,7 @@ async function defineAndSyncAdminTableModel(sequelize) {
     return Admins;
 }
 
-async function checkIfUserIsAdmin(userID, Admins) {
+async function checkTableForAdminEntry(userID, Admins) {
     const adminEntry = await Admins.findOne({where: {id: userID}});
     if(adminEntry !== null) {
         return true;

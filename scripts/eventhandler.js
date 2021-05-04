@@ -2,35 +2,47 @@ const Sequelize = require("sequelize");
 const credentials = require("../credentials.json");
 
 module.exports = {
-    async getEventChannel(serverID) {
-        const sequelize = establishDatabaseConnection();
-        const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
-        return await getEventChannelEntry(serverID, EventChannels);
-    },
-    async checkIfEventChannelIsActive(channelEntry) {
-        return checkEventChannelEntryForActivity(channelEntry);
-    },
-    async setEventChannelActivity(serverID, active) {
-        const sequelize = establishDatabaseConnection();
-        const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
-        await toggleEventChannelEntry(EventChannels, serverID, active);
-    },
-    async createEventChannel(serverID, channelID) {
-        const sequelize = establishDatabaseConnection();
-        const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
-        await createEventChannelEntry(EventChannels, serverID, channelID);
-    },
-    async changeEventChannel(serverID, channelID) {
-        const sequelize = establishDatabaseConnection();
-        const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
-        await changeEventChannelEntry(EventChannels, serverID, channelID);
-    },
-    async deleteEventChannel(serverID) {
-        const sequelize = establishDatabaseConnection();
-        const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
-        await deleteEventChannelEntry(EventChannels, serverID);
-    }
+    getEventChannel,
+    checkIfEventChannelIsActive,
+    setEventChannelActivity,
+    createEventChannel,
+    changeEventChannel,
+    deleteEventChannel
 };
+
+async function getEventChannel(serverID) {
+    const sequelize = establishDatabaseConnection();
+    const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
+    return await getEventChannelEntry(serverID, EventChannels);
+}
+
+async function checkIfEventChannelIsActive(channelEntry) {
+    return checkEventChannelEntryForActivity(channelEntry);
+}
+
+async function setEventChannelActivity(serverID, active) {
+    const sequelize = establishDatabaseConnection();
+    const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
+    await toggleEventChannelEntry(EventChannels, serverID, active);
+}
+
+async function createEventChannel(serverID, channelID) {
+    const sequelize = establishDatabaseConnection();
+    const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
+    await createEventChannelEntry(EventChannels, serverID, channelID);
+}
+
+async function changeEventChannel(serverID, channelID) {
+    const sequelize = establishDatabaseConnection();
+    const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
+    await changeEventChannelEntry(EventChannels, serverID, channelID);
+}
+
+async function deleteEventChannel(serverID) {
+    const sequelize = establishDatabaseConnection();
+    const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
+    await deleteEventChannelEntry(EventChannels, serverID);
+}
 
 function establishDatabaseConnection() {
     return new Sequelize(credentials.db_name, credentials.db_username, credentials.db_password, {

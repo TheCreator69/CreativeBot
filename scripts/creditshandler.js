@@ -2,30 +2,38 @@ const Sequelize = require("sequelize");
 const credentials = require("../credentials.json");
 
 module.exports = {
-    async getCreditsForUser(userID) {
-        const sequelize = establishDatabaseConnection();
-        const Credits = await defineAndSyncCreditsTableModel(sequelize);
-        const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
-        return userEntry.credits;
-    },
-    async incrementCreditsForUser(userID, incrementAmount) {
-        const sequelize = establishDatabaseConnection();
-        const Credits = await defineAndSyncCreditsTableModel(sequelize);
-        const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
-        await updateUserCredits(userID, userEntry.credits + incrementAmount, Credits);
-    },
-    async setCreditsForUser(userID, amount) {
-        const sequelize = establishDatabaseConnection();
-        const Credits = await defineAndSyncCreditsTableModel(sequelize);
-        const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
-        await updateUserCredits(userID, amount, Credits);
-    },
-    async getCreditsRankForUser(userID) {
-        const sequelize = establishDatabaseConnection();
-        const Credits = await defineAndSyncCreditsTableModel(sequelize);
-        return await sortTableEntriesAndReturnPosition(Credits, userID);
-    }
+    getCreditsForUser,
+    incrementCreditsForUser,
+    setCreditsForUser,
+    getCreditsRankForUser
 };
+
+async function getCreditsForUser(userID) {
+    const sequelize = establishDatabaseConnection();
+    const Credits = await defineAndSyncCreditsTableModel(sequelize);
+    const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
+    return userEntry.credits;
+}
+
+async function incrementCreditsForUser(userID, incrementAmount) {
+    const sequelize = establishDatabaseConnection();
+    const Credits = await defineAndSyncCreditsTableModel(sequelize);
+    const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
+    await updateUserCredits(userID, userEntry.credits + incrementAmount, Credits);
+}
+
+async function setCreditsForUser(userID, amount) {
+    const sequelize = establishDatabaseConnection();
+    const Credits = await defineAndSyncCreditsTableModel(sequelize);
+    const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
+    await updateUserCredits(userID, amount, Credits);
+}
+
+async function getCreditsRankForUser(userID) {
+    const sequelize = establishDatabaseConnection();
+    const Credits = await defineAndSyncCreditsTableModel(sequelize);
+    return await sortTableEntriesAndReturnPosition(Credits, userID);
+}
 
 function establishDatabaseConnection() {
     return new Sequelize(credentials.db_name, credentials.db_username, credentials.db_password, {
