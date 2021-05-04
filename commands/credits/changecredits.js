@@ -8,36 +8,54 @@ module.exports = {
     min_args: 3,
     admin_only: true,
     async execute(message, args) {
-        if(args[0] !== "add" && args[0] !== "remove" && args[0] !== "set") {
-            message.channel.send("Please use either \"add\", \"remove\" or \"set\" to change a user's credits!");
+        const mention = message.mentions.users.values().next().value;
+        if(!checkForValidArgsAndNotifyUser(message, args, mention)) {
             return;
         }
-        if(isNaN(args[1])) {
-            message.channel.send("Please enter a valid amount of credits!");
-            return;
-        }
-        const mentionEntry = message.mentions.users.values().next().value;
-        if(mentionEntry === undefined) {
-            message.channel.send("Please mention a user!");
-            return;
-        }
-        const userID = mentionEntry.id;
         if(args[0] === "add") {
-            args[1] = parseInt(args[1]);
-            message.channel.send("Added " + args[1] + " credits to " + mentionEntry.username + "!");
-            await CreditsHandler.incrementCreditsForUser(userID, args[1]);
+            addCreditsAndNotifyUser(message, args[1], mention);
             return;
         }
         else if(args[0] === "remove") {
-            message.channel.send("Removed " + args[1] + " credits from" + mentionEntry.username + "!");
-            args[1] = args[1] * -1;
-            await CreditsHandler.incrementCreditsForUser(userID, args[1]);
+            removeCreditsAndNotifyUser(message, args[1], mention);
             return;
         }
         else {
-            message.channel.send("Set credits to " + args[1] + " for " + mentionEntry.username + "!");
-            await CreditsHandler.setCreditsForUser(userID, args[1]);
+            setCreditsAndNotifyUser(message, args[1], mention);
             return;
         }
     }
 };
+
+function checkForValidArgsAndNotifyUser(message, args, mention) {
+    if(args[0] !== "add" && args[0] !== "remove" && args[0] !== "set") {
+        message.channel.send("Please use either \"add\", \"remove\" or \"set\" to change a user's credits!");
+        return false;
+    }
+    if(isNaN(args[1])) {
+        message.channel.send("Please enter a valid amount of credits!");
+        return false;
+    }
+    if(mention === undefined) {
+        message.channel.send("Please mention a user!");
+        return false;
+    }
+    return true;
+}
+
+async function addCreditsAndNotifyUser(message, amount, mention) {
+    amount = parseInt(amount);
+    message.channel.send("Added " + amount + " credits to " + mention.username + "!");
+    await CreditsHandler.incrementCreditsForUser(mention.id, amount);
+}
+
+async function removeCreditsAndNotifyUser(message, amount, mention) {
+    message.channel.send("Removed " + amount + " credits from" + mention.username + "!");
+    amount = amount * -1;
+    await CreditsHandler.incrementCreditsForUser(mention.id, amount);
+}
+
+async function setCreditsAndNotifyUser(message, amount, mention) {
+    message.channel.send("Set credits to " + amount + " for " + mention.username + "!");
+    await CreditsHandler.setCreditsForUser(mention.id, amount);
+}
