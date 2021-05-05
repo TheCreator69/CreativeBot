@@ -4,6 +4,8 @@
   "description": "Creative Bot",
   "main": "index.js",
   "scripts": {
+    "build": "rimraf ./build && tsc",
+    "devstart": "ts-node ./src/index.ts"
     "test": "jest"
   },
   "repository": {
@@ -12,10 +14,11 @@
   },
   "keywords": [
     "creative",
-    "skeleton",
+    "creator",
+    "thecreator",
     "bot"
   ],
-  "author": "TheCreator, SomeVeryEpicSkeleton",
+  "author": "TheCreator",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/TheCreator69/CreativeBot/issues"
