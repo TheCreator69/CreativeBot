@@ -1,5 +1,4 @@
 const Index = require("../../index.js");
-const config = require("../../config.json");
 const {MessageEmbed} = require("discord.js");
 const EventHandler = require("../../scripts/eventhandler.js");
 
