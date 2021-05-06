@@ -1,7 +1,7 @@
 module.exports = {
-    apps : [{
+    apps: [{
         name: "cbot",
-        script: "index.js",
+        script: "./build/index.js",
         watch: true,
         env: {
             "NODE_ENV": "development"
