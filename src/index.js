@@ -3,9 +3,15 @@ const client = new Discord.Client();
 
 const credentials = require("./credentials.json");
 
-client.commands = new Discord.Collection();
 const fs = require("fs");
+if(process.platform === "win32") {
+    process.chdir(`${process.cwd()}\\build`);
+}
+else if(process.platform === "linux") {
+    process.chdir(`${process.cwd()}/build`);
+}
 
+client.commands = new Discord.Collection();
 const commandFolders = fs.readdirSync("./commands");
 for(const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith(".js"));

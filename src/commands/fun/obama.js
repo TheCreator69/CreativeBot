@@ -25,7 +25,7 @@ async function createObamaImageBuffer(args) {
 }
 
 async function drawImage(canvas, context) {
-    var obamaImage = await Canvas.loadImage("./media/obama.png");
+    var obamaImage = await Canvas.loadImage("../media/obama.png");
     context.drawImage(obamaImage, 0, 0, canvas.width, canvas.height);
 }
 
