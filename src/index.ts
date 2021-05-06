@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
-const credentials = require("./credentials.json");
+import * as credentials from "./credentials.json";
 
 const fs = require("fs");
 if(process.platform === "win32") {

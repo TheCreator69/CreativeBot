@@ -1,6 +1,6 @@
 const {MessageEmbed} = require("discord.js");
 const Index = require("../../index.js");
-const config = require("../../config.json");
+import * as config from "../../config.json";
 const Sequelize = require("sequelize");
 const AdminCheck = require("../../scripts/admincheck.js");
 
