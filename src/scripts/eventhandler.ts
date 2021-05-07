@@ -1,51 +1,43 @@
-const Sequelize = require("sequelize");
-const credentials = require("../credentials.json");
+import * as Sequelize from "sequelize";
+import {Sequelize as SequelizeConstructor} from "sequelize";
+import * as credentials from "../credentials.json";
 
-module.exports = {
-    getEventChannel,
-    checkIfEventChannelIsActive,
-    setEventChannelActivity,
-    createEventChannel,
-    changeEventChannel,
-    deleteEventChannel
-};
-
-async function getEventChannel(serverID) {
+export async function getEventChannel(serverID) {
     const sequelize = establishDatabaseConnection();
     const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
     return await getEventChannelEntry(serverID, EventChannels);
 }
 
-async function checkIfEventChannelIsActive(channelEntry) {
+export async function checkIfEventChannelIsActive(channelEntry) {
     return checkEventChannelEntryForActivity(channelEntry);
 }
 
-async function setEventChannelActivity(serverID, active) {
+export async function setEventChannelActivity(serverID, active) {
     const sequelize = establishDatabaseConnection();
     const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
     await toggleEventChannelEntry(EventChannels, serverID, active);
 }
 
-async function createEventChannel(serverID, channelID) {
+export async function createEventChannel(serverID, channelID) {
     const sequelize = establishDatabaseConnection();
     const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
     await createEventChannelEntry(EventChannels, serverID, channelID);
 }
 
-async function changeEventChannel(serverID, channelID) {
+export async function changeEventChannel(serverID, channelID) {
     const sequelize = establishDatabaseConnection();
     const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
     await changeEventChannelEntry(EventChannels, serverID, channelID);
 }
 
-async function deleteEventChannel(serverID) {
+export async function deleteEventChannel(serverID) {
     const sequelize = establishDatabaseConnection();
     const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
     await deleteEventChannelEntry(EventChannels, serverID);
 }
 
 function establishDatabaseConnection() {
-    return new Sequelize(credentials.db_name, credentials.db_username, credentials.db_password, {
+    return new SequelizeConstructor(credentials.db_name, credentials.db_username, credentials.db_password, {
         host: "localhost",
         dialect: "mysql",
         logging: false

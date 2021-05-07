@@ -1,18 +1,15 @@
-const Sequelize = require("sequelize");
-const credentials = require("../credentials.json");
+import * as Sequelize from "sequelize";
+import {Sequelize as SequelizeConstructor} from "sequelize";
+import * as credentials from "../credentials.json";
 
-module.exports = {
-    checkIfUserIsAdmin
-};
-
-async function checkIfUserIsAdmin(userID) {
+export async function checkIfUserIsAdmin(userID) {
     const sequelize = establishDatabaseConnection();
     const Admins = await defineAndSyncAdminTableModel(sequelize);
     return await checkTableForAdminEntry(userID, Admins);
 }
 
 function establishDatabaseConnection() {
-    return new Sequelize(credentials.db_name, credentials.db_username, credentials.db_password, {
+    return new SequelizeConstructor(credentials.db_name, credentials.db_username, credentials.db_password, {
         host: "localhost",
         dialect: "mysql",
         logging: false

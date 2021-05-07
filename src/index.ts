@@ -1,9 +1,9 @@
-const Discord = require("discord.js");
-const client = new Discord.Client();
-
+import * as Discord from "discord.js";
 import * as credentials from "./credentials.json";
+import * as fs from "fs";
 
-const fs = require("fs");
+export const client = new Discord.Client();
+
 if(process.platform === "win32") {
     process.chdir(`${process.cwd()}\\build`);
 }
@@ -21,6 +21,7 @@ for(const folder of commandFolders) {
         client.commands.set(command.name, command);
     }
 }
+export var commandMap = client.commands;
 
 const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
 for(const file of eventFiles) {
@@ -34,6 +35,3 @@ for(const file of eventFiles) {
 }
 
 client.login(credentials.token);
-
-exports.client = client;
-exports.commandMap = client.commands;

@@ -1,4 +1,4 @@
-const Index = require("../../index.js");
+import * as Index from "../../index";
 
 module.exports = {
     name: "thumbsup",

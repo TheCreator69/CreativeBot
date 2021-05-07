@@ -1,8 +1,7 @@
-const {MessageEmbed} = require("discord.js");
-const Index = require("../../index.js");
+import {MessageEmbed} from "discord.js";
+import * as Index from "../../index";
 import * as config from "../../config.json";
-const Sequelize = require("sequelize");
-const AdminCheck = require("../../scripts/admincheck.js");
+import * as AdminCheck from "../../scripts/admincheck";
 
 var isCommandSenderAdmin = false;
 
@@ -44,8 +43,7 @@ function createHelpEmbed(color, title, description, footer) {
 
 function listAllCommands(message) {
     var commandList = "";
-    for(const [key, value] of Index.commandMap) {
-        var commandObject = Index.commandMap.get(key);
+    for(const commandObject of Index.commandMap.values()) {
         if(commandObject.admin_only) {
             commandList = listAdminCommandForAdminsOnly(message, commandList, commandObject); //Change = to =+, remove additional "commandList" in function
         }

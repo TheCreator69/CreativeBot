@@ -1,5 +1,5 @@
-const {MessageAttachment} = require("discord.js");
-const Canvas = require("canvas");
+import {MessageAttachment} from "discord.js";
+import * as Canvas from "canvas";
 
 module.exports = {
     name: "obama",

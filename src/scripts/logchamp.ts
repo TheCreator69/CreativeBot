@@ -1,4 +1,4 @@
-const Winston = require("winston");
+import * as Winston from "winston";
 
 const logFormat = Winston.format.printf(({level, message, timestamp}) => {
     return `${timestamp} - ${level}: ${message}`;
@@ -13,19 +13,15 @@ const logger = Winston.createLogger({
     exitOnError: false
 });
 
-module.exports = {
-    info, warn, error
-};
-
-function info(message) {
+export function info(message) {
     log("info", message);
 }
 
-function warn(message) {
+export function warn(message) {
     log("warn", message);
 }
 
-function error(message) {
+export function error(message) {
     log("error", message);
 }
 

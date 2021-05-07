@@ -1,4 +1,4 @@
-const EventHandler = require("../../scripts/eventhandler.js");
+import * as EventHandler from "../../scripts/eventhandler";
 
 module.exports = {
     name: "toggleevent",

@@ -1,6 +1,6 @@
-const {MessageAttachment} = require("discord.js");
-const Canvas = require("canvas");
-const CreditsHandler = require("../../scripts/creditshandler.js");
+import {MessageAttachment} from "discord.js";
+import * as Canvas from "canvas";
+import * as CreditsHandler from "../../scripts/creditshandler";
 
 module.exports = {
     name: "credits",

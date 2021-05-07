@@ -1,5 +1,4 @@
-const CreditsHandler = require("../../scripts/creditshandler.js");
-const LogChamp = require("../../scripts/logchamp.js");
+import * as CreditsHandler from "../../scripts/creditshandler";
 
 module.exports = {
     name: "changecredits",

@@ -1,42 +1,35 @@
-const Sequelize = require("sequelize");
-const credentials = require("../credentials.json");
+import * as Sequelize from "sequelize";
+import {Sequelize as SequelizeConstructor} from "sequelize";
+import * as credentials from "../credentials.json";
 
-module.exports = {
-    getCreditsForUser,
-    incrementCreditsForUser,
-    setCreditsForUser,
-    getCreditsRankForUser
-};
-
-async function getCreditsForUser(userID) {
+export async function getCreditsForUser(userID) {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
     return userEntry.credits;
 }
 
-async function incrementCreditsForUser(userID, incrementAmount) {
+export async function incrementCreditsForUser(userID, incrementAmount) {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
     await updateUserCredits(userID, userEntry.credits + incrementAmount, Credits);
 }
 
-async function setCreditsForUser(userID, amount) {
+export async function setCreditsForUser(userID, amount) {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
-    const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
     await updateUserCredits(userID, amount, Credits);
 }
 
-async function getCreditsRankForUser(userID) {
+export async function getCreditsRankForUser(userID) {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     return await sortTableEntriesAndReturnPosition(Credits, userID);
 }
 
 function establishDatabaseConnection() {
-    return new Sequelize(credentials.db_name, credentials.db_username, credentials.db_password, {
+    return new SequelizeConstructor(credentials.db_name, credentials.db_username, credentials.db_password, {
         host: "localhost",
         dialect: "mysql",
         logging: false

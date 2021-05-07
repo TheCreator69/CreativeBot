@@ -1,7 +1,6 @@
-const config = require("../config.json");
-const Sequelize = require("sequelize");
-const AdminCheck = require("../scripts/admincheck.js");
-const CreditsHandler = require("../scripts/creditshandler.js");
+import * as config from "../config.json";
+import * as AdminCheck from "../scripts/admincheck";
+import * as CreditsHandler from "../scripts/creditshandler";
 
 module.exports = {
     name: "message",

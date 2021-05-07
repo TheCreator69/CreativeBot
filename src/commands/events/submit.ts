@@ -1,6 +1,6 @@
-const Index = require("../../index.js");
-const {MessageEmbed} = require("discord.js");
-const EventHandler = require("../../scripts/eventhandler.js");
+import * as Index from "../../index";
+import {MessageEmbed} from "discord.js";
+import * as EventHandler from "../../scripts/eventhandler";
 
 module.exports = {
     name: "submit",

@@ -1,5 +1,5 @@
 const config = require("../config.json");
-const LogChamp = require("../scripts/logchamp.js");
+import * as LogChamp from "../scripts/logchamp";
 
 module.exports = {
     name: "ready",
