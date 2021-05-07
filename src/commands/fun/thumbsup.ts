@@ -30,7 +30,7 @@ function getUserFromMention(mention: any) {
 
 function reactToLastMessageFromMentionedUser(message: any, mentionedUser: any) {
     message.channel.messages.fetch().then(function(messageMap: any) {
-        var messagesByMentionedUser = messageMap.filter(m => m.author.id == mentionedUser.id);
+        var messagesByMentionedUser = messageMap.filter((m: any) => m.author.id == mentionedUser.id);
         if(!messagesByMentionedUser.size) {
             message.channel.send("This user hasn't posted here in a while, I can't react to them :flushed:");
             return;

@@ -52,7 +52,7 @@ function finishAnimation(slotMessagePromise: any) {
 }
 
 function selectRandomSymbols() {
-    var randomSymbols = [];
+    var randomSymbols: string[] = [];
     for(let i = 0; i < 9; i++) {
         randomSymbols.push(symbols[Math.floor(Math.random() * symbols.length)]);
     }

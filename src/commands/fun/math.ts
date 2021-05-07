@@ -50,13 +50,13 @@ function createMathMessage(question: any) {
 }
 
 function collectAndResolveAnswer(message: any, question: any) {
-    const filter = m => m.author.id === message.author.id;
+    const filter = (m: any) => m.author.id === message.author.id;
     const collector = message.channel.createMessageCollector(filter, {max: 1, time: question.time});
 
-    collector.on("collect", collectedMessage => {
+    collector.on("collect", (collectedMessage: any) => {
         replyBasedOnValidityOfAnswer(collectedMessage, question);
     });
-    collector.on("end", collectedMessages => {
+    collector.on("end", (collectedMessages: any) => {
         replyIfNoMessagesWereSent(message, question, collectedMessages);
     });
 }
