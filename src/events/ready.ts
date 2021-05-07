@@ -12,8 +12,6 @@ module.exports = {
         });
         if(process.env.NODE_ENV == "development" || process.env.NODE_ENV == "build") {
             config.prefix = "dev ";
-            console.log("WORK!");
         }
-        console.log(process.env.NODE_ENV);
     }
 };

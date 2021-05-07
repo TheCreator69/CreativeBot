@@ -20,14 +20,12 @@ else if(process.platform === "linux") {
 
 export var commandMap: Discord.Collection<string, any> = new Discord.Collection();
 const commandFolders = fs.readdirSync("./commands");
-console.log(commandFolders);
 for(const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(function(file) {
         if(file.endsWith(".js") || file.endsWith(".ts")) {
             return true;
         }
     });
-    console.log(commandFiles);
     for(const file of commandFiles) {
         const command = require(`./commands/${folder}/${file}`);
         command.category = folder;
