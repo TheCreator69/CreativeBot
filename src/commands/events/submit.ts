@@ -1,5 +1,5 @@
 import * as Index from "../../index";
-import {MessageEmbed} from "discord.js";
+import {MessageEmbed, TextChannel} from "discord.js";
 import * as EventHandler from "../../scripts/eventhandler";
 
 module.exports = {
@@ -32,7 +32,7 @@ function constructAndSendSubmissionEmbed(message: any, args: string[], channelID
     const submissionDescription = "*Link to Content:* " + args[0] + "\n*Description:* " + description;
     const submissionEmbed = constructSubmissionEmbed(submissionTitle, submissionDescription, message.author);
     var channelIDKey = channelID.toString();
-    const eventChannel = Index.client.channels.cache.get(channelIDKey);
+    const eventChannel = Index.client.channels.cache.get(channelIDKey) as TextChannel;
     if(eventChannel !== undefined) {
         eventChannel.send(submissionEmbed);
     }
