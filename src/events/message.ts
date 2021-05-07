@@ -13,7 +13,7 @@ module.exports = {
                 await handleCreativeCredits(message);
             }
         }
-        else if(process.env.NODE_ENV == "development") {
+        else if(process.env.NODE_ENV == "development" || process.env.NODE_ENV == "build") {
             if(message.content.startsWith(config.prefix) && !message.author.bot && await AdminCheck.checkIfUserIsAdmin(message.author.id)) {
                 executeCommand(message, client);
             }

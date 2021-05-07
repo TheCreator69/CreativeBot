@@ -4,26 +4,42 @@ import * as fs from "fs";
 
 export const client = new Discord.Client();
 
+var changeDirFolder: string = "src";
+if(process.env.NODE_ENV === "development") {
+    changeDirFolder = "src";
+}
+else if(process.env.NODE_ENV === "build") {
+    changeDirFolder = "build";
+}
 if(process.platform === "win32") {
-    process.chdir(`${process.cwd()}\\build`);
+    process.chdir(`${process.cwd()}\\${changeDirFolder}`);
 }
 else if(process.platform === "linux") {
-    process.chdir(`${process.cwd()}/build`);
+    process.chdir(`${process.cwd()}/${changeDirFolder}`);
 }
 
-client.commands = new Discord.Collection();
+export var commandMap: Discord.Collection<string, any> = new Discord.Collection();
 const commandFolders = fs.readdirSync("./commands");
+console.log(commandFolders);
 for(const folder of commandFolders) {
-    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith(".js"));
+    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(function(file) {
+        if(file.endsWith(".js") || file.endsWith(".ts")) {
+            return true;
+        }
+    });
+    console.log(commandFiles);
     for(const file of commandFiles) {
         const command = require(`./commands/${folder}/${file}`);
         command.category = folder;
-        client.commands.set(command.name, command);
+        commandMap.set(command.name, command);
     }
 }
-export var commandMap = client.commands;
 
-const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
+const eventFiles = fs.readdirSync("./events").filter(function(file) {
+    if(file.endsWith(".js") || file.endsWith(".ts")) {
+        return true;
+    }
+});
 for(const file of eventFiles) {
     const eventInstance = require(`./events/${file}`);
     if(eventInstance.once) {

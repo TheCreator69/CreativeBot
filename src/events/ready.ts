@@ -10,8 +10,10 @@ module.exports = {
             status: "online",
             activity: {name: "Use '" + config.prefix + "help' to learn what I can do!"}
         });
-        if(process.env.NODE_ENV == "development") {
+        if(process.env.NODE_ENV == "development" || process.env.NODE_ENV == "build") {
             config.prefix = "dev ";
+            console.log("WORK!");
         }
+        console.log(process.env.NODE_ENV);
     }
 };
