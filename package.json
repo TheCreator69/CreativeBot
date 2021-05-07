@@ -19,7 +19,7 @@
     "skeleton",
     "bot"
   ],
-  "author": "TheCreator", "SomeVeryEpicSkeleton",
+  "author": ["TheCreator", "SomeVeryEpicSkeleton"],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/TheCreator69/CreativeBot/issues"
