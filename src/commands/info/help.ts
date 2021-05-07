@@ -43,7 +43,7 @@ function createHelpEmbed(color: string, title: string, description: string, foot
 
 function listAllCommands(message: any) {
     var commandList = "";
-    for(const commandObject of Index.commandMap.values()) {
+    for(const commandObject of Index.commandMap.array()) {
         if(commandObject.admin_only) {
             commandList = listAdminCommandForAdminsOnly(message, commandList, commandObject); //Change = to =+, remove additional "commandList" in function
         }
