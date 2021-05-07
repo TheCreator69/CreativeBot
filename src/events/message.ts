@@ -1,6 +1,7 @@
 import * as config from "../config.json";
 import * as AdminCheck from "../scripts/admincheck";
 import * as CreditsHandler from "../scripts/creditshandler";
+import {commandMap} from "../index";
 
 module.exports = {
     name: "message",
@@ -29,10 +30,10 @@ async function executeCommand(message: any, client: any) {
     const args = message.content.slice(config.prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
 
-    if(!client.commands.has(command)) {
+    if(!commandMap.has(command)) {
         return;
     }
-    var commandMapEntry = client.commands.get(command);
+    var commandMapEntry = commandMap.get(command);
     if(commandMapEntry.admin_only && !await AdminCheck.checkIfUserIsAdmin(message.author.id)) {
         return;
     }
