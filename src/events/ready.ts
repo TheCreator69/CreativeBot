@@ -4,7 +4,7 @@ import * as LogChamp from "../scripts/logchamp";
 module.exports = {
     name: "ready",
     once: true,
-    execute(client) {
+    execute(client: any) {
         LogChamp.info("Creative Bot has been started! Using environment: " + process.env.NODE_ENV);
         client.user.setPresence({
             status: "online",

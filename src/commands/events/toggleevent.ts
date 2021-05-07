@@ -6,7 +6,7 @@ module.exports = {
     syntax: "toggleevent <on/off>",
     min_args: 1,
     admin_only: true,
-    async execute(message, args) {
+    async execute(message: any, args: string[]) {
         if(!message.guild) {
             message.channel.send("Please send this command in a server with an active event channel!");
             return;

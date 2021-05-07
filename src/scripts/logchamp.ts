@@ -13,19 +13,19 @@ const logger = Winston.createLogger({
     exitOnError: false
 });
 
-export function info(message) {
+export function info(message: string) {
     log("info", message);
 }
 
-export function warn(message) {
+export function warn(message: string) {
     log("warn", message);
 }
 
-export function error(message) {
+export function error(message: string) {
     log("error", message);
 }
 
-function log(level, message) {
+function log(level: string, message: string) {
     if(process.env.NODE_ENV !== "production") {
         logger.log({
             level: level,

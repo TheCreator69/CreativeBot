@@ -6,7 +6,7 @@ module.exports = {
     syntax: "setevent <channelID/delete>",
     min_args: 1,
     admin_only: true,
-    async execute(message, args) {
+    async execute(message: any, args: string[]) {
         if(!message.guild || !message.guild.available) {
             message.channel.send("Please send this command in an available server!");
             return;
@@ -18,7 +18,8 @@ module.exports = {
             message.channel.send("Deleted event channel!");
             return;
         }
-        if(isNaN(args[0])) {
+        var channelID = parseInt(args[0]);
+        if(isNaN(channelID)) {
             message.channel.send("You need to enter a number as a channel ID!");
             return;
         }
@@ -27,11 +28,11 @@ module.exports = {
             return;
         }
         if(channelEntry === null) {
-            await EventHandler.createEventChannel(serverID, args[0]);
+            await EventHandler.createEventChannel(serverID, channelID);
             message.channel.send("Set up event channel!");
             return;
         }
-        await EventHandler.changeEventChannel(serverID, args[0]);
+        await EventHandler.changeEventChannel(serverID, channelID);
         message.channel.send("Changed event channel!");
         return;
     }

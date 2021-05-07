@@ -7,14 +7,14 @@ module.exports = {
     syntax: "obama <message>",
     min_args: 1,
     admin_only: false,
-    async execute(message, args) {
+    async execute(message: any, args: string[]) {
         var obamaImageBuffer = await createObamaImageBuffer(args);
         var attachment = new MessageAttachment(obamaImageBuffer, "obama-is-very-inspiring.png");
         message.channel.send(attachment);
     }
 };
 
-async function createObamaImageBuffer(args) {
+async function createObamaImageBuffer(args: string[]) {
     const canvas = Canvas.createCanvas(1200, 800);
     const context = canvas.getContext("2d");
 
@@ -24,12 +24,12 @@ async function createObamaImageBuffer(args) {
     return canvas.toBuffer();
 }
 
-async function drawImage(canvas, context) {
+async function drawImage(canvas: any, context: any) {
     var obamaImage = await Canvas.loadImage("../media/obama.png");
     context.drawImage(obamaImage, 0, 0, canvas.width, canvas.height);
 }
 
-function drawText(canvas, context, args) {
+function drawText(canvas: any, context: any, args: string[]) {
     var imageText = constructTextFromArgs(args);
 
     context.fillStyle = "#ffffff";
@@ -38,7 +38,7 @@ function drawText(canvas, context, args) {
     context.fillText(imageText, canvas.width / 2, 150);
 }
 
-function constructTextFromArgs(args) {
+function constructTextFromArgs(args: string[]) {
     var imageText = "";
     for(var arg of args) {
         imageText = imageText + arg + " ";
@@ -46,7 +46,7 @@ function constructTextFromArgs(args) {
     return imageText;
 }
 
-function getFittingFontSize(canvas, context, text) {
+function getFittingFontSize(canvas: any, context: any, text: string) {
     let fontSize = 70;
 
     do {

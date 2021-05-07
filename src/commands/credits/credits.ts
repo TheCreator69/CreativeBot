@@ -8,7 +8,7 @@ module.exports = {
     syntax: "credits",
     min_args: 0,
     admin_only: false,
-    async execute(message, args) {
+    async execute(message: any, args: string[]) {
         var userCredits = await CreditsHandler.getCreditsForUser(message.author.id);
         var creditsRank = await CreditsHandler.getCreditsRankForUser(message.author.id);
         var creditsBadge = await drawCreditsBadge(message, userCredits, creditsRank);
@@ -18,7 +18,7 @@ module.exports = {
     }
 };
 
-async function drawCreditsBadge(message, credits, creditsRank) {
+async function drawCreditsBadge(message: any, credits: number, creditsRank: {position: number, max: number}) {
     const canvas = Canvas.createCanvas(750, 200);
     const context = canvas.getContext("2d");
 

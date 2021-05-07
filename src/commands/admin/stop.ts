@@ -4,7 +4,7 @@ module.exports = {
     syntax: "stop",
     min_args: 0,
     admin_only: true,
-    execute(message, args) {
+    execute(message: any, args: string[]) {
         process.exit();
     }
 };

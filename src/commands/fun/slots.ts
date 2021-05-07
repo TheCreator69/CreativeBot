@@ -7,26 +7,26 @@ module.exports = {
     syntax: "slots",
     min_args: 0,
     admin_only: false,
-    execute(message, args) {
+    execute(message: any, args: string[]) {
         editMessageOverTime(message);
     }
 };
 
-function editMessageOverTime(message) {
-    var slotMessagePromise = message.channel.send("Rolling").then(function(messageObject) {
+function editMessageOverTime(message: any) {
+    var slotMessagePromise = message.channel.send("Rolling").then(function(messageObject: any) {
         return messageObject;
     });
     animateMessageWhenReady(slotMessagePromise);
     finishAnimation(slotMessagePromise);
 }
 
-function animateMessageWhenReady(slotMessagePromise) {
-    slotMessagePromise.then((slotMessage) => {
+function animateMessageWhenReady(slotMessagePromise: any) {
+    slotMessagePromise.then((slotMessage: any) => {
         animateRollingMessage(slotMessage);
     });
 }
 
-async function animateRollingMessage(slotMessage) {
+async function animateRollingMessage(slotMessage: any) {
     for(let i = 0; i < rollCycles; i++) {
         await sleep(1000);
         slotMessage.edit("Rolling.");
@@ -39,12 +39,12 @@ async function animateRollingMessage(slotMessage) {
     }
 }
 
-function sleep(delay) {
+function sleep(delay: number) {
     return new Promise((resolve) => setTimeout(resolve, delay));
 }
 
-function finishAnimation(slotMessagePromise) {
-    setTimeout(() => slotMessagePromise.then(function(slotMessage) {
+function finishAnimation(slotMessagePromise: any) {
+    setTimeout(() => slotMessagePromise.then(function(slotMessage: any) {
         var randomSymbols = selectRandomSymbols();
         var coinsWon = calculateWin();
         finishEditingMessage(slotMessage, randomSymbols, coinsWon);
@@ -78,7 +78,7 @@ function calculateWin() {
     }
 }
 
-function finishEditingMessage(slotMessage, randomSymbols, coinsWon) {
+function finishEditingMessage(slotMessage: any, randomSymbols: any, coinsWon: number) {
     var slotMachineBorder = " - - - - - - - - -\n";
     var finishedSlotText = "";
     if(coinsWon == 0) {

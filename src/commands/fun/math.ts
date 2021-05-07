@@ -4,7 +4,7 @@ module.exports = {
     syntax: "math",
     min_args: 0,
     admin_only: false,
-    execute(message, args) {
+    execute(message: any, args: string[]) {
         var question = generateMathQuestion();
         message.channel.send(createMathMessage(question));
         collectAndResolveAnswer(message, question);
@@ -23,21 +23,20 @@ function generateMathQuestion() {
     return {question: question, time: time, result: result};
 }
 
-function createQuestionMessage(initialValue, isPlusOperator, randomOperationValue) {
-    var message = initialValue;
+function createQuestionMessage(initialValue: number, isPlusOperator: boolean, randomOperationValue: number) {
+    var message = initialValue.toString();
     message += isPlusOperator ? " + " : " - ";
     message += randomOperationValue + " = ?";
     return message;
 }
 
-function calculateAnswerTime(initialValue, isPlusOperator, randomOperationValue) {
+function calculateAnswerTime(initialValue: number, isPlusOperator: boolean, randomOperationValue: number) {
     var answerTime = 1000 + Math.floor(initialValue / 20) * 1000;
     answerTime += isPlusOperator ? Math.floor(randomOperationValue / 10) * 1000 : Math.floor(randomOperationValue / 8) * 1000;
     return answerTime;
 }
 
-function calculateResult(initialValue, isPlusOperator, randomOperationValue) {
-    var result = initialValue;
+function calculateResult(initialValue: number, isPlusOperator: boolean, randomOperationValue: number) {
     if(isPlusOperator) {
         return initialValue += randomOperationValue;
     }
@@ -46,11 +45,11 @@ function calculateResult(initialValue, isPlusOperator, randomOperationValue) {
     }
 }
 
-function createMathMessage(question) {
+function createMathMessage(question: any) {
     return "**Question:** " + question.question + "\nQuick, you only have " + question.time / 1000 + " seconds!";
 }
 
-function collectAndResolveAnswer(message, question) {
+function collectAndResolveAnswer(message: any, question: any) {
     const filter = m => m.author.id === message.author.id;
     const collector = message.channel.createMessageCollector(filter, {max: 1, time: question.time});
 
@@ -62,7 +61,7 @@ function collectAndResolveAnswer(message, question) {
     });
 }
 
-function replyBasedOnValidityOfAnswer(message, question) {
+function replyBasedOnValidityOfAnswer(message: any, question: any) {
     if(parseInt(message.content) == question.result) {
         message.channel.send("Correct answer! :smile:");
     }
@@ -71,7 +70,7 @@ function replyBasedOnValidityOfAnswer(message, question) {
     }
 }
 
-function replyIfNoMessagesWereSent(message, question, collectedMessages) {
+function replyIfNoMessagesWereSent(message: any, question: any, collectedMessages: any) {
     if(collectedMessages.size == 0) {
         message.channel.send("You didn't answer in time! The correct answer would have been " + question.result + "! :sweat:");
     }

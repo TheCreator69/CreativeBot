@@ -1,4 +1,4 @@
-import * as LogChamp from "../../scripts/logchamp";
+//import * as LogChamp from "../../scripts/logchamp";
 
 module.exports = {
     name: "test",
@@ -6,7 +6,7 @@ module.exports = {
     syntax: "test",
     min_args: 0,
     admin_only: true,
-    execute(message, args) {
-        //Nothing to test here right now...
+    execute(message: any, args: string[]) {
+        //No test
     }
 };

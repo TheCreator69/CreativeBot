@@ -6,32 +6,34 @@ module.exports = {
     syntax: "changecredits <add/remove/set> <amount> <user mention>",
     min_args: 3,
     admin_only: true,
-    async execute(message, args) {
+    async execute(message: any, args: string[]) {
         const mention = message.mentions.users.values().next().value;
         if(!checkForValidArgsAndNotifyUser(message, args, mention)) {
             return;
         }
+        var amount = parseInt(args[1]);
         if(args[0] === "add") {
-            addCreditsAndNotifyUser(message, args[1], mention);
+            addCreditsAndNotifyUser(message, amount, mention);
             return;
         }
         else if(args[0] === "remove") {
-            removeCreditsAndNotifyUser(message, args[1], mention);
+            removeCreditsAndNotifyUser(message, amount, mention);
             return;
         }
         else {
-            setCreditsAndNotifyUser(message, args[1], mention);
+            setCreditsAndNotifyUser(message, amount, mention);
             return;
         }
     }
 };
 
-function checkForValidArgsAndNotifyUser(message, args, mention) {
+function checkForValidArgsAndNotifyUser(message: any, args: string[], mention: any) {
     if(args[0] !== "add" && args[0] !== "remove" && args[0] !== "set") {
         message.channel.send("Please use either \"add\", \"remove\" or \"set\" to change a user's credits!");
         return false;
     }
-    if(isNaN(args[1])) {
+    var amount = parseInt(args[1]);
+    if(isNaN(amount)) {
         message.channel.send("Please enter a valid amount of credits!");
         return false;
     }
@@ -42,19 +44,18 @@ function checkForValidArgsAndNotifyUser(message, args, mention) {
     return true;
 }
 
-async function addCreditsAndNotifyUser(message, amount, mention) {
-    amount = parseInt(amount);
+async function addCreditsAndNotifyUser(message: any, amount: number, mention: any) {
     message.channel.send("Added " + amount + " credits to " + mention.username + "!");
     await CreditsHandler.incrementCreditsForUser(mention.id, amount);
 }
 
-async function removeCreditsAndNotifyUser(message, amount, mention) {
+async function removeCreditsAndNotifyUser(message: any, amount: number, mention: any) {
     message.channel.send("Removed " + amount + " credits from" + mention.username + "!");
-    amount = amount * -1;
-    await CreditsHandler.incrementCreditsForUser(mention.id, amount);
+    var amountToRemove = amount * -1 as number;
+    await CreditsHandler.incrementCreditsForUser(mention.id, amountToRemove);
 }
 
-async function setCreditsAndNotifyUser(message, amount, mention) {
+async function setCreditsAndNotifyUser(message: any, amount: number, mention: any) {
     message.channel.send("Set credits to " + amount + " for " + mention.username + "!");
     await CreditsHandler.setCreditsForUser(mention.id, amount);
 }

@@ -8,7 +8,7 @@ module.exports = {
     syntax: "submit <link> <description>",
     min_args: 2,
     admin_only: false,
-    async execute(message, args) {
+    async execute(message: any, args: string[]) {
         if(!message.guild || !message.guild.available) {
             message.channel.send("Please send this command in an available server with an active event channel!");
             return;
@@ -26,16 +26,19 @@ module.exports = {
     }
 };
 
-function constructAndSendSubmissionEmbed(message, args, channelID) {
+function constructAndSendSubmissionEmbed(message: any, args: string[], channelID: number) {
     var description = constructSubmissionDescription(args);
     const submissionTitle = "__**Submission by " + message.author.username + ":**__";
     const submissionDescription = "*Link to Content:* " + args[0] + "\n*Description:* " + description;
     const submissionEmbed = constructSubmissionEmbed(submissionTitle, submissionDescription, message.author);
-    const eventChannel = Index.client.channels.cache.get(channelID);
-    eventChannel.send(submissionEmbed);
+    var channelIDKey = channelID.toString();
+    const eventChannel = Index.client.channels.cache.get(channelIDKey);
+    if(eventChannel !== undefined) {
+        eventChannel.send(submissionEmbed);
+    }
 }
 
-function constructSubmissionDescription(args) {
+function constructSubmissionDescription(args: string[]) {
     var description = "";
     for(var i = 1; i < args.length; i++) {
         description += args[i] + " ";
@@ -43,7 +46,7 @@ function constructSubmissionDescription(args) {
     return description;
 }
 
-function constructSubmissionEmbed(title, description, author) {
+function constructSubmissionEmbed(title: string, description: string, author: any) {
     var submissionEmbed = new MessageEmbed();
     submissionEmbed.setColor("#4444ff");
     submissionEmbed.setTitle(title);

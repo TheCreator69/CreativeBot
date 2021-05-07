@@ -2,27 +2,27 @@ import * as Sequelize from "sequelize";
 import {Sequelize as SequelizeConstructor} from "sequelize";
 import * as credentials from "../credentials.json";
 
-export async function getCreditsForUser(userID) {
+export async function getCreditsForUser(userID: number) {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
     return userEntry.credits;
 }
 
-export async function incrementCreditsForUser(userID, incrementAmount) {
+export async function incrementCreditsForUser(userID: number, incrementAmount: number) {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
     await updateUserCredits(userID, userEntry.credits + incrementAmount, Credits);
 }
 
-export async function setCreditsForUser(userID, amount) {
+export async function setCreditsForUser(userID: number, amount: number) {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     await updateUserCredits(userID, amount, Credits);
 }
 
-export async function getCreditsRankForUser(userID) {
+export async function getCreditsRankForUser(userID: number) {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     return await sortTableEntriesAndReturnPosition(Credits, userID);
@@ -36,7 +36,7 @@ function establishDatabaseConnection() {
     });
 }
 
-async function defineAndSyncCreditsTableModel(sequelize) {
+async function defineAndSyncCreditsTableModel(sequelize: any) {
     const Credits = sequelize.define("credits", {
         userID: {
             type: Sequelize.BIGINT,
@@ -53,7 +53,7 @@ async function defineAndSyncCreditsTableModel(sequelize) {
     return Credits;
 }
 
-async function returnExistingEntryOrCreateNewOne(userID, Credits) {
+async function returnExistingEntryOrCreateNewOne(userID: number, Credits: any) {
     const userEntry = await Credits.findOne({where: {userID: userID}});
     if(userEntry === null) {
         return await Credits.create({userID: userID, credits: 0});
@@ -63,19 +63,19 @@ async function returnExistingEntryOrCreateNewOne(userID, Credits) {
     }
 }
 
-async function updateUserCredits(userID, newCredits, Credits) {
+async function updateUserCredits(userID: number, newCredits: number, Credits: any) {
     if(newCredits < 0) {
         newCredits = 0;
     }
-    newCredits = newCredits.toString();
+    var newCreditsConverted = newCredits.toString();
     await Credits.update({
-        credits: newCredits
+        credits: newCreditsConverted
     }, {
         where: {userID: userID}
     });
 }
 
-async function sortTableEntriesAndReturnPosition(Credits, userID) {
+async function sortTableEntriesAndReturnPosition(Credits: any, userID: number) {
     const sortedEntries = await Credits.findAll({
         order: [
             ["credits", "DESC"]

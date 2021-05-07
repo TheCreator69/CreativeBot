@@ -11,19 +11,19 @@ module.exports = {
     syntax: "help [command]",
     min_args: 0,
     admin_only: false,
-    async execute(message, args) {
+    async execute(message: any, args: string[]) {
         isCommandSenderAdmin = await AdminCheck.checkIfUserIsAdmin(message.author.id);
         var helpEmbed = createCorrectHelpEmbed(message, args);
         message.channel.send(helpEmbed);
     }
 };
 
-function createCorrectHelpEmbed(message, args) {
+function createCorrectHelpEmbed(message: any, args: string[]) {
     if(!args.length) {
         return createHelpEmbed("#52ce7b", ":page_facing_up: List of possible commands:", listAllCommands(message), "To learn more about individual commands, use " + config.prefix + "help [command]!");
     }
     else {
-        if(doesCommandExist(message, args)) {
+        if(doesCommandExist(args)) {
             return createHelpEmbed("#499fff", ":ledger: Help for: " + getCommandInstance(args).name, createCommandInfoString(args), "Arguments wrapped with \"<>\" are required, others wrapped with \"[]\" are optional.");
         }
         else {
@@ -32,7 +32,7 @@ function createCorrectHelpEmbed(message, args) {
     }
 }
 
-function createHelpEmbed(color, title, description, footer) {
+function createHelpEmbed(color: string, title: string, description: string, footer: string) {
     var helpEmbed = new MessageEmbed();
     helpEmbed.setColor(color);
     helpEmbed.setTitle(title);
@@ -41,7 +41,7 @@ function createHelpEmbed(color, title, description, footer) {
     return helpEmbed;
 }
 
-function listAllCommands(message) {
+function listAllCommands(message: any) {
     var commandList = "";
     for(const commandObject of Index.commandMap.values()) {
         if(commandObject.admin_only) {
@@ -55,14 +55,14 @@ function listAllCommands(message) {
     return commandList;
 }
 
-function listAdminCommandForAdminsOnly(message, commandList, commandObject) {
+function listAdminCommandForAdminsOnly(message: any, commandList: string, commandObject: any) {
     if(isCommandSenderAdmin && message.channel.type == "dm") {
         return commandList + "`" + commandObject.name + "`, ";
     }
     return commandList;
 }
 
-function doesCommandExist(message, args) {
+function doesCommandExist(args: string[]) {
     if(!Index.commandMap.has(args[0])) {
         return false;
     }
@@ -75,17 +75,17 @@ function doesCommandExist(message, args) {
     }
 }
 
-function getCommandInstance(args) {
+function getCommandInstance(args: string[]) {
     return Index.commandMap.get(args[0]);
 }
 
-function createCommandInfoString(args) {
+function createCommandInfoString(args: string[]) {
     var commandObject = getRequestedCommandObject(args);
 
-    return "**Description:** " + commandObject.description + "\n" + "**Syntax:** *" + commandObject.syntax + "*\n" + "**Category:** " + commandObject.category.replace(/^\w/, (c) => c.toUpperCase());
+    return "**Description:** " + commandObject.description + "\n" + "**Syntax:** *" + commandObject.syntax + "*\n" + "**Category:** " + commandObject.category.replace(/^\w/, (c: any) => c.toUpperCase());
 }
 
-function getRequestedCommandObject(args) {
+function getRequestedCommandObject(args: string[]) {
     var requestedCommand = args[0];
 
     if(Index.commandMap.has(requestedCommand)) {

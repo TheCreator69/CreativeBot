@@ -4,7 +4,7 @@ module.exports = {
     syntax: "gameidea",
     min_args: 0,
     admin_only: false,
-    execute(message, args) {
+    execute(message: any, args: string[]) {
         var gameIdea = generateGameIdea();
         message.channel.send(gameIdea);
     }
@@ -41,7 +41,7 @@ function generateGameIdea() {
     return ideaString;
 }
 
-function formatZero(ideaString) {
+function formatZero(ideaString: string) {
     var genre0 = getRandomArrayElement(genres);
     var genre1 = getRandomArrayElement(genres);
 
@@ -55,28 +55,28 @@ function formatZero(ideaString) {
     return ideaString = ideaString + "A mix of " + genre0 + " and " + genre1 + " set " + getRandomArrayElement(locations);
 }
 
-function formatOne(ideaString) {
+function formatOne(ideaString: string) {
     var genre = getRandomArrayElement(genres);
     return ideaString = ideaString + getCorrectFormOfArticle(genre) + genre + " set " + getRandomArrayElement(locations);
 }
 
-function formatTwo(ideaString) {
+function formatTwo(ideaString: string) {
     var genre = getRandomArrayElement(genres);
     return ideaString = ideaString + getCorrectFormOfArticle(genre) + genre + " where " + getRandomArrayElement(modifiers);
 }
 
-function formatThree(ideaString) {
+function formatThree(ideaString: string) {
     var theme = getRandomArrayElement(themes);
-    theme = theme.replace(/^\w/, (c) => c.toUpperCase());
+    theme = theme.replace(/^\w/, (c: string) => c.toUpperCase());
     return ideaString = ideaString + theme + ", but " + getRandomArrayElement(modifiers);
 }
 
-function formatFour(ideaString) {
+function formatFour(ideaString: string) {
     var genre = getRandomArrayElement(genres);
     return ideaString = ideaString + getCorrectFormOfArticle(genre) + genre + " about " + getRandomArrayElement(themes);
 }
 
-function getCorrectFormOfArticle(nextWord) {
+function getCorrectFormOfArticle(nextWord: string) {
     nextWord = nextWord.toLowerCase();
     var vowels = ["a", "e", "i", "o", "u"];
     for(let vowel of vowels) {
@@ -87,7 +87,7 @@ function getCorrectFormOfArticle(nextWord) {
     return "A ";
 }
 
-function getRandomArrayElement(array) {
+function getRandomArrayElement(array: string[]) {
     return array[Math.floor(Math.random() * array.length)];
 }
 

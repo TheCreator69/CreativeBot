@@ -6,7 +6,7 @@ module.exports = {
     syntax: "ping",
     min_args: 0,
     admin_only: false,
-    execute(message, args) {
+    execute(message: any, args: string[]) {
         message.channel.send("My ping is: " + Index.client.ws.ping + "ms! ");
     }
 };

@@ -4,7 +4,7 @@ import * as CreditsHandler from "../scripts/creditshandler";
 
 module.exports = {
     name: "message",
-    async execute(message, client) {
+    async execute(message: any, client: any) {
         if(process.env.NODE_ENV == "production") {
             if(message.content.startsWith(config.prefix) && !message.author.bot) {
                 executeCommand(message, client);
@@ -21,11 +21,11 @@ module.exports = {
     }
 };
 
-async function handleCreativeCredits(message) {
+async function handleCreativeCredits(message: any) {
     CreditsHandler.incrementCreditsForUser(message.author.id, 5);
 }
 
-async function executeCommand(message, client) {
+async function executeCommand(message: any, client: any) {
     const args = message.content.slice(config.prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
 
