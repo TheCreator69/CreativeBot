@@ -2,35 +2,35 @@ import * as Sequelize from "sequelize";
 import {Sequelize as SequelizeConstructor} from "sequelize";
 import * as credentials from "../credentials.json";
 
-export async function getEventChannel(serverID: number) {
+export async function getEventChannel(serverID: bigint) {
     const sequelize = establishDatabaseConnection();
     const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
     return await getEventChannelEntry(serverID, EventChannels);
 }
 
-export async function checkIfEventChannelIsActive(channelEntry: any) {
+export function checkIfEventChannelIsActive(channelEntry: any) {
     return checkEventChannelEntryForActivity(channelEntry);
 }
 
-export async function setEventChannelActivity(serverID: number, active: boolean) {
+export async function setEventChannelActivity(serverID: bigint, active: boolean) {
     const sequelize = establishDatabaseConnection();
     const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
     await toggleEventChannelEntry(EventChannels, serverID, active);
 }
 
-export async function createEventChannel(serverID: number, channelID: number) {
+export async function createEventChannel(serverID: bigint, channelID: bigint) {
     const sequelize = establishDatabaseConnection();
     const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
     await createEventChannelEntry(EventChannels, serverID, channelID);
 }
 
-export async function changeEventChannel(serverID: number, channelID: number) {
+export async function changeEventChannel(serverID: bigint, channelID: bigint) {
     const sequelize = establishDatabaseConnection();
     const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
     await changeEventChannelEntry(EventChannels, serverID, channelID);
 }
 
-export async function deleteEventChannel(serverID: number) {
+export async function deleteEventChannel(serverID: bigint) {
     const sequelize = establishDatabaseConnection();
     const EventChannels = await defineAndSyncEventChannelTableModel(sequelize);
     await deleteEventChannelEntry(EventChannels, serverID);
@@ -64,15 +64,15 @@ async function defineAndSyncEventChannelTableModel(sequelize: any) {
     return EventChannels;
 }
 
-async function getEventChannelEntry(serverID: number, EventChannels: any) {
+async function getEventChannelEntry(serverID: bigint, EventChannels: any) {
     return await EventChannels.findOne({where: {serverID: serverID}});
 }
 
-async function checkEventChannelEntryForActivity(channelEntry: any) {
+function checkEventChannelEntryForActivity(channelEntry: any) {
     return channelEntry.channelActive;
 }
 
-async function toggleEventChannelEntry(EventChannels: any, serverID: number, active: boolean) {
+async function toggleEventChannelEntry(EventChannels: any, serverID: bigint, active: boolean) {
     var activeConverted = active.toString();
     await EventChannels.update({
         channelActive: activeConverted
@@ -81,7 +81,7 @@ async function toggleEventChannelEntry(EventChannels: any, serverID: number, act
     });
 }
 
-async function createEventChannelEntry(EventChannels: any, serverID: number, channelID: number) {
+async function createEventChannelEntry(EventChannels: any, serverID: bigint, channelID: bigint) {
     await EventChannels.create({
         serverID: serverID,
         eventChannelID: channelID,
@@ -89,7 +89,7 @@ async function createEventChannelEntry(EventChannels: any, serverID: number, cha
     });
 }
 
-async function changeEventChannelEntry(EventChannels: any, serverID: number, newChannelID: number) {
+async function changeEventChannelEntry(EventChannels: any, serverID: bigint, newChannelID: bigint) {
     await EventChannels.update({eventChannelID: newChannelID}, {
         where: {
             serverID: serverID
@@ -97,7 +97,7 @@ async function changeEventChannelEntry(EventChannels: any, serverID: number, new
     });
 }
 
-async function deleteEventChannelEntry(EventChannels: any, serverID: number) {
+async function deleteEventChannelEntry(EventChannels: any, serverID: bigint) {
     await EventChannels.destroy({
         where: {serverID: serverID}
     });
