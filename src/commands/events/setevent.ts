@@ -18,8 +18,10 @@ module.exports = {
             message.channel.send("Deleted event channel!");
             return;
         }
-        var channelID = parseInt(args[0]);
-        if(isNaN(channelID)) {
+        //BigInt needed, as Number isn't large enough to handle Snowflakes. Oof.
+        var channelID = BigInt(args[0]);
+        var channelIDAsNumber = Number(args[0]);
+        if(isNaN(channelIDAsNumber)) {
             message.channel.send("You need to enter a number as a channel ID!");
             return;
         }
