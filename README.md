@@ -1,7 +1,20 @@
 # Creative Bot
 
+## EXPERIMENTAL TYPESCRIPT CONVERSION BRANCH
+Refactoring Checklist:
+- [] Move responsibility of connecting to database out of scripts
+- [] Remove "hidden" input arguments like the active database connection
+- [] Make use of interfaces to allow for mock objects (e.g. a mock database for testing)
+- [] Remove any "anys" as types and define objects & interfaces for input arguments
+- [] Add classes for modules in the scripts folder
+- [] Add return types for functions
+- [] Split large execute() functions for commands into smaller, more modular functions
+- [] Add enums if needed
+- [] Rename variables and functions if needed
+- [] Reorganize functions when needed
+- [] Make sure that state changes can be easily traced outside of the function responsible (functions changing state as input arguments)
+
 This discord bot is being created by TheCreator with [TypeScript](https://www.typescriptlang.org/), using discord.js.\
-**EXPERIMENTAL TYPESCRIPT CONVERSION BRANCH**\
 **It is intended for my personal use only.**\
 That's why it can only do the things I want it to do.
 But I have still added support for multiple servers, just in case (even though I just own one).
