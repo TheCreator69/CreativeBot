@@ -8,7 +8,7 @@ module.exports = {
     admin_only: true,
     async execute(message: any, args: string[]) {
         if(!message.guild) {
-            message.channel.send("Please send this command in a server with an active event channel!");
+            message.channel.send("Please send this command in a server!");
             return;
         }
         const channelEntry = await EventHandler.getEventChannel(message.guild.id);

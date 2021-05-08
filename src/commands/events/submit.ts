@@ -10,7 +10,7 @@ module.exports = {
     admin_only: false,
     async execute(message: any, args: string[]) {
         if(!message.guild || !message.guild.available) {
-            message.channel.send("Please send this command in an available server with an active event channel!");
+            message.channel.send("Please send this command in a server!");
             return;
         }
         const channelEntry = await EventHandler.getEventChannel(message.guild.id);
@@ -18,15 +18,16 @@ module.exports = {
             message.channel.send("This Discord doesn't have an event channel!");
             return;
         }
-        if(!await EventHandler.checkIfEventChannelIsActive(channelEntry)) {
+        if(!EventHandler.checkIfEventChannelIsActive(channelEntry)) {
             message.channel.send("There is currently no active event. Please return later.");
             return;
         }
+        message.channel.send("Posted submission in event channel!");
         constructAndSendSubmissionEmbed(message, args, channelEntry.eventChannelID);
     }
 };
 
-function constructAndSendSubmissionEmbed(message: any, args: string[], channelID: number) {
+function constructAndSendSubmissionEmbed(message: any, args: string[], channelID: bigint) {
     var description = constructSubmissionDescription(args);
     const submissionTitle = "__**Submission by " + message.author.username + ":**__";
     const submissionDescription = "*Link to Content:* " + args[0] + "\n*Description:* " + description;
