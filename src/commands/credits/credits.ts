@@ -1,6 +1,7 @@
-import {MessageAttachment} from "discord.js";
+import {MessageAttachment, Message} from "discord.js";
 import * as Canvas from "canvas";
 import * as CreditsHandler from "../../scripts/creditshandler";
+import * as CanvasHelper from "../../scripts/canvashelper";
 
 module.exports = {
     name: "credits",
@@ -22,9 +23,19 @@ async function drawCreditsBadge(message: any, credits: number, creditsRank: {pos
     const canvas = Canvas.createCanvas(750, 200);
     const context = canvas.getContext("2d");
 
+    drawBackground(canvas, context);
+    await drawAuthorAvatar(canvas, context, message);
+    drawUserInfo(canvas, context, message, credits, creditsRank);
+
+    return canvas.toBuffer();
+}
+
+function drawBackground(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D): void {
     context.fillStyle = "#666666";
     context.fillRect(0, 0, canvas.width, canvas.height);
+}
 
+async function drawAuthorAvatar(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D, message: Message): Promise<void> {
     const avatar = await Canvas.loadImage(message.author.displayAvatarURL({format: "png"}));
     context.drawImage(avatar, 25, 25, 150, 150);
     context.strokeStyle = "#ffffff";
@@ -32,15 +43,16 @@ async function drawCreditsBadge(message: any, credits: number, creditsRank: {pos
     context.strokeRect(0, 0, canvas.width, canvas.height);
     context.lineWidth = 5;
     context.strokeRect(25, 25, 150, 150);
+}
 
-    context.font = "60px Arial";
+function drawUserInfo(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D, message: Message, credits: number, creditsRank: {position: number, max: number}) {
+    context.font = CanvasHelper.getFittingFontSize(canvas, context, message.author.username, 65);
     context.fillStyle = "#ffffff";
     context.fillText(message.author.username, 225, 75);
-    context.font = "40px Arial";
+    context.font = CanvasHelper.getFittingFontSize(canvas, context, credits.toString(), 45);
     context.fillStyle = "#ffff00";
     context.fillText("Creative Credits: " + credits, 225, 125);
+    context.font = CanvasHelper.getFittingFontSize(canvas, context, creditsRank.position.toString(), 45);
     context.fillStyle = "#ff0000";
-    context.fillText("Credits Rank: #" + creditsRank.position + " out of " + creditsRank.max, 225, 175); //TODO: Implement ranking system
-
-    return canvas.toBuffer();
+    context.fillText("Credits Rank: #" + creditsRank.position + " out of " + creditsRank.max, 225, 175);
 }
