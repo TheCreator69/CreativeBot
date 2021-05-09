@@ -1,57 +1,80 @@
+import {Message} from "discord.js";
+
 module.exports = {
     name: "math",
     description: "Tests your math skills by giving an exercise and waiting for a quick response.",
     syntax: "math",
     min_args: 0,
     admin_only: false,
-    execute(message: any, args: string[]) {
-        var question = generateMathQuestion();
-        message.channel.send(createMathMessage(question));
-        collectAndResolveAnswer(message, question);
+    execute(message: Message, args: string[]): void {
+        askMathQuestionAndProcessAnswer(message);
     }
 };
 
-function generateMathQuestion() {
+class MathQuestion {
+    initialValue: number;
+    isPlusOperator: boolean;
+    term: number;
+    timeForAnswering: number;
+    result: number;
+
+    constructor(_initialValue: number, _isPlusOperator: boolean, _term: number, _timeForAnswering: number) {
+        this.initialValue = _initialValue;
+        this.isPlusOperator = _isPlusOperator;
+        this.term = _term;
+        this.timeForAnswering = _timeForAnswering;
+        if(this.isPlusOperator) this.result = this.initialValue + this.term;
+        else this.result = this.initialValue - this.term;
+    }
+}
+
+function askMathQuestionAndProcessAnswer(message: Message): void {
+    var mathQuestion = generateMathQuestion();
+    message.channel.send(createQuestionMessage(mathQuestion));
+    collectAndResolveAnswer(message, mathQuestion);
+}
+
+function generateMathQuestion(): MathQuestion {
     var initialValue = Math.floor(Math.random() * 100) + 1;
     var isPlusOperator = Math.random() < 0.5;
-    var randomOperationValue = Math.floor(Math.random() * 50) + 1;
+    var term = Math.floor(Math.random() * 50) + 1;
+    var timeForAnswering = calculateTimeForAnswering(initialValue, isPlusOperator, term);
 
-    var question = createQuestionMessage(initialValue, isPlusOperator, randomOperationValue);
-    var time = calculateAnswerTime(initialValue, isPlusOperator, randomOperationValue);
-    var result = calculateResult(initialValue, isPlusOperator, randomOperationValue);
-
-    return {question: question, time: time, result: result};
+    return new MathQuestion(initialValue, isPlusOperator, term, timeForAnswering);
 }
 
-function createQuestionMessage(initialValue: number, isPlusOperator: boolean, randomOperationValue: number) {
-    var message = initialValue.toString();
-    message += isPlusOperator ? " + " : " - ";
-    message += randomOperationValue + " = ?";
-    return message;
-}
+function calculateTimeForAnswering(initialValue: number, isPlusOperator: boolean, term: number): number {
+    var answerTime = 0;
 
-function calculateAnswerTime(initialValue: number, isPlusOperator: boolean, randomOperationValue: number) {
-    var answerTime = 1000 + Math.floor(initialValue / 20) * 1000;
-    answerTime += isPlusOperator ? Math.floor(randomOperationValue / 10) * 1000 : Math.floor(randomOperationValue / 8) * 1000;
+    if(isNumberMultipleOf(initialValue, 10)) answerTime += 1000;
+    else if(isNumberMultipleOf(initialValue, 2)) answerTime += 2000;
+    else answerTime += 3000;
+
+    if(isNumberMultipleOf(term, 10)) answerTime += 1000;
+    else answerTime += Math.floor(term / 10) * 1000;
+
+    if(isPlusOperator) answerTime += 2000;
+    else answerTime += 4000;
+
     return answerTime;
 }
 
-function calculateResult(initialValue: number, isPlusOperator: boolean, randomOperationValue: number) {
-    if(isPlusOperator) {
-        return initialValue += randomOperationValue;
-    }
-    else {
-        return initialValue -= randomOperationValue;
-    }
+function isNumberMultipleOf(numberInQuestion: number, multiple: number): boolean {
+    if(numberInQuestion % multiple === 0) return true;
+    else return false;
 }
 
-function createMathMessage(question: any) {
-    return "**Question:** " + question.question + "\nQuick, you only have " + question.time / 1000 + " seconds!";
+function createQuestionMessage(question: MathQuestion): string {
+    var mathOperator;
+    if(question.isPlusOperator) mathOperator = " + ";
+    else mathOperator = " - ";
+    return "**Question:** " + question.initialValue + mathOperator + question.term + " = ?\nQuick, you only have " + question.timeForAnswering / 1000 + " seconds!";
 }
 
-function collectAndResolveAnswer(message: any, question: any) {
-    const filter = (m: any) => m.author.id === message.author.id;
-    const collector = message.channel.createMessageCollector(filter, {max: 1, time: question.time});
+function collectAndResolveAnswer(message: Message, question: MathQuestion): void {
+    const filter = (filteredMessage: Message) => filteredMessage.author.id === message.author.id;
+    const AMOUNT_OF_MESSAGES_TO_COLLECT: number = 1;
+    const collector = message.channel.createMessageCollector(filter, {max: AMOUNT_OF_MESSAGES_TO_COLLECT, time: question.timeForAnswering});
 
     collector.on("collect", (collectedMessage: any) => {
         replyBasedOnValidityOfAnswer(collectedMessage, question);
@@ -61,17 +84,20 @@ function collectAndResolveAnswer(message: any, question: any) {
     });
 }
 
-function replyBasedOnValidityOfAnswer(message: any, question: any) {
+function replyBasedOnValidityOfAnswer(message: Message, question: MathQuestion): void {
     if(parseInt(message.content) == question.result) {
         message.channel.send("Correct answer! :smile:");
+        //Award creative credits based on math question values - hard / easy
     }
     else {
         message.channel.send("Wrong answer! The result was " + question.result + "! :frowning:");
+        //Lose creative credits
     }
 }
 
-function replyIfNoMessagesWereSent(message: any, question: any, collectedMessages: any) {
+function replyIfNoMessagesWereSent(message: Message, question: MathQuestion, collectedMessages: any): void {
     if(collectedMessages.size == 0) {
         message.channel.send("You didn't answer in time! The correct answer would have been " + question.result + "! :sweat:");
+        //Lose even more creative credits
     }
 }
