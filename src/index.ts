@@ -25,6 +25,7 @@ for(const folder of commandFolders) {
         if(file.endsWith(".js") || file.endsWith(".ts")) {
             return true;
         }
+        else return false;
     });
     for(const file of commandFiles) {
         const command = require(`./commands/${folder}/${file}`);
@@ -37,6 +38,7 @@ const eventFiles = fs.readdirSync("./events").filter(function(file) {
     if(file.endsWith(".js") || file.endsWith(".ts")) {
         return true;
     }
+    else return false;
 });
 for(const file of eventFiles) {
     const eventInstance = require(`./events/${file}`);
