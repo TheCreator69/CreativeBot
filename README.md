@@ -2,16 +2,16 @@
 
 ## EXPERIMENTAL TYPESCRIPT CONVERSION BRANCH
 Refactoring Checklist:
-- [ ] Move responsibility of connecting to database out of scripts
+- [ ] Move responsibility of connecting to database out of scripts (DRY principle important here)
 - [ ] Remove "hidden" input arguments like the active database connection
 - [ ] Make use of interfaces to allow for mock objects (e.g. a mock database for testing)
 - [ ] Remove any "anys" as types and define objects & interfaces for input arguments
 - [ ] Add classes for modules in the scripts folder
-- [ ] Add return types for functions
+- [ ] Add return types for functions with TypeScript
 - [ ] Split large execute() functions for commands into smaller, more modular functions
 - [ ] Add enums if needed
-- [ ] Rename variables and functions if needed
-- [ ] Reorganize functions when needed
+- [ ] Rename variables, functions and files if needed (remove words like "manager" and "handler")
+- [ ] Reorganize functions when needed, extract them maybe
 - [ ] Make sure that state changes can be easily traced outside of the function responsible (functions changing state as input arguments)
 
 This discord bot is being created by TheCreator with [TypeScript](https://www.typescriptlang.org/), using discord.js.\
@@ -31,7 +31,11 @@ But I have still added support for multiple servers, just in case (even though I
 - [eslint](https://eslint.org/docs/user-guide/getting-started) (checking my code for style inconsistencies)
 - [winston](https://github.com/winstonjs/winston) (more sophisticated logging)
 - [sequelize](https://sequelize.org/master/) (accessing databases in an easier to read way)
-- [jest](https://jestjs.io/) (automated code testing)
+- [jest](https://jestjs.io/) with [ts-jest](https://www.npmjs.com/package/ts-jest) (automated code testing)
 
 ### Other Credits
-Obama Picture: http://www.acclaimimages.com/_gallery/_free_images/0519-0906-1522-3927_president_barack_obama_points_at_you_o.jpg
+Obama Pictures:
+- http://www.acclaimimages.com/_gallery/_free_images/0519-0906-1522-3927_president_barack_obama_points_at_you_o.jpg
+- https://ksassets.timeincuk.net/wp/uploads/sites/46/2017/08/Barack-Obama-1.jpg
+- https://media1.popsugar-assets.com/files/thumbor/NwEsD8SynNHbb5XVqvPv4Zy3ED0/fit-in/1024x1024/filters:format_auto-!!-:strip_icc-!!-/2020/11/13/842/n/1922283/4493f6825faedaa70cd706.95048289_/i/what-is-barack-obamas-a-promised-land-book-about.jpg
+- https://newsinafrica.co/wp-content/uploads/2017/12/Former-President-Barrack-Obama.jpg
