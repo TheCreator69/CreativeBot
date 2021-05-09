@@ -1,4 +1,5 @@
 import {Message} from "discord.js";
+import * as CreditsHandler from "../../scripts/creditshandler";
 
 module.exports = {
     name: "math",
@@ -86,18 +87,18 @@ function collectAndResolveAnswer(message: Message, question: MathQuestion): void
 
 function replyBasedOnValidityOfAnswer(message: Message, question: MathQuestion): void {
     if(parseInt(message.content) == question.result) {
-        message.channel.send("Correct answer! :smile:");
-        //Award creative credits based on math question values - hard / easy
+        message.channel.send("Correct answer! :smile:\nYou have been granted " + question.timeForAnswering / 1000 + " credits for answering correctly!");
+        CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), question.timeForAnswering / 1000);
     }
     else {
-        message.channel.send("Wrong answer! The result was " + question.result + "! :frowning:");
-        //Lose creative credits
+        message.channel.send("Wrong answer! The result was " + question.result + "! :frowning:\nYou have lost " + question.timeForAnswering / 1000 + " credits as a result!");
+        CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), question.timeForAnswering / 1000 * -1);
     }
 }
 
 function replyIfNoMessagesWereSent(message: Message, question: MathQuestion, collectedMessages: any): void {
     if(collectedMessages.size == 0) {
-        message.channel.send("You didn't answer in time! The correct answer would have been " + question.result + "! :sweat:");
-        //Lose even more creative credits
+        message.channel.send("You didn't answer in time! The correct answer would have been " + question.result + "! :sweat:\nYou have lost " + question.timeForAnswering / 1000 * 2 + " credits as a result!");
+        CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), question.timeForAnswering / 1000 * -2);
     }
 }
