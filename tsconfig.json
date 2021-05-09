@@ -16,6 +16,6 @@
         "node_modules",
         "build",
         "ecosystem.config.js",
-        "jest.config.ts"
+        "jest.config.js"
     ]
 }
