@@ -1,6 +1,7 @@
 import {MessageAttachment, Message} from "discord.js";
 import * as Canvas from "canvas";
 import * as CanvasHelper from "../../scripts/canvashelper";
+import * as fs from "fs";
 
 module.exports = {
     name: "obama",
@@ -20,17 +21,27 @@ async function sendObamaImageWithText(message: Message, args: string[]): Promise
 }
 
 async function createObamaImageBuffer(args: string[]): Promise<Buffer> {
-    const canvas = Canvas.createCanvas(1200, 800);
+    let obamaImage = await loadRandomObamaImageFromFolder();
+
+    const canvas = Canvas.createCanvas(obamaImage.width, obamaImage.height);
     const context = canvas.getContext("2d");
 
-    await drawImage(canvas, context);
+    await drawImage(canvas, context, obamaImage);
     drawText(canvas, context, args);
 
     return canvas.toBuffer();
 }
 
-async function drawImage(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D): Promise<void> {
-    var obamaImage = await Canvas.loadImage("../media/obama_0.png");
+async function loadRandomObamaImageFromFolder(): Promise<Canvas.Image> {
+    const obamaImages = fs.readdirSync("../media").filter(function(file) {
+        return file.endsWith(".png");
+    });
+    const randomObamaIndex = Math.floor(Math.random() * obamaImages.length);
+    let obamaImage = await Canvas.loadImage("../media/obama_" + randomObamaIndex + ".png");
+    return obamaImage;
+}
+
+async function drawImage(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D, obamaImage: Canvas.Image): Promise<void> {
     context.drawImage(obamaImage, 0, 0, canvas.width, canvas.height);
 }
 
@@ -39,8 +50,8 @@ function drawText(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2
 
     context.fillStyle = "#ffffff";
     context.textAlign = "center";
-    context.font = CanvasHelper.getFittingFontSize(canvas, context, imageText, 70);
-    context.fillText(imageText, canvas.width / 2, 150);
+    context.font = CanvasHelper.getFittingFontSize(canvas, context, imageText, Math.floor(canvas.width / 17));
+    context.fillText(imageText, canvas.width / 2, Math.floor(canvas.height / 5));
 }
 
 function constructTextFromArgs(args: string[]): string {
