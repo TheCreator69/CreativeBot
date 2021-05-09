@@ -2,7 +2,7 @@ import * as Sequelize from "sequelize";
 import {Sequelize as SequelizeConstructor} from "sequelize";
 import * as credentials from "../credentials.json";
 
-export async function checkIfUserIsAdmin(userID: number) {
+export async function checkIfUserIsAdmin(userID: bigint) {
     const sequelize = establishDatabaseConnection();
     const Admins = await defineAndSyncAdminTableModel(sequelize);
     return await checkTableForAdminEntry(userID, Admins);
@@ -29,7 +29,7 @@ async function defineAndSyncAdminTableModel(sequelize: any) {
     return Admins;
 }
 
-async function checkTableForAdminEntry(userID: number, Admins: any) {
+async function checkTableForAdminEntry(userID: bigint, Admins: any) {
     const adminEntry = await Admins.findOne({where: {id: userID}});
     if(adminEntry !== null) {
         return true;
