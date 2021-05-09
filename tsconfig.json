@@ -15,6 +15,7 @@
     "exclude": [
         "node_modules",
         "build",
-        "ecosystem.config.js"
+        "ecosystem.config.js",
+        "jest.config.ts"
     ]
 }
