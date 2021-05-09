@@ -30,7 +30,7 @@ async function createObamaImageBuffer(args: string[]): Promise<Buffer> {
 }
 
 async function drawImage(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D): Promise<void> {
-    var obamaImage = await Canvas.loadImage("../media/obama.png");
+    var obamaImage = await Canvas.loadImage("../media/obama_0.png");
     context.drawImage(obamaImage, 0, 0, canvas.width, canvas.height);
 }
 
