@@ -1,7 +1,7 @@
 import {MessageAttachment, Message} from "discord.js";
 import * as Canvas from "canvas";
 import * as CreditsHandler from "../../scripts/creditshandler";
-import * as CanvasHelper from "../../scripts/canvashelper";
+import * as UIFunctions from "../../scripts/uifunctions";
 
 module.exports = {
     name: "credits",
@@ -9,17 +9,21 @@ module.exports = {
     syntax: "credits",
     min_args: 0,
     admin_only: false,
-    async execute(message: any, args: string[]) {
-        var userCredits = await CreditsHandler.getCreditsForUser(message.author.id);
-        var creditsRank = await CreditsHandler.getCreditsRankForUser(message.author.id);
-        var creditsBadge = await drawCreditsBadge(message, userCredits, creditsRank);
-
-        const attachment = new MessageAttachment(creditsBadge, message.author.username + "_credits.png");
-        message.channel.send(attachment);
+    async execute(message: Message, args: string[]) {
+        await displayUserInfoOnCreditsBadge(message);
     }
 };
 
-async function drawCreditsBadge(message: any, credits: number, creditsRank: {position: number, max: number}) {
+async function displayUserInfoOnCreditsBadge(message: Message) {
+    var userCredits = await CreditsHandler.getCreditsForUser(BigInt(message.author.id));
+    var creditsRank = await CreditsHandler.getCreditsRankForUser(BigInt(message.author.id));
+    var creditsBadge = await drawCreditsBadge(message, userCredits, creditsRank);
+
+    const attachment = new MessageAttachment(creditsBadge, message.author.username + "_credits.png");
+    message.channel.send(attachment);
+}
+
+async function drawCreditsBadge(message: Message, credits: number, creditsRank: {position: number, max: number}) {
     const canvas = Canvas.createCanvas(750, 200);
     const context = canvas.getContext("2d");
 
@@ -46,13 +50,13 @@ async function drawAuthorAvatar(canvas: Canvas.Canvas, context: Canvas.CanvasRen
 }
 
 function drawUserInfo(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D, message: Message, credits: number, creditsRank: {position: number, max: number}) {
-    context.font = CanvasHelper.getFittingFontSize(canvas, context, message.author.username, 65);
+    context.font = UIFunctions.getFittingFontSize(canvas, context, message.author.username, 65);
     context.fillStyle = "#ffffff";
     context.fillText(message.author.username, 225, 75);
-    context.font = CanvasHelper.getFittingFontSize(canvas, context, credits.toString(), 45);
+    context.font = UIFunctions.getFittingFontSize(canvas, context, credits.toString(), 45);
     context.fillStyle = "#ffff00";
     context.fillText("Creative Credits: " + credits, 225, 125);
-    context.font = CanvasHelper.getFittingFontSize(canvas, context, creditsRank.position.toString(), 45);
+    context.font = UIFunctions.getFittingFontSize(canvas, context, creditsRank.position.toString(), 45);
     context.fillStyle = "#ff0000";
     context.fillText("Credits Rank: #" + creditsRank.position + " out of " + creditsRank.max, 225, 175);
 }

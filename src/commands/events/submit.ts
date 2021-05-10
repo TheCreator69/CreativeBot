@@ -1,6 +1,7 @@
 import * as Index from "../../index";
-import {MessageEmbed, TextChannel} from "discord.js";
+import {MessageEmbed, TextChannel, Message, User} from "discord.js";
 import * as EventHandler from "../../scripts/eventhandler";
+import * as UIFunctions from "../../scripts/uifunctions";
 
 module.exports = {
     name: "submit",
@@ -8,27 +9,31 @@ module.exports = {
     syntax: "submit <link> <description>",
     min_args: 2,
     admin_only: false,
-    async execute(message: any, args: string[]) {
-        if(!message.guild || !message.guild.available) {
-            message.channel.send("Please send this command in a server!");
-            return;
-        }
-        const channelEntry = await EventHandler.getEventChannel(message.guild.id);
-        if(channelEntry === null) {
-            message.channel.send("This Discord doesn't have an event channel!");
-            return;
-        }
-        if(!EventHandler.checkIfEventChannelIsActive(channelEntry)) {
-            message.channel.send("There is currently no active event. Please return later.");
-            return;
-        }
-        message.channel.send("Posted submission in event channel!");
-        constructAndSendSubmissionEmbed(message, args, channelEntry.eventChannelID);
+    async execute(message: Message, args: string[]) {
+        await checkForValidEventChannelAndPostEmbed(message, args);
     }
 };
 
-function constructAndSendSubmissionEmbed(message: any, args: string[], channelID: bigint) {
-    var description = constructSubmissionDescription(args);
+async function checkForValidEventChannelAndPostEmbed(message: Message, args: string[]): Promise<void> {
+    if(!message.guild || !message.guild.available) {
+        message.channel.send("Please send this command in a server!");
+        return;
+    }
+    const channelEntry = await EventHandler.getEventChannel(BigInt(message.guild.id));
+    if(channelEntry === null) {
+        message.channel.send("This Discord doesn't have an event channel!");
+        return;
+    }
+    if(!EventHandler.checkIfEventChannelIsActive(channelEntry)) {
+        message.channel.send("There is currently no active event. Please return later.");
+        return;
+    }
+    message.channel.send("Posted submission in event channel!");
+    constructAndSendSubmissionEmbed(message, args, channelEntry.eventChannelID);
+}
+
+function constructAndSendSubmissionEmbed(message: Message, args: string[], channelID: bigint): void {
+    var description = UIFunctions.createStringFromArray(args, 1);
     const submissionTitle = "__**Submission by " + message.author.username + ":**__";
     const submissionDescription = "*Link to Content:* " + args[0] + "\n*Description:* " + description;
     const submissionEmbed = constructSubmissionEmbed(submissionTitle, submissionDescription, message.author);
@@ -39,15 +44,7 @@ function constructAndSendSubmissionEmbed(message: any, args: string[], channelID
     }
 }
 
-function constructSubmissionDescription(args: string[]) {
-    var description = "";
-    for(var i = 1; i < args.length; i++) {
-        description += args[i] + " ";
-    }
-    return description;
-}
-
-function constructSubmissionEmbed(title: string, description: string, author: any) {
+function constructSubmissionEmbed(title: string, description: string, author: User): MessageEmbed {
     var submissionEmbed = new MessageEmbed();
     submissionEmbed.setColor("#4444ff");
     submissionEmbed.setTitle(title);

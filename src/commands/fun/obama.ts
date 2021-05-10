@@ -1,6 +1,6 @@
 import {MessageAttachment, Message} from "discord.js";
 import * as Canvas from "canvas";
-import * as CanvasHelper from "../../scripts/canvashelper";
+import * as UIFunctions from "../../scripts/uifunctions";
 import * as fs from "fs";
 
 module.exports = {
@@ -46,18 +46,10 @@ async function drawImage(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingC
 }
 
 function drawText(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D, args: string[]): void {
-    var imageText = constructTextFromArgs(args);
+    var imageText = UIFunctions.createStringFromArray(args, 0);
 
     context.fillStyle = "#ffffff";
     context.textAlign = "center";
-    context.font = CanvasHelper.getFittingFontSize(canvas, context, imageText, Math.floor(canvas.width / 17));
+    context.font = UIFunctions.getFittingFontSize(canvas, context, imageText, Math.floor(canvas.width / 17));
     context.fillText(imageText, canvas.width / 2, Math.floor(canvas.height / 5));
-}
-
-function constructTextFromArgs(args: string[]): string {
-    var imageText = "";
-    for(var arg of args) {
-        imageText = imageText + arg + " ";
-    }
-    return imageText;
 }
