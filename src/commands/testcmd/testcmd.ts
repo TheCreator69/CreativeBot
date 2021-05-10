@@ -1,4 +1,5 @@
 //import * as LogChamp from "../../scripts/logchamp";
+import {Message} from "discord.js";
 
 module.exports = {
     name: "test",
@@ -6,7 +7,7 @@ module.exports = {
     syntax: "test",
     min_args: 0,
     admin_only: true,
-    execute(message: any, args: string[]) {
+    execute(message: Message, args: string[]) {
         //No test
     }
 };
