@@ -7,3 +7,11 @@ export function getFittingFontSize(canvas: Canvas.Canvas, context: Canvas.Canvas
 
     return context.font;
 }
+
+export function createStringFromArray(args: string[], startingIndex: number): string {
+    var text = "";
+    for(var i = startingIndex; i < args.length; i++) {
+        text += args[i] + " ";
+    }
+    return text;
+}
