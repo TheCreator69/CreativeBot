@@ -1,3 +1,5 @@
+import {Message} from "discord.js";
+
 var rollCycles = 3;
 var symbols = [":grapes:", ":cherries:", ":lemon:", ":tangerine:", ":apple:", ":blueberries:", ":kiwi:", ":strawberry:"];
 
@@ -7,26 +9,22 @@ module.exports = {
     syntax: "slots",
     min_args: 0,
     admin_only: false,
-    execute(message: any, args: string[]) {
-        editMessageOverTime(message);
+    async execute(message: Message, args: string[]) {
+        await editMessageOverTime(message);
     }
 };
 
-function editMessageOverTime(message: any) {
-    var slotMessagePromise = message.channel.send("Rolling").then(function(messageObject: any) {
-        return messageObject;
-    });
-    animateMessageWhenReady(slotMessagePromise);
-    finishAnimation(slotMessagePromise);
+async function editMessageOverTime(message: Message): Promise<void> {
+    var slotMessage = await message.channel.send("Rolling");
+    animateMessageWhenReady(slotMessage);
+    finishAnimation(slotMessage);
 }
 
-function animateMessageWhenReady(slotMessagePromise: any) {
-    slotMessagePromise.then((slotMessage: any) => {
-        animateRollingMessage(slotMessage);
-    });
+async function animateMessageWhenReady(slotMessage: Message): Promise<void> {
+    animateRollingMessage(slotMessage);
 }
 
-async function animateRollingMessage(slotMessage: any) {
+async function animateRollingMessage(slotMessage: Message): Promise<void> {
     for(let i = 0; i < rollCycles; i++) {
         await sleep(1000);
         slotMessage.edit("Rolling.");
@@ -39,19 +37,19 @@ async function animateRollingMessage(slotMessage: any) {
     }
 }
 
-function sleep(delay: number) {
+function sleep(delay: number): Promise<unknown> {
     return new Promise((resolve) => setTimeout(resolve, delay));
 }
 
-function finishAnimation(slotMessagePromise: any) {
-    setTimeout(() => slotMessagePromise.then(function(slotMessage: any) {
+function finishAnimation(slotMessage: Message): void {
+    setTimeout(() => {
         var randomSymbols = selectRandomSymbols();
         var coinsWon = calculateWin();
         finishEditingMessage(slotMessage, randomSymbols, coinsWon);
-    }), rollCycles * 4000 + 1000);
+    }, rollCycles * 4000 + 1000);
 }
 
-function selectRandomSymbols() {
+function selectRandomSymbols(): string[] {
     var randomSymbols: string[] = [];
     for(let i = 0; i < 9; i++) {
         randomSymbols.push(symbols[Math.floor(Math.random() * symbols.length)]);
@@ -59,7 +57,7 @@ function selectRandomSymbols() {
     return randomSymbols;
 }
 
-function calculateWin() {
+function calculateWin(): number {
     var winTier = Math.floor(Math.random() * 100) + 1;
     if(winTier <= 50) {
         return 0;
@@ -78,7 +76,7 @@ function calculateWin() {
     }
 }
 
-function finishEditingMessage(slotMessage: any, randomSymbols: any, coinsWon: number) {
+function finishEditingMessage(slotMessage: Message, randomSymbols: string[], coinsWon: number): void {
     var slotMachineBorder = " - - - - - - - - -\n";
     var finishedSlotText = "";
     if(coinsWon == 0) {
