@@ -2,7 +2,7 @@ import {MessageEmbed} from "discord.js";
 
 module.exports = {
     name: "socials",
-    description: "Lists TheCreator's socials in an embed.",
+    description: "Lists TheCreator's socials.",
     syntax: "socials",
     min_args: 0,
     admin_only: false,

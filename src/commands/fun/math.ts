@@ -3,7 +3,7 @@ import * as CreditsHandler from "../../scripts/creditshandler";
 
 module.exports = {
     name: "math",
-    description: "Tests your math skills by giving an exercise and waiting for a quick response.",
+    description: "Tests your math skills and quick thinking with an exercise that needs to be solved in a few seconds.",
     syntax: "math",
     min_args: 0,
     admin_only: false,
@@ -69,7 +69,7 @@ function createQuestionMessage(question: MathQuestion): string {
     var mathOperator;
     if(question.isPlusOperator) mathOperator = " + ";
     else mathOperator = " - ";
-    return "**Question:** " + question.initialValue + mathOperator + question.term + " = ?\nQuick, you only have " + question.timeForAnswering / 1000 + " seconds!";
+    return "**Question:** " + question.initialValue + mathOperator + question.term + " = ?\nQuick, you only have " + question.timeForAnswering / 1000 + " seconds to answer!";
 }
 
 function collectAndResolveAnswer(message: Message, question: MathQuestion): void {
@@ -87,18 +87,18 @@ function collectAndResolveAnswer(message: Message, question: MathQuestion): void
 
 function replyBasedOnValidityOfAnswer(message: Message, question: MathQuestion): void {
     if(parseInt(message.content) == question.result) {
-        message.channel.send("Correct answer! :smile:\nYou have been granted " + question.timeForAnswering / 1000 + " credits for answering correctly!");
+        message.channel.send("Correct answer! :smile:\nYou have been granted " + question.timeForAnswering / 1000 + " Creative Credits for answering correctly!");
         CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), question.timeForAnswering / 1000);
     }
     else {
-        message.channel.send("Wrong answer! The result was " + question.result + "! :frowning:\nYou have lost " + question.timeForAnswering / 1000 + " credits as a result!");
+        message.channel.send("Wrong answer! The result was " + question.result + "! :frowning:\nYou have lost " + question.timeForAnswering / 1000 + " Creative Credits as a result!");
         CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), question.timeForAnswering / 1000 * -1);
     }
 }
 
 function replyIfNoMessagesWereSent(message: Message, question: MathQuestion, collectedMessages: any): void {
     if(collectedMessages.size == 0) {
-        message.channel.send("You didn't answer in time! The correct answer would have been " + question.result + "! :sweat:\nYou have lost " + question.timeForAnswering / 1000 * 2 + " credits as a result!");
+        message.channel.send("You didn't answer in time! The correct answer would have been " + question.result + "! :sweat:\nYou have lost " + question.timeForAnswering / 1000 * 2 + " Creative Credits as a result!");
         CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), question.timeForAnswering / 1000 * -2);
     }
 }

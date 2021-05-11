@@ -7,7 +7,7 @@ var isCommandSenderAdmin = false;
 
 module.exports = {
     name: "help",
-    description: "Lists all possible commands or info about a specific command.",
+    description: "Lists all possible commands or info about a specific command if one is specified.",
     syntax: "help [command]",
     min_args: 0,
     admin_only: false,

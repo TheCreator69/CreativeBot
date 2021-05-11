@@ -2,8 +2,8 @@ import * as EventHandler from "../../scripts/eventhandler";
 
 module.exports = {
     name: "setevent",
-    description: "Set a server's event channel or delete it.",
-    syntax: "setevent <channelID/delete>",
+    description: "Sets a server's event channel or deletes the event association of the current event channel.",
+    syntax: "setevent <channel ID/delete>",
     min_args: 1,
     admin_only: true,
     async execute(message: any, args: string[]) {
@@ -15,7 +15,7 @@ module.exports = {
         const channelEntry = await EventHandler.getEventChannel(serverID);
         if(channelEntry !== null && args[0] === "delete") {
             EventHandler.deleteEventChannel(serverID);
-            message.channel.send("Deleted event channel!");
+            message.channel.send("Previous event channel is no longer considered an event channel!");
             return;
         }
         //BigInt needed, as Number isn't large enough to handle Snowflakes. Oof.
@@ -31,11 +31,11 @@ module.exports = {
         }
         if(channelEntry === null) {
             await EventHandler.createEventChannel(serverID, channelID);
-            message.channel.send("Set up event channel!");
+            message.channel.send("Set up new event channel!");
             return;
         }
         await EventHandler.changeEventChannel(serverID, channelID);
-        message.channel.send("Changed event channel!");
+        message.channel.send("Changed current event channel!");
         return;
     }
 };

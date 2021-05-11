@@ -5,7 +5,7 @@ import * as UIFunctions from "../../scripts/uifunctions";
 
 module.exports = {
     name: "submit",
-    description: "Submits an entry for the current event in the event channel.",
+    description: "Submits an entry for the current event in the server's event channel.",
     syntax: "submit <link> <description>",
     min_args: 2,
     admin_only: false,
@@ -16,12 +16,12 @@ module.exports = {
 
 async function checkForValidEventChannelAndPostEmbed(message: Message, args: string[]): Promise<void> {
     if(!message.guild || !message.guild.available) {
-        message.channel.send("Please send this command in a server!");
+        message.channel.send("Please send this command in an available server!");
         return;
     }
     const channelEntry = await EventHandler.getEventChannel(BigInt(message.guild.id));
     if(channelEntry === null) {
-        message.channel.send("This Discord doesn't have an event channel!");
+        message.channel.send("This server doesn't have an event channel!");
         return;
     }
     if(!EventHandler.checkIfEventChannelIsActive(channelEntry)) {

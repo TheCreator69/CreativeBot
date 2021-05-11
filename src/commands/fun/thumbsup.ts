@@ -3,7 +3,7 @@ import {Message, User} from "discord.js";
 
 module.exports = {
     name: "thumbsup",
-    description: "Mention a user whose last message will get a thumbs up reaction from the bot :thumbsup:",
+    description: "Gives the user mentioned a thumbs up on their last message :thumbsup:",
     syntax: "thumbsup <user mention>",
     min_args: 1,
     admin_only: false,

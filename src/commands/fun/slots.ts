@@ -21,13 +21,13 @@ async function editMessageIfBetIsValid(message: Message, args: string[]): Promis
         message.channel.send("Please enter a number as a bet!");
         return;
     }
-    if(bet === 0) {
-        message.channel.send("You know, the winning amount gets multiplied by your bet. And what is x * 0?");
+    if(bet <= 0) {
+        message.channel.send("Nice try, but I thought of that. Please enter a bet above 0.");
         return;
     }
     var creditsOfAuthor = await CreditsHandler.getCreditsForUser(BigInt(message.author.id));
     if(bet > creditsOfAuthor) {
-        message.channel.send("Your bet exceeds the amount of credits you have!");
+        message.channel.send("Your bet exceeds the amount of Creative Credits you have!");
         return;
     }
     createAndEditMessageOverTime(message, bet);
@@ -117,7 +117,7 @@ function finishEditingMessage(slotMessage: Message, randomSymbols: string[], cre
         finishedSlotMessage += "Unfortunately, you lost your bet :frowning:\nBetter luck next time!\n" + slotMachineBorder;
     }
     else {
-        finishedSlotMessage += "You've won " + creditsWon + " coins! Hooray!\n" + slotMachineBorder;
+        finishedSlotMessage += "You've won " + creditsWon + " Creative Credits! Hooray!\n" + slotMachineBorder;
     }
     for(let i = 0; i <= 8; i += 3) {
         var slotMachineRow = "  " + randomSymbols[i] + " " + randomSymbols[i + 1] + " " + randomSymbols[i + 2] + "  \n";

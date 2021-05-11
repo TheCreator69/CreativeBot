@@ -3,7 +3,7 @@ import {Message} from "discord.js";
 
 module.exports = {
     name: "test",
-    description: "Dummy test command to test functionality in a clean js file.",
+    description: "Tests functionality in a clean js file.",
     syntax: "test",
     min_args: 0,
     admin_only: true,

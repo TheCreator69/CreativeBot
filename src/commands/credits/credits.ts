@@ -5,7 +5,7 @@ import * as UIFunctions from "../../scripts/uifunctions";
 
 module.exports = {
     name: "credits",
-    description: "Check your own credit balance.",
+    description: "Checks your Creative Credits balance.",
     syntax: "credits",
     min_args: 0,
     admin_only: false,

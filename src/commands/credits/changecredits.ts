@@ -2,7 +2,7 @@ import * as CreditsHandler from "../../scripts/creditshandler";
 
 module.exports = {
     name: "changecredits",
-    description: "Change or set credits for a specific user",
+    description: "Changes or sets Creative Credits for a specific user",
     syntax: "changecredits <add/remove/set> <amount> <user mention>",
     min_args: 3,
     admin_only: true,
@@ -29,12 +29,12 @@ module.exports = {
 
 function checkForValidArgsAndNotifyUser(message: any, args: string[], mention: any) {
     if(args[0] !== "add" && args[0] !== "remove" && args[0] !== "set") {
-        message.channel.send("Please use either \"add\", \"remove\" or \"set\" to change a user's credits!");
+        message.channel.send("Please use either \"add\", \"remove\" or \"set\" to change a user's Creative Credits!");
         return false;
     }
     var amount = parseInt(args[1]);
     if(isNaN(amount)) {
-        message.channel.send("Please enter a valid amount of credits!");
+        message.channel.send("Please enter a valid amount of Creative Credits!");
         return false;
     }
     if(mention === undefined) {
@@ -45,17 +45,17 @@ function checkForValidArgsAndNotifyUser(message: any, args: string[], mention: a
 }
 
 async function addCreditsAndNotifyUser(message: any, amount: number, mention: any) {
-    message.channel.send("Added " + amount + " credits to " + mention.username + "!");
+    message.channel.send("Added " + amount + " Creative Credits to " + mention.username + "!");
     await CreditsHandler.incrementCreditsForUser(mention.id, amount);
 }
 
 async function removeCreditsAndNotifyUser(message: any, amount: number, mention: any) {
-    message.channel.send("Removed " + amount + " credits from" + mention.username + "!");
+    message.channel.send("Removed " + amount + " Creative Credits from" + mention.username + "!");
     var amountToRemove = amount * -1 as number;
     await CreditsHandler.incrementCreditsForUser(mention.id, amountToRemove);
 }
 
 async function setCreditsAndNotifyUser(message: any, amount: number, mention: any) {
-    message.channel.send("Set credits to " + amount + " for " + mention.username + "!");
+    message.channel.send("Set Creative Credits to " + amount + " for " + mention.username + "!");
     await CreditsHandler.setCreditsForUser(mention.id, amount);
 }
