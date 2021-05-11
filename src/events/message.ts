@@ -2,39 +2,43 @@ import * as config from "../config.json";
 import * as AdminCheck from "../scripts/admincheck";
 import * as CreditsHandler from "../scripts/creditshandler";
 import {commandMap} from "../index";
+import {Message, Client} from "discord.js";
 
 module.exports = {
     name: "message",
-    async execute(message: any, client: any) {
+    async execute(message: Message, client: Client) {
         if(process.env.NODE_ENV == "production") {
             if(message.content.startsWith(config.prefix) && !message.author.bot) {
-                executeCommand(message, client);
+                executeCommand(message);
             }
             else if(!message.author.bot) {
                 await handleCreativeCredits(message);
             }
         }
         else if(process.env.NODE_ENV == "development" || process.env.NODE_ENV == "build") {
-            if(message.content.startsWith(config.prefix) && !message.author.bot && await AdminCheck.checkIfUserIsAdmin(message.author.id)) {
-                executeCommand(message, client);
+            if(message.content.startsWith(config.prefix) && !message.author.bot && await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
+                executeCommand(message);
             }
         }
     }
 };
 
-async function handleCreativeCredits(message: any) {
-    CreditsHandler.incrementCreditsForUser(message.author.id, 5);
+async function handleCreativeCredits(message: Message) {
+    CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), 5);
 }
 
-async function executeCommand(message: any, client: any) {
+async function executeCommand(message: Message) {
     const args = message.content.slice(config.prefix.length).split(/ +/);
-    const command = args.shift().toLowerCase();
+
+    var command = args.shift();
+    if(command === undefined) return;
+    command = command.toLowerCase();
 
     if(!commandMap.has(command)) {
         return;
     }
     var commandMapEntry = commandMap.get(command);
-    if(commandMapEntry.admin_only && !await AdminCheck.checkIfUserIsAdmin(message.author.id)) {
+    if(commandMapEntry.admin_only && !await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
         return;
     }
     if(args.length < commandMapEntry.min_args) {

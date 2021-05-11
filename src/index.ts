@@ -4,7 +4,7 @@ import * as fs from "fs";
 
 export const client = new Discord.Client();
 
-var changeDirFolder: string = "src";
+var changeDirFolder = "src";
 if(process.env.NODE_ENV === "development") {
     changeDirFolder = "src";
 }
