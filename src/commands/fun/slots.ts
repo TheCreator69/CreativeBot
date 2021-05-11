@@ -1,7 +1,7 @@
 import {Message} from "discord.js";
 import * as CreditsHandler from "../../scripts/creditshandler";
 
-var rollCycles = 0;
+var rollCycles = 3;
 var symbols = [":grapes:", ":cherries:", ":lemon:", ":green_apple:", ":kiwi:", ":peach:"];
 
 module.exports = {
