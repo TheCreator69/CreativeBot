@@ -56,7 +56,8 @@ function drawUserInfo(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingCont
     context.font = UIFunctions.getFittingFontSize(canvas, context, credits.toString(), 45);
     context.fillStyle = "#ffff00";
     context.fillText("Creative Credits: " + credits, 225, 125);
-    context.font = UIFunctions.getFittingFontSize(canvas, context, creditsRank.position.toString(), 45);
+    var rankText = "Credits Rank: #" + creditsRank.position + " out of " + creditsRank.max;
+    context.font = UIFunctions.getFittingFontSize(canvas, context, rankText, 45);
     context.fillStyle = "#ff0000";
-    context.fillText("Credits Rank: #" + creditsRank.position + " out of " + creditsRank.max, 225, 175);
+    context.fillText(rankText, 225, 175);
 }
