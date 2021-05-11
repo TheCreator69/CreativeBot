@@ -25,7 +25,7 @@ export async function setCreditsForUser(userID: bigint, amount: number) {
 export async function getCreditsRankForUser(userID: bigint) {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
-    return await sortTableEntriesAndReturnPosition(Credits, userID);
+    return await sortTableEntriesAndReturnRank(Credits, userID);
 }
 
 function establishDatabaseConnection() {
@@ -75,15 +75,17 @@ async function updateUserCredits(userID: bigint, newCredits: number, Credits: an
     });
 }
 
-async function sortTableEntriesAndReturnPosition(Credits: any, userID: bigint) {
+async function sortTableEntriesAndReturnRank(Credits: any, userID: bigint) {
     const sortedEntries = await Credits.findAll({
         order: [
             ["credits", "DESC"]
         ]
     });
+    console.log(sortedEntries);
     var position = 0;
+    var userIDConverted = userID.toString();
     for(var i = 0; i < sortedEntries.length; i++) {
-        if(userID === sortedEntries[i].userID) {
+        if(userIDConverted === sortedEntries[i].userID) {
             position = i + 1;
         }
     }
