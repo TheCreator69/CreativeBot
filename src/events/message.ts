@@ -24,7 +24,9 @@ module.exports = {
 };
 
 async function handleCreativeCredits(message: Message) {
-    CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), 5);
+    if(message.type === "DEFAULT") {
+        await CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), message.content.length);
+    }
 }
 
 async function executeCommand(message: Message) {
