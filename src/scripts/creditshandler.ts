@@ -81,7 +81,6 @@ async function sortTableEntriesAndReturnRank(Credits: any, userID: bigint) {
             ["credits", "DESC"]
         ]
     });
-    console.log(sortedEntries);
     var position = 0;
     var userIDConverted = userID.toString();
     for(var i = 0; i < sortedEntries.length; i++) {
