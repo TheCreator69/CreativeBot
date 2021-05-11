@@ -20,7 +20,7 @@ module.exports = {
 
 function createCorrectHelpEmbed(message: any, args: string[]) {
     if(!args.length) {
-        return createHelpEmbed("#52ce7b", ":page_facing_up: List of possible commands:", listAllCommands(message), "To learn more about individual commands, use " + config.prefix + "help [command]!");
+        return createHelpEmbed("#52ce7b", ":page_facing_up: List of possible commands:", listAllCommandsAlphabetically(message), "To learn more about individual commands, use " + config.prefix + "help [command]!");
     }
     else {
         if(doesCommandExist(args)) {
@@ -41,25 +41,35 @@ function createHelpEmbed(color: string, title: string, description: string, foot
     return helpEmbed;
 }
 
-function listAllCommands(message: any) {
+function listAllCommandsAlphabetically(message: any) {
     var commandList = "";
-    for(const commandObject of Index.commandMap.array()) {
+    var commands = Index.commandMap.array();
+    commands.sort(function(a, b) {
+        if(a.name < b.name) {
+            return -1;
+        }
+        else if(a.name > b.name) {
+            return 1;
+        }
+        return 0;
+    });
+    for(const commandObject of commands) {
         if(commandObject.admin_only) {
-            commandList = listAdminCommandForAdminsOnly(message, commandList, commandObject); //Change = to =+, remove additional "commandList" in function
+            commandList += listAdminCommandForAdminsOnlyInDM(message, commandObject);
         }
         else {
-            commandList = commandList + "`" + commandObject.name + "`, ";
+            commandList += "`" + commandObject.name + "`, ";
         }
     }
     commandList = commandList.substr(0, commandList.length - 2);
     return commandList;
 }
 
-function listAdminCommandForAdminsOnly(message: any, commandList: string, commandObject: any) {
+function listAdminCommandForAdminsOnlyInDM(message: any, commandObject: any) {
     if(isCommandSenderAdmin && message.channel.type == "dm") {
-        return commandList + "`" + commandObject.name + "`, ";
+        return "`" + commandObject.name + "`, ";
     }
-    return commandList;
+    return "";
 }
 
 function doesCommandExist(args: string[]) {
@@ -82,7 +92,7 @@ function getCommandInstance(args: string[]) {
 function createCommandInfoString(args: string[]) {
     var commandObject = getRequestedCommandObject(args);
 
-    return "**Description:** " + commandObject.description + "\n" + "**Syntax:** *" + commandObject.syntax + "*\n" + "**Category:** " + commandObject.category.replace(/^\w/, (c: any) => c.toUpperCase());
+    return "**Description:** " + commandObject.description + "\n" + "**Syntax:** *" + config.prefix + commandObject.syntax + "*\n" + "**Category:** " + commandObject.category.replace(/^\w/, (c: any) => c.toUpperCase());
 }
 
 function getRequestedCommandObject(args: string[]) {
