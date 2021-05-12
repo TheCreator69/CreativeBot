@@ -8,7 +8,7 @@ var changeDirFolder = "src";
 if(process.env.NODE_ENV === "development") {
     changeDirFolder = "src";
 }
-else if(process.env.NODE_ENV === "build") {
+else {
     changeDirFolder = "build";
 }
 if(process.platform === "win32") {
