@@ -25,7 +25,7 @@ async function handleMessageInDifferentEnvironments(message: Message): Promise<v
 
 async function handleMessageInProduction(message: Message): Promise<void> {
     if(message.content.startsWith(config.prefix) && !message.author.bot) {
-        executeCommand(message);
+        executeCommandIfPossible(message);
     }
     else if(!message.author.bot) {
         await handleCreativeCredits(message);
@@ -34,11 +34,11 @@ async function handleMessageInProduction(message: Message): Promise<void> {
 
 async function handleMessageInDevAndBuild(message: Message): Promise<void> {
     if(message.content.startsWith(config.prefix) && !message.author.bot && await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
-        executeCommand(message);
+        executeCommandIfPossible(message);
     }
 }
 
-async function handleMessageInMaintenance(message: Message) {
+async function handleMessageInMaintenance(message: Message): Promise<void> {
     if(message.content.startsWith(config.prefix) && !message.author.bot) {
         var commandInfo = getCommandInfoFromMessage(message);
 
@@ -59,7 +59,7 @@ interface CommandInfo {
     args: string[];
 }
 
-async function executeCommand(message: Message): Promise<void> {
+async function executeCommandIfPossible(message: Message): Promise<void> {
     var commandInfo = getCommandInfoFromMessage(message);
 
     if(await canCommandBeExecuted(message, commandInfo)) {
