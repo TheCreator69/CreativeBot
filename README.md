@@ -1,23 +1,22 @@
 # Creative Bot
 
-## EXPERIMENTAL TYPESCRIPT CONVERSION BRANCH
-Refactoring Checklist:
-- [ ] Move responsibility of connecting to database out of scripts (DRY principle important here)
-- [ ] Remove "hidden" input arguments like the active database connection
-- [ ] Make use of interfaces to allow for mock objects (e.g. a mock database for testing)
-- [ ] Remove any "anys" as types and define objects & interfaces for input arguments
-- [ ] Add classes for modules in the scripts folder
-- [ ] Add return types for functions with TypeScript
-- [ ] Split large execute() functions for commands into smaller, more modular functions
-- [ ] Add enums if needed
+## Refactoing Checklist
+Now that the TypeScript conversion has been successful, it is time to refactor!
 - [ ] Rename variables, functions and files if needed (remove words like "manager" and "handler")
-- [ ] Reorganize functions when needed, extract them maybe
+- [ ] DRY (don't repeat yourself): connection to database, any other duplicate code
+- [ ] Remove "hidden" input arguments like the active database connection
 - [ ] Make sure that state changes can be easily traced outside of the function responsible (functions changing state as input arguments)
+- [ ] Make use of interfaces to allow for mock objects (e.g. a mock database table for testing)
+- [ ] Remove any "anys" as types and define objects & interfaces for input arguments
+- [ ] Add return types for functions with TypeScript
+- [ ] Add classes for modules in the scripts folder
+- [ ] Split large execute() functions for commands into smaller, more modular functions
+- [ ] Reorganize functions when needed, extract them maybe
+- [ ] Add enums if needed
 
 This discord bot is being created by TheCreator with [TypeScript](https://www.typescriptlang.org/), using discord.js.\
 **It is intended for my personal use only.**\
-That's why it can only do the things I want it to do.
-But I have still added support for multiple servers, just in case (even though I just own one).
+I have still added support for multiple servers, just in case, even though I just have one at the moment. Sharding is not supported, however.
 
 ## What it can do
 - [x] Fun Commands: generate a random game idea, simulate a slot machine and create an inspiring Obama message
@@ -32,6 +31,7 @@ But I have still added support for multiple servers, just in case (even though I
 - [winston](https://github.com/winstonjs/winston) (more sophisticated logging)
 - [sequelize](https://sequelize.org/master/) (accessing databases in an easier to read way)
 - [jest](https://jestjs.io/) with [ts-jest](https://www.npmjs.com/package/ts-jest) (automated code testing)
+- and more...
 
 ### Other Credits
 Obama Pictures:
