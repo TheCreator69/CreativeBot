@@ -43,7 +43,7 @@ function createHelpEmbed(color: string, title: string, description: string, foot
 
 function listAllCommandsAlphabetically(message: any) {
     var commandList = "";
-    var commands = Index.commandMap.array();
+    var commands = Index.commands.array();
     commands.sort(function(a, b) {
         if(a.name < b.name) {
             return -1;
@@ -73,7 +73,7 @@ function listAdminCommandForAdminsOnlyInDM(message: any, commandObject: any) {
 }
 
 function doesCommandExist(args: string[]) {
-    if(!Index.commandMap.has(args[0])) {
+    if(!Index.commands.has(args[0])) {
         return false;
     }
     var commandObject = getCommandInstance(args);
@@ -86,7 +86,7 @@ function doesCommandExist(args: string[]) {
 }
 
 function getCommandInstance(args: string[]) {
-    return Index.commandMap.get(args[0]);
+    return Index.commands.get(args[0]);
 }
 
 function createCommandInfoString(args: string[]) {
@@ -98,7 +98,7 @@ function createCommandInfoString(args: string[]) {
 function getRequestedCommandObject(args: string[]) {
     var requestedCommand = args[0];
 
-    if(Index.commandMap.has(requestedCommand)) {
-        return Index.commandMap.get(requestedCommand);
+    if(Index.commands.has(requestedCommand)) {
+        return Index.commands.get(requestedCommand);
     }
 }
