@@ -18,6 +18,9 @@ async function handleMessageInDifferentEnvironments(message: Message): Promise<v
     else if(process.env.NODE_ENV == "development" || process.env.NODE_ENV == "build") {
         handleMessageInDevAndBuild(message);
     }
+    else if(process.env.NODE_ENV == "maintenance") {
+        handleMessageInMaintenance(message);
+    }
 }
 
 async function handleMessageInProduction(message: Message): Promise<void> {
@@ -32,6 +35,16 @@ async function handleMessageInProduction(message: Message): Promise<void> {
 async function handleMessageInDevAndBuild(message: Message): Promise<void> {
     if(message.content.startsWith(config.prefix) && !message.author.bot && await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
         executeCommand(message);
+    }
+}
+
+async function handleMessageInMaintenance(message: Message) {
+    if(message.content.startsWith(config.prefix) && !message.author.bot) {
+        var commandInfo = getCommandInfoFromMessage(message);
+
+        if(await canCommandBeExecuted(message, commandInfo)) {
+            message.channel.send("Bot is currently under maintenance, you can't use any commands right now! Sorry! :frowning:");
+        }
     }
 }
 
@@ -75,7 +88,6 @@ async function canCommandBeExecuted(message: Message, commandInfo: CommandInfo):
     if(command.admin_only && !await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
         return false;
     }
-    //Check is required args were entered, if not, help the user out and return
     if(commandInfo.args.length < command.min_args) {
         message.channel.send("You need to provide the required arguments for the command to work! See `" + config.prefix + "help " + command.name + "` for details!");
         return false;
