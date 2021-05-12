@@ -18,7 +18,7 @@ else if(process.platform === "linux") {
     process.chdir(`${process.cwd()}/${changeDirFolder}`);
 }
 
-export var commandMap: Discord.Collection<string, any> = new Discord.Collection();
+export var commands: Discord.Collection<string, any> = new Discord.Collection();
 const commandFolders = fs.readdirSync("./commands");
 for(const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(function(file) {
@@ -30,7 +30,7 @@ for(const folder of commandFolders) {
     for(const file of commandFiles) {
         const command = require(`./commands/${folder}/${file}`);
         command.category = folder;
-        commandMap.set(command.name, command);
+        commands.set(command.name, command);
     }
 }
 
