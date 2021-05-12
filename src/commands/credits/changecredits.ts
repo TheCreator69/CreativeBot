@@ -41,6 +41,10 @@ function checkForValidArgsAndNotifyUser(message: any, args: string[], mention: a
         message.channel.send("Please mention a user!");
         return false;
     }
+    if(args[0] === "set" && amount < 0) {
+        message.channel.send("You can't set someone's Creative Credits to be negative! They'll be in debt and that's just cruel :pleading_face:");
+        return false;
+    }
     return true;
 }
 

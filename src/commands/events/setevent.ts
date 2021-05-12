@@ -18,13 +18,13 @@ module.exports = {
             message.channel.send("Previous event channel is no longer considered an event channel!");
             return;
         }
-        //BigInt needed, as Number isn't large enough to handle Snowflakes. Oof.
-        var channelID = BigInt(args[0]);
         var channelIDAsNumber = Number(args[0]);
         if(isNaN(channelIDAsNumber)) {
             message.channel.send("You need to enter a number as a channel ID!");
             return;
         }
+        //BigInt needed, as Number isn't large enough to handle Snowflakes. Oof.
+        var channelID = BigInt(args[0]);
         if(message.guild.channels.cache.get(args[0]) === undefined) {
             message.channel.send("Couldn't find channel by ID!");
             return;

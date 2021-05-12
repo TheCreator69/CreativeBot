@@ -7,7 +7,7 @@ module.exports = {
     min_args: 1,
     admin_only: true,
     async execute(message: any, args: string[]) {
-        if(!message.guild) {
+        if(!message.guild || !message.guild.available) {
             message.channel.send("Please send this command in an available server!");
             return;
         }
