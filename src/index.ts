@@ -23,7 +23,10 @@ const commandFolders = fs.readdirSync("./commands");
 for(const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(function(file) {
         if(file.endsWith(".js") || file.endsWith(".ts")) {
-            return true;
+            if(!file.endsWith(".test.ts")) {
+                return true;
+            }
+            else return false;
         }
         else return false;
     });
@@ -36,7 +39,10 @@ for(const folder of commandFolders) {
 
 const eventFiles = fs.readdirSync("./events").filter(function(file) {
     if(file.endsWith(".js") || file.endsWith(".ts")) {
-        return true;
+        if(!file.endsWith(".test.ts")) {
+            return true;
+        }
+        else return false;
     }
     else return false;
 });
