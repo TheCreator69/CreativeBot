@@ -14,7 +14,7 @@ export function execute(message: Message, args: string[]): void {
     message.channel.send(gameIdea);
 }
 
-function generateGameIdea() {
+function generateGameIdea(): string {
     var format = Math.floor(Math.random() * 4);
     //Format #0: A mix of GENRE and GENRE set (in) LOCATION
     //Format #1: A GENRE set (in) LOCATION
@@ -45,7 +45,7 @@ function generateGameIdea() {
     return ideaString;
 }
 
-function formatZero(ideaString: string) {
+function formatZero(ideaString: string): string {
     var genre0 = getRandomArrayElement(genres);
     var genre1 = getRandomArrayElement(genres);
 
@@ -56,31 +56,31 @@ function formatZero(ideaString: string) {
         genre1 = getRandomArrayElement(modifiedGenreArray);
     }
 
-    return ideaString = ideaString + "A mix of " + genre0 + " and " + genre1 + " set " + getRandomArrayElement(locations);
+    return ideaString += "A mix of " + genre0 + " and " + genre1 + " set " + getRandomArrayElement(locations);
 }
 
-function formatOne(ideaString: string) {
+function formatOne(ideaString: string): string {
     var genre = getRandomArrayElement(genres);
-    return ideaString = ideaString + getCorrectFormOfArticle(genre) + genre + " set " + getRandomArrayElement(locations);
+    return ideaString += getCorrectFormOfArticle(genre) + genre + " set " + getRandomArrayElement(locations);
 }
 
-function formatTwo(ideaString: string) {
+function formatTwo(ideaString: string): string {
     var genre = getRandomArrayElement(genres);
-    return ideaString = ideaString + getCorrectFormOfArticle(genre) + genre + " where " + getRandomArrayElement(modifiers);
+    return ideaString += getCorrectFormOfArticle(genre) + genre + " where " + getRandomArrayElement(modifiers);
 }
 
-function formatThree(ideaString: string) {
+function formatThree(ideaString: string): string {
     var theme = getRandomArrayElement(themes);
     theme = theme.replace(/^\w/, (c: string) => c.toUpperCase());
-    return ideaString = ideaString + theme + ", but " + getRandomArrayElement(modifiers);
+    return ideaString += theme + ", but " + getRandomArrayElement(modifiers);
 }
 
-function formatFour(ideaString: string) {
+function formatFour(ideaString: string): string {
     var genre = getRandomArrayElement(genres);
-    return ideaString = ideaString + getCorrectFormOfArticle(genre) + genre + " about " + getRandomArrayElement(themes);
+    return ideaString += getCorrectFormOfArticle(genre) + genre + " about " + getRandomArrayElement(themes);
 }
 
-function getCorrectFormOfArticle(nextWord: string) {
+export function getCorrectFormOfArticle(nextWord: string): string {
     nextWord = nextWord.toLowerCase();
     var vowels = ["a", "e", "i", "o", "u"];
     for(let vowel of vowels) {
@@ -91,7 +91,7 @@ function getCorrectFormOfArticle(nextWord: string) {
     return "A ";
 }
 
-function getRandomArrayElement(array: string[]) {
+function getRandomArrayElement(array: string[]): string {
     return array[Math.floor(Math.random() * array.length)];
 }
 
