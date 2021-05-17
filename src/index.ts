@@ -48,11 +48,11 @@ const eventFiles = fs.readdirSync("./events").filter(function(file) {
 });
 for(const file of eventFiles) {
     const eventInstance = require(`./events/${file}`);
-    if(eventInstance.once) {
-        client.once(eventInstance.name, (...args) => eventInstance.execute(...args, client));
+    if(eventInstance.info.once) {
+        client.once(eventInstance.info.name, (...args) => eventInstance.execute(...args, client));
     }
     else {
-        client.on(eventInstance.name, (...args) => eventInstance.execute(...args, client));
+        client.on(eventInstance.info.name, (...args) => eventInstance.execute(...args, client));
     }
 }
 

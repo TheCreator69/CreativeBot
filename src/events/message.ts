@@ -3,13 +3,15 @@ import * as AdminCheck from "../scripts/admincheck";
 import * as CreditsHandler from "../scripts/creditshandler";
 import {commands} from "../index";
 import {Message, Client} from "discord.js";
+import {EventAttributes} from "../scripts/eventdef";
 
-module.exports = {
+export var info: EventAttributes = {
     name: "message",
-    async execute(message: Message, client: Client): Promise<void> {
-        handleMessageInDifferentEnvironments(message);
-    }
-};
+}
+
+export async function execute(message: Message, client: Client): Promise<void> {
+    await handleMessageInDifferentEnvironments(message);
+}
 
 async function handleMessageInDifferentEnvironments(message: Message): Promise<void> {
     if(process.env.NODE_ENV == "production") {
