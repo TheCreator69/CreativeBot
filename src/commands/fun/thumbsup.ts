@@ -1,16 +1,18 @@
 import * as Index from "../../index";
 import {Message, User} from "discord.js";
+import {CreativeCommandAttributes} from "../../scripts/commanddef";
 
-module.exports = {
+export var info: CreativeCommandAttributes = {
     name: "thumbsup",
     description: "Gives the user mentioned a thumbs up on their last message :thumbsup:",
     syntax: "thumbsup <user mention>",
     min_args: 1,
     admin_only: false,
-    execute(message: Message, args: string[]) {
-        reactToMentionedUserIfValid(message, args);
-    }
-};
+}
+
+export function execute(message: Message, args: string[]) {
+    reactToMentionedUserIfValid(message, args);
+}
 
 function reactToMentionedUserIfValid(message: Message, args: string[]): void {
     var mentionedUser = getUserFromMention(args[0]);

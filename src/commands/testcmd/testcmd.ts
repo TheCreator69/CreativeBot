@@ -1,13 +1,15 @@
 //import * as LogChamp from "../../scripts/logchamp";
 import {Message} from "discord.js";
+import {CreativeCommandAttributes} from "../../scripts/commanddef";
 
-module.exports = {
+export var info: CreativeCommandAttributes = {
     name: "test",
-    description: "Tests functionality in a clean js file.",
+    description: "Tests functionality in a clean ts file.",
     syntax: "test",
     min_args: 0,
     admin_only: true,
-    execute(message: Message, args: string[]) {
-        //No test
-    }
-};
+}
+
+export function execute(message: Message, args: string[]) {
+    //Nothing to test.
+}

@@ -2,17 +2,19 @@ import {MessageAttachment, Message} from "discord.js";
 import * as Canvas from "canvas";
 import * as UIFunctions from "../../scripts/uifunctions";
 import * as fs from "fs";
+import {CreativeCommandAttributes} from "../../scripts/commanddef";
 
-module.exports = {
+export var info: CreativeCommandAttributes = {
     name: "obama",
     description: "Sends an inspiring Obama picture with an equally inspiring message (hopefully).",
     syntax: "obama <message>",
     min_args: 1,
     admin_only: false,
-    async execute(message: Message, args: string[]) {
-        sendObamaImageWithText(message, args);
-    }
-};
+}
+
+export function execute(message: Message, args: string[]) {
+    sendObamaImageWithText(message, args);
+}
 
 async function sendObamaImageWithText(message: Message, args: string[]): Promise<void> {
     var obamaImageBuffer = await createObamaImageBuffer(args);

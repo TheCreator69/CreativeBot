@@ -2,17 +2,19 @@ import {MessageAttachment, Message, User, TextChannel, DMChannel, NewsChannel} f
 import * as Canvas from "canvas";
 import * as CreditsHandler from "../../scripts/creditshandler";
 import * as UIFunctions from "../../scripts/uifunctions";
+import {CreativeCommandAttributes} from "../../scripts/commanddef";
 
-module.exports = {
+export var info: CreativeCommandAttributes = {
     name: "credits",
     description: "Checks your Creative Credits balance.",
     syntax: "credits",
     min_args: 0,
     admin_only: false,
-    async execute(message: Message, args: string[]) {
-        await displayUserInfoOnCreditsBadge(message.channel, message.author);
-    }
-};
+}
+
+export async function execute(message: Message, args: string[]) {
+    await displayUserInfoOnCreditsBadge(message.channel, message.author);
+}
 
 async function displayUserInfoOnCreditsBadge(channel: TextChannel | DMChannel | NewsChannel, user: User) {
     var userCredits = await CreditsHandler.getCreditsForUser(BigInt(user.id));

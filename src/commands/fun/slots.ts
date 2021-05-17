@@ -1,19 +1,21 @@
 import {Message} from "discord.js";
 import * as CreditsHandler from "../../scripts/creditshandler";
+import {CreativeCommandAttributes} from "../../scripts/commanddef";
 
 var rollCycles = 3;
 var symbols = [":grapes:", ":cherries:", ":lemon:", ":green_apple:", ":kiwi:", ":peach:"];
 
-module.exports = {
+export var info: CreativeCommandAttributes = {
     name: "slots",
     description: "Simulates a slot machine, but without the monetary losses...and gains. You win if there are horizontal or diagonal lines of matching symbols.",
     syntax: "slots <bet>",
     min_args: 1,
     admin_only: false,
-    async execute(message: Message, args: string[]) {
-        await editMessageIfBetIsValid(message, args);
-    }
-};
+}
+
+export async function execute(message: Message, args: string[]) {
+    await editMessageIfBetIsValid(message, args);
+}
 
 async function editMessageIfBetIsValid(message: Message, args: string[]): Promise<void> {
     var bet = parseInt(args[0]);

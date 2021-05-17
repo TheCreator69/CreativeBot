@@ -2,17 +2,19 @@ import * as Index from "../../index";
 import {MessageEmbed, TextChannel, Message, User} from "discord.js";
 import * as EventHandler from "../../scripts/eventhandler";
 import * as UIFunctions from "../../scripts/uifunctions";
+import {CreativeCommandAttributes} from "../../scripts/commanddef";
 
-module.exports = {
+export var info: CreativeCommandAttributes = {
     name: "submit",
     description: "Submits an entry for the current event in the server's event channel.",
     syntax: "submit <link> <description>",
     min_args: 2,
     admin_only: false,
-    async execute(message: Message, args: string[]) {
-        await checkForValidEventChannelAndPostEmbed(message, args);
-    }
-};
+}
+
+export async function execute(message: Message, args: string[]) {
+    await checkForValidEventChannelAndPostEmbed(message, args);
+}
 
 async function checkForValidEventChannelAndPostEmbed(message: Message, args: string[]): Promise<void> {
     if(!message.guild || !message.guild.available) {

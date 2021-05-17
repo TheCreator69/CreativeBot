@@ -1,16 +1,18 @@
 import {Message} from "discord.js";
 import * as CreditsHandler from "../../scripts/creditshandler";
+import {CreativeCommandAttributes} from "../../scripts/commanddef";
 
-module.exports = {
+export var info: CreativeCommandAttributes = {
     name: "math",
     description: "Tests your math skills and quick thinking with an exercise that needs to be solved in a few seconds.",
     syntax: "math",
     min_args: 0,
     admin_only: false,
-    execute(message: Message, args: string[]): void {
-        askMathQuestionAndProcessAnswer(message);
-    }
-};
+}
+
+export function execute(message: Message, args: string[]) {
+    askMathQuestionAndProcessAnswer(message);
+}
 
 class MathQuestion {
     initialValue: number;

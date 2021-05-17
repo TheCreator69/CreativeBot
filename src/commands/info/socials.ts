@@ -1,15 +1,17 @@
-import {MessageEmbed} from "discord.js";
+import {MessageEmbed, Message} from "discord.js";
+import {CreativeCommandAttributes} from "../../scripts/commanddef";
 
-module.exports = {
+export var info: CreativeCommandAttributes = {
     name: "socials",
     description: "Lists TheCreator's socials.",
     syntax: "socials",
     min_args: 0,
     admin_only: false,
-    execute(message: any, args: string[]) {
-        message.channel.send(constructEmbed());
-    }
-};
+}
+
+export function execute(message: Message, args: string[]) {
+    message.channel.send(constructEmbed());
+}
 
 function constructEmbed() {
     const socialEmbed = new MessageEmbed();

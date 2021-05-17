@@ -32,8 +32,8 @@ for(const folder of commandFolders) {
     });
     for(const file of commandFiles) {
         const command = require(`./commands/${folder}/${file}`);
-        command.category = folder;
-        commands.set(command.name, command);
+        command.info.category = folder;
+        commands.set(command.info.name, command);
     }
 }
 

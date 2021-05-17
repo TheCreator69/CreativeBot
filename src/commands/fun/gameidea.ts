@@ -1,14 +1,18 @@
-module.exports = {
+import {CreativeCommandAttributes} from "../../scripts/commanddef";
+import {Message} from "discord.js";
+
+export var info: CreativeCommandAttributes = {
     name: "gameidea",
     description: "Generates a random game idea.",
     syntax: "gameidea",
     min_args: 0,
     admin_only: false,
-    execute(message: any, args: string[]) {
-        var gameIdea = generateGameIdea();
-        message.channel.send(gameIdea);
-    }
-};
+}
+
+export function execute(message: Message, args: string[]) {
+    var gameIdea = generateGameIdea();
+    message.channel.send(gameIdea);
+}
 
 function generateGameIdea() {
     var format = Math.floor(Math.random() * 4);

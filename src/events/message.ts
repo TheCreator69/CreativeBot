@@ -85,11 +85,11 @@ async function canCommandBeExecuted(message: Message, commandInfo: CommandInfo):
         return false;
     }
     var command = commands.get(commandInfo.name);
-    if(command.admin_only && !await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
+    if(command.info.admin_only && !await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
         return false;
     }
-    if(commandInfo.args.length < command.min_args) {
-        message.channel.send("You need to provide the required arguments for the command to work! See `" + config.prefix + "help " + command.name + "` for details!");
+    if(commandInfo.args.length < command.info.min_args) {
+        message.channel.send("You need to provide the required arguments for the command to work! See `" + config.prefix + "help " + command.info.name + "` for details!");
         return false;
     }
     return true;
