@@ -12,8 +12,8 @@ export var info: CreativeCommandAttributes = {
     admin_only: false,
 }
 
-export function execute(message: Message, args: string[]) {
-    sendObamaImageWithText(message, args);
+export async function execute(message: Message, args: string[]): Promise<void> {
+    await sendObamaImageWithText(message, args);
 }
 
 async function sendObamaImageWithText(message: Message, args: string[]): Promise<void> {

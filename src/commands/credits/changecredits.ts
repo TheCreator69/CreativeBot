@@ -1,6 +1,6 @@
 import * as CreditsHandler from "../../scripts/creditshandler";
 import {CreativeCommandAttributes} from "../../scripts/commanddef";
-import {Message} from "discord.js";
+import {Message, User} from "discord.js";
 
 export var info: CreativeCommandAttributes = {
     name: "changecredits",
@@ -11,7 +11,7 @@ export var info: CreativeCommandAttributes = {
 }
 
 export async function execute(message: Message, args: string[]): Promise<void> {
-    const mention = message.mentions.users.values().next().value;
+    const mention: User = message.mentions.users.values().next().value;
     if(!checkForValidArgsAndNotifyUser(message, args, mention)) {
         return;
     }
@@ -30,7 +30,7 @@ export async function execute(message: Message, args: string[]): Promise<void> {
     }
 }
 
-function checkForValidArgsAndNotifyUser(message: any, args: string[], mention: any): boolean {
+function checkForValidArgsAndNotifyUser(message: Message, args: string[], mention: any): boolean {
     if(args[0] !== "add" && args[0] !== "remove" && args[0] !== "set") {
         message.channel.send("Please use either \"add\", \"remove\" or \"set\" to change a user's Creative Credits!");
         return false;
@@ -51,18 +51,18 @@ function checkForValidArgsAndNotifyUser(message: any, args: string[], mention: a
     return true;
 }
 
-async function addCreditsAndNotifyUser(message: any, amount: number, mention: any): Promise<void> {
+async function addCreditsAndNotifyUser(message: Message, amount: number, mention: User): Promise<void> {
     message.channel.send("Added " + amount + " Creative Credits to " + mention.username + "!");
-    await CreditsHandler.incrementCreditsForUser(mention.id, amount);
+    await CreditsHandler.incrementCreditsForUser(BigInt(mention.id), amount);
 }
 
-async function removeCreditsAndNotifyUser(message: any, amount: number, mention: any): Promise<void> {
+async function removeCreditsAndNotifyUser(message: Message, amount: number, mention: User): Promise<void> {
     message.channel.send("Removed " + amount + " Creative Credits from" + mention.username + "!");
     var amountToRemove = amount * -1 as number;
-    await CreditsHandler.incrementCreditsForUser(mention.id, amountToRemove);
+    await CreditsHandler.incrementCreditsForUser(BigInt(mention.id), amountToRemove);
 }
 
-async function setCreditsAndNotifyUser(message: any, amount: number, mention: any): Promise<void> {
+async function setCreditsAndNotifyUser(message: Message, amount: number, mention: User): Promise<void> {
     message.channel.send("Set Creative Credits to " + amount + " for " + mention.username + "!");
-    await CreditsHandler.setCreditsForUser(mention.id, amount);
+    await CreditsHandler.setCreditsForUser(BigInt(mention.id), amount);
 }

@@ -2,33 +2,38 @@ import * as Sequelize from "sequelize";
 import {Sequelize as SequelizeConstructor} from "sequelize";
 import * as credentials from "../credentials.json";
 
-export async function getCreditsForUser(userID: bigint) {
+export interface CreditsRanking {
+    position: number,
+    max: number
+}
+
+export async function getCreditsForUser(userID: bigint): Promise<number> {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
     return userEntry.credits;
 }
 
-export async function incrementCreditsForUser(userID: bigint, incrementAmount: number) {
+export async function incrementCreditsForUser(userID: bigint, incrementAmount: number): Promise<void> {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
     await updateUserCredits(userID, userEntry.credits + incrementAmount, Credits);
 }
 
-export async function setCreditsForUser(userID: bigint, amount: number) {
+export async function setCreditsForUser(userID: bigint, amount: number): Promise<void> {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     await updateUserCredits(userID, amount, Credits);
 }
 
-export async function getCreditsRankForUser(userID: bigint) {
+export async function getCreditsRankForUser(userID: bigint): Promise<CreditsRanking> {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     return await sortTableEntriesAndReturnRank(Credits, userID);
 }
 
-function establishDatabaseConnection() {
+function establishDatabaseConnection(): SequelizeConstructor {
     return new SequelizeConstructor(credentials.db_name, credentials.db_username, credentials.db_password, {
         host: "localhost",
         dialect: "mysql",
@@ -36,7 +41,7 @@ function establishDatabaseConnection() {
     });
 }
 
-async function defineAndSyncCreditsTableModel(sequelize: any) {
+async function defineAndSyncCreditsTableModel(sequelize: SequelizeConstructor): Promise<Sequelize.ModelCtor<Sequelize.Model<any, any>>> {
     const Credits = sequelize.define("credits", {
         userID: {
             type: Sequelize.BIGINT,
@@ -63,7 +68,7 @@ async function returnExistingEntryOrCreateNewOne(userID: bigint, Credits: any) {
     }
 }
 
-async function updateUserCredits(userID: bigint, newCredits: number, Credits: any) {
+async function updateUserCredits(userID: bigint, newCredits: number, Credits: any): Promise<void> {
     if(newCredits < 0) {
         newCredits = 0;
     }
@@ -75,7 +80,7 @@ async function updateUserCredits(userID: bigint, newCredits: number, Credits: an
     });
 }
 
-async function sortTableEntriesAndReturnRank(Credits: any, userID: bigint) {
+async function sortTableEntriesAndReturnRank(Credits: any, userID: bigint): Promise<CreditsRanking> {
     const sortedEntries = await Credits.findAll({
         order: [
             ["credits", "DESC"]
@@ -88,7 +93,7 @@ async function sortTableEntriesAndReturnRank(Credits: any, userID: bigint) {
             position = i + 1;
         }
     }
-    var rankObject = {
+    var rankObject: CreditsRanking = {
         position: position,
         max: sortedEntries.length
     };

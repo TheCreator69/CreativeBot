@@ -10,7 +10,7 @@ export var info: CreativeCommandAttributes = {
     admin_only: true,
 }
 
-export async function execute(message: Message, args: string[]) {
+export async function execute(message: Message, args: string[]): Promise<void> {
     if(!message.guild || !message.guild.available) {
         message.channel.send("Please send this command in an available server!");
         return;

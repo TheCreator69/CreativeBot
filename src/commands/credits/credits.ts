@@ -12,11 +12,11 @@ export var info: CreativeCommandAttributes = {
     admin_only: false,
 }
 
-export async function execute(message: Message, args: string[]) {
+export async function execute(message: Message, args: string[]): Promise<void> {
     await displayUserInfoOnCreditsBadge(message.channel, message.author);
 }
 
-async function displayUserInfoOnCreditsBadge(channel: TextChannel | DMChannel | NewsChannel, user: User) {
+async function displayUserInfoOnCreditsBadge(channel: TextChannel | DMChannel | NewsChannel, user: User): Promise<void> {
     var userCredits = await CreditsHandler.getCreditsForUser(BigInt(user.id));
     var creditsRank = await CreditsHandler.getCreditsRankForUser(BigInt(user.id));
     var creditsBadge = await drawCreditsBadge(user, userCredits, creditsRank);
@@ -25,7 +25,7 @@ async function displayUserInfoOnCreditsBadge(channel: TextChannel | DMChannel | 
     channel.send(attachment);
 }
 
-async function drawCreditsBadge(user: User, credits: number, creditsRank: {position: number, max: number}) {
+async function drawCreditsBadge(user: User, credits: number, creditsRank: CreditsHandler.CreditsRanking): Promise<Buffer> {
     const canvas = Canvas.createCanvas(750, 200);
     const context = canvas.getContext("2d");
 
@@ -51,7 +51,7 @@ async function drawAuthorAvatar(canvas: Canvas.Canvas, context: Canvas.CanvasRen
     context.strokeRect(25, 25, 150, 150);
 }
 
-function drawUserInfo(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D, user: User, credits: number, creditsRank: {position: number, max: number}) {
+function drawUserInfo(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D, user: User, credits: number, creditsRank: CreditsHandler.CreditsRanking): void {
     context.font = UIFunctions.getFittingFontSize(canvas, context, user.username, 65);
     context.fillStyle = "#ffffff";
     context.fillText(user.username, 210, 75);

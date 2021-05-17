@@ -8,19 +8,23 @@ export var info: EventAttributes = {
     once: true
 }
 
-export function execute(client: any) {
+export function execute(client: Client) {
     LogChamp.info("Creative Bot has been started! Using environment: " + process.env.NODE_ENV);
     if(process.env.NODE_ENV !== "maintenance") {
-        client.user.setPresence({
-            status: "online",
-            activity: {name: "Use '" + config.prefix + "help' to learn what I can do!"}
-        });
+        if(client.user !== null) {
+            client.user.setPresence({
+                status: "online",
+                activity: {name: "Use '" + config.prefix + "help' to learn what I can do!"}
+            });
+        }
     }
     else {
-        client.user.setPresence({
-            status: "dnd",
-            activity: {name: "Bot is currently undergoing maintenance!"}
-        });
+        if(client.user !== null) {
+            client.user.setPresence({
+                status: "dnd",
+                activity: {name: "Bot is currently undergoing maintenance!"}
+            });
+        }
     }
     if(process.env.NODE_ENV == "development" || process.env.NODE_ENV == "build") {
         config.prefix = "dev ";

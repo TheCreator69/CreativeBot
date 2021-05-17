@@ -10,6 +10,6 @@ export var info: CreativeCommandAttributes = {
     admin_only: false,
 }
 
-export function execute(message: Message, args: string[]) {
+export function execute(message: Message, args: string[]): void {
     message.channel.send("My ping is: __" + Index.client.ws.ping + "ms__!");
 }

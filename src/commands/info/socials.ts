@@ -9,11 +9,11 @@ export var info: CreativeCommandAttributes = {
     admin_only: false,
 }
 
-export function execute(message: Message, args: string[]) {
+export function execute(message: Message, args: string[]): void {
     message.channel.send(constructEmbed());
 }
 
-function constructEmbed() {
+function constructEmbed(): MessageEmbed {
     const socialEmbed = new MessageEmbed();
     socialEmbed.setColor("#ff0000");
     socialEmbed.setTitle("Follow me on social media!");

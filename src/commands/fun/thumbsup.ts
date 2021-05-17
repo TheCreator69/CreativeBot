@@ -10,7 +10,7 @@ export var info: CreativeCommandAttributes = {
     admin_only: false,
 }
 
-export function execute(message: Message, args: string[]) {
+export function execute(message: Message, args: string[]): void {
     reactToMentionedUserIfValid(message, args);
 }
 

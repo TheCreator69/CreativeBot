@@ -12,7 +12,7 @@ export var info: CreativeCommandAttributes = {
     admin_only: false,
 }
 
-export async function execute(message: Message, args: string[]) {
+export async function execute(message: Message, args: string[]): Promise<void> {
     await checkForValidEventChannelAndPostEmbed(message, args);
 }
 
