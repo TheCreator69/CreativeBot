@@ -62,7 +62,9 @@ function sleep(delay: number): Promise<unknown> {
 async function finishAnimationAndAwardCoins(slotMessage: Message, message: Message, bet: number): Promise<void> {
     setTimeout(() => {
         var randomSymbols = selectSeeminglyRandomSymbols();
-        var creditsWon = determineCreditsWon(randomSymbols, bet);
+        var horizontalRows = getHorizontalRowCount(randomSymbols);
+        var diagonalRows = getDiagonalRowCount(randomSymbols);
+        var creditsWon = determineCreditsWon(horizontalRows, diagonalRows, bet);
         finishEditingMessage(slotMessage, randomSymbols, creditsWon);
         withdrawOrAwardCredits(message, creditsWon, bet);
     }, rollCycles * 4000 + 1000);
@@ -87,8 +89,8 @@ function selectSeeminglyRandomSymbols(): string[] {
     return randomSymbols;
 }
 
-function determineCreditsWon(randomSymbols: string[], bet: number): number {
-    var betMultiplier = getHorizontalRowCount(randomSymbols) * 2 + getDiagonalRowCount(randomSymbols) * 4;
+export function determineCreditsWon(horizontalRows: number, diagonalRows: number, bet: number): number {
+    var betMultiplier = horizontalRows * 2 + diagonalRows * 4;
     return bet * betMultiplier;
 }
 
