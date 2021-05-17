@@ -12,6 +12,10 @@ export var info: CreativeCommandAttributes = {
     admin_only: false,
 }
 
+export function checkRequiredArgs(message: Message, args: string[]): boolean {
+    return true;
+}
+
 export async function execute(message: Message, args: string[]): Promise<void> {
     await sendObamaImageWithText(message, args);
 }

@@ -10,16 +10,18 @@ export var info: CreativeCommandAttributes = {
     admin_only: false,
 }
 
-export function execute(message: Message, args: string[]): void {
-    reactToMentionedUserIfValid(message, args);
-}
-
-function reactToMentionedUserIfValid(message: Message, args: string[]): void {
+export function checkRequiredArgs(message: Message, args: string[]): boolean {
     var mentionedUser = getUserFromMention(args[0]);
     if(mentionedUser === undefined) {
         message.channel.send("You just specified an invalid user! Who am I supposed to react to? :frowning:");
-        return;
+        return false;
     }
+    return true;
+}
+
+export function execute(message: Message, args: string[]): void {
+    var mentionedUser = getUserFromMention(args[0]);
+    if(mentionedUser === undefined) return;
     reactToLastMessageFromMentionedUser(message, mentionedUser);
 }
 

@@ -10,11 +10,30 @@ export var info: CreativeCommandAttributes = {
     admin_only: true,
 }
 
+export function checkRequiredArgs(message: Message, args: string[]): boolean {
+    if(args[0] !== "add" && args[0] !== "remove" && args[0] !== "set") {
+        message.channel.send("Please use either \"add\", \"remove\" or \"set\" to change a user's Creative Credits!");
+        return false;
+    }
+    var amount = parseInt(args[1]);
+    if(isNaN(amount)) {
+        message.channel.send("Please enter a valid amount of Creative Credits!");
+        return false;
+    }
+    const mention: User = message.mentions.users.values().next().value;
+    if(mention === undefined) {
+        message.channel.send("Please mention a user!");
+        return false;
+    }
+    if(args[0] === "set" && amount < 0) {
+        message.channel.send("You can't set someone's Creative Credits to be negative! They'll be in debt and that's just cruel :pleading_face:");
+        return false;
+    }
+    return true;
+}
+
 export async function execute(message: Message, args: string[]): Promise<void> {
     const mention: User = message.mentions.users.values().next().value;
-    if(!checkForValidArgsAndNotifyUser(message, args, mention)) {
-        return;
-    }
     var amount = parseInt(args[1]);
     if(args[0] === "add") {
         await addCreditsAndNotifyUser(message, amount, mention);
@@ -28,27 +47,6 @@ export async function execute(message: Message, args: string[]): Promise<void> {
         await setCreditsAndNotifyUser(message, amount, mention);
         return;
     }
-}
-
-function checkForValidArgsAndNotifyUser(message: Message, args: string[], mention: any): boolean {
-    if(args[0] !== "add" && args[0] !== "remove" && args[0] !== "set") {
-        message.channel.send("Please use either \"add\", \"remove\" or \"set\" to change a user's Creative Credits!");
-        return false;
-    }
-    var amount = parseInt(args[1]);
-    if(isNaN(amount)) {
-        message.channel.send("Please enter a valid amount of Creative Credits!");
-        return false;
-    }
-    if(mention === undefined) {
-        message.channel.send("Please mention a user!");
-        return false;
-    }
-    if(args[0] === "set" && amount < 0) {
-        message.channel.send("You can't set someone's Creative Credits to be negative! They'll be in debt and that's just cruel :pleading_face:");
-        return false;
-    }
-    return true;
 }
 
 async function addCreditsAndNotifyUser(message: Message, amount: number, mention: User): Promise<void> {

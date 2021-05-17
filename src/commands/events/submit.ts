@@ -12,26 +12,28 @@ export var info: CreativeCommandAttributes = {
     admin_only: false,
 }
 
-export async function execute(message: Message, args: string[]): Promise<void> {
-    await checkForValidEventChannelAndPostEmbed(message, args);
-}
-
-async function checkForValidEventChannelAndPostEmbed(message: Message, args: string[]): Promise<void> {
+export async function checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {
     if(!message.guild || !message.guild.available) {
         message.channel.send("Please send this command in an available server!");
-        return;
+        return false;
     }
     const channelEntry = await EventHandler.getEventChannel(BigInt(message.guild.id));
     if(channelEntry === null) {
         message.channel.send("This server doesn't have an event channel!");
-        return;
+        return false;
     }
     if(!EventHandler.checkIfEventChannelIsActive(channelEntry)) {
         message.channel.send("There is currently no active event. Please return later.");
-        return;
+        return false;
     }
-    message.channel.send("Posted submission in event channel!");
+    return true;
+}
+
+export async function execute(message: Message, args: string[]): Promise<void> {
+    if(message.guild === null) return;
+    const channelEntry = await EventHandler.getEventChannel(BigInt(message.guild.id));
     constructAndSendSubmissionEmbed(message, args, channelEntry.eventChannelID);
+    message.channel.send("Posted submission in event channel!");
 }
 
 function constructAndSendSubmissionEmbed(message: Message, args: string[], channelID: bigint): void {

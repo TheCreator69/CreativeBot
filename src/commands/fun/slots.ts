@@ -13,26 +13,27 @@ export var info: CreativeCommandAttributes = {
     admin_only: false,
 }
 
-export async function execute(message: Message, args: string[]): Promise<void> {
-    await editMessageIfBetIsValid(message, args);
-}
-
-async function editMessageIfBetIsValid(message: Message, args: string[]): Promise<void> {
+export async function checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {
     var bet = parseInt(args[0]);
     if(isNaN(bet)) {
         message.channel.send("Please enter a number as a bet!");
-        return;
+        return false;
     }
     if(bet <= 0) {
         message.channel.send("Nice try, but I thought of that. Please enter a bet above 0.");
-        return;
+        return false;
     }
     var creditsOfAuthor = await CreditsHandler.getCreditsForUser(BigInt(message.author.id));
     if(bet > creditsOfAuthor) {
         message.channel.send("Your bet exceeds the amount of Creative Credits you have!");
-        return;
+        return false;
     }
-    createAndEditMessageOverTime(message, bet);
+    return true;
+}
+
+export async function execute(message: Message, args: string[]): Promise<void> {
+    var bet = parseInt(args[0]);
+    await createAndEditMessageOverTime(message, bet);
 }
 
 async function createAndEditMessageOverTime(message: Message, bet: number): Promise<void> {

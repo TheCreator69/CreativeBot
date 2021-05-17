@@ -66,7 +66,14 @@ async function executeCommandIfPossible(message: Message): Promise<void> {
 
     if(await canCommandBeExecuted(message, commandInfo)) {
         var command = commands.get(commandInfo.name);
-        command.execute(message, commandInfo.args);
+        if(command.info.min_args) {
+            if(await command.checkRequiredArgs(message, commandInfo.args)) {
+                command.execute(message, commandInfo.args);
+            }
+        }
+        else {
+            command.execute(message, commandInfo.args);
+        }
     }
 }
 

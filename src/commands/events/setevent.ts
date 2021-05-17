@@ -10,11 +10,30 @@ export var info: CreativeCommandAttributes = {
     admin_only: true,
 }
 
-export async function execute(message: Message, args: string[]): Promise<void> {
+export async function checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {
     if(!message.guild || !message.guild.available) {
         message.channel.send("Please send this command in an available server!");
-        return;
+        return false;
     }
+    if(args[0] === "delete") {
+        return true;
+    }
+    else {
+        var channelIDAsNumber = Number(args[0]);
+        if(isNaN(channelIDAsNumber)) {
+            message.channel.send("You need to enter a number as a channel ID!");
+            return false;
+        }
+        if(message.guild.channels.cache.get(args[0]) === undefined) {
+            message.channel.send("Couldn't find channel by ID!");
+            return false;
+        }
+        return true;
+    }
+}
+
+export async function execute(message: Message, args: string[]): Promise<void> {
+    if(message.guild === null) return;
     const serverID = BigInt(message.guild.id);
     const channelEntry = await EventHandler.getEventChannel(serverID);
     if(channelEntry !== null && args[0] === "delete") {
@@ -22,17 +41,8 @@ export async function execute(message: Message, args: string[]): Promise<void> {
         message.channel.send("Previous event channel is no longer considered an event channel!");
         return;
     }
-    var channelIDAsNumber = Number(args[0]);
-    if(isNaN(channelIDAsNumber)) {
-        message.channel.send("You need to enter a number as a channel ID!");
-        return;
-    }
     //BigInt needed, as Number isn't large enough to handle Snowflakes. Oof.
     var channelID = BigInt(args[0]);
-    if(message.guild.channels.cache.get(args[0]) === undefined) {
-        message.channel.send("Couldn't find channel by ID!");
-        return;
-    }
     if(channelEntry === null) {
         await EventHandler.createEventChannel(serverID, channelID);
         message.channel.send("Set up new event channel!");

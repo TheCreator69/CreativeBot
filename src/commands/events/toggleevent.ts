@@ -10,17 +10,27 @@ export var info: CreativeCommandAttributes = {
     admin_only: true,
 }
 
-export async function execute(message: Message, args: string[]) {
+export async function checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {
     if(!message.guild || !message.guild.available) {
         message.channel.send("Please send this command in an available server!");
-        return;
+        return false;
+    }
+    if(args[0] !== "on" && args[0] !== "off") {
+        message.channel.send("Please type either \"on\" or \"off\"!");
+        return false;
     }
     const guildID = BigInt(message.guild.id);
     const channelEntry = await EventHandler.getEventChannel(guildID);
     if(channelEntry === null) {
         message.channel.send("This server doesn't have an event channel!");
-        return;
+        return false;
     }
+    return true;
+}
+
+export async function execute(message: Message, args: string[]): Promise<void> {
+    if(message.guild === null) return;
+    const guildID = BigInt(message.guild.id);
     if(args[0] === "on") {
         EventHandler.setEventChannelActivity(guildID, true);
         message.channel.send("Event channel has been enabled!");
@@ -29,10 +39,6 @@ export async function execute(message: Message, args: string[]) {
     else if(args[0] === "off") {
         EventHandler.setEventChannelActivity(guildID, false);
         message.channel.send("Event channel has been disabled!");
-        return;
-    }
-    else {
-        message.channel.send("Please type either \"on\" or \"off\"!");
         return;
     }
 }
