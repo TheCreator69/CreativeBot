@@ -1,8 +1,11 @@
+import {Message, Client} from "discord.js";
 import * as LogChamp from "../scripts/logchamp";
+import {EventAttributes} from "../scripts/eventdef";
 
-module.exports = {
-    name: "error",
-    execute(message: any, client: any) {
-        LogChamp.error(message);
-    }
-};
+export var info: EventAttributes = {
+    name: "error"
+}
+
+export function execute(message: Message, client: Client): void {
+    LogChamp.error(message.content);
+}
