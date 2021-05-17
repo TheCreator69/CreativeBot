@@ -14,7 +14,7 @@ export function execute(message: Message, args: string[]): void {
     askMathQuestionAndProcessAnswer(message);
 }
 
-class MathQuestion {
+export class MathQuestion {
     initialValue: number;
     isPlusOperator: boolean;
     term: number;
@@ -37,7 +37,7 @@ function askMathQuestionAndProcessAnswer(message: Message): void {
     collectAndResolveAnswer(message, mathQuestion);
 }
 
-function generateMathQuestion(): MathQuestion {
+export function generateMathQuestion(): MathQuestion {
     var initialValue = Math.floor(Math.random() * 100) + 1;
     var isPlusOperator = Math.random() < 0.5;
     var term = Math.floor(Math.random() * 50) + 1;
@@ -46,7 +46,7 @@ function generateMathQuestion(): MathQuestion {
     return new MathQuestion(initialValue, isPlusOperator, term, timeForAnswering);
 }
 
-function calculateTimeForAnswering(initialValue: number, isPlusOperator: boolean, term: number): number {
+export function calculateTimeForAnswering(initialValue: number, isPlusOperator: boolean, term: number): number {
     var answerTime = 0;
 
     if(isNumberMultipleOf(initialValue, 10)) answerTime += 1000;
@@ -54,7 +54,7 @@ function calculateTimeForAnswering(initialValue: number, isPlusOperator: boolean
     else answerTime += 3000;
 
     if(isNumberMultipleOf(term, 10)) answerTime += 1000;
-    else answerTime += Math.floor(term / 10) * 1000;
+    else answerTime += Math.ceil(term / 10) * 1000;
 
     if(isPlusOperator) answerTime += 2000;
     else answerTime += 4000;
@@ -62,7 +62,7 @@ function calculateTimeForAnswering(initialValue: number, isPlusOperator: boolean
     return answerTime;
 }
 
-function isNumberMultipleOf(numberInQuestion: number, multiple: number): boolean {
+export function isNumberMultipleOf(numberInQuestion: number, multiple: number): boolean {
     if(numberInQuestion % multiple === 0) return true;
     else return false;
 }
