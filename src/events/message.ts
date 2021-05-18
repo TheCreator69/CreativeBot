@@ -27,7 +27,7 @@ async function handleMessageInDifferentEnvironments(message: Message): Promise<v
 
 async function handleMessageInProduction(message: Message): Promise<void> {
     if(message.content.startsWith(config.prefix) && !message.author.bot) {
-        executeCommandIfPossible(message);
+        await executeCommandIfPossible(message);
     }
     else if(!message.author.bot) {
         await handleCreativeCredits(message);
@@ -36,7 +36,7 @@ async function handleMessageInProduction(message: Message): Promise<void> {
 
 async function handleMessageInDevAndBuild(message: Message): Promise<void> {
     if(message.content.startsWith(config.prefix) && !message.author.bot && await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
-        executeCommandIfPossible(message);
+        await executeCommandIfPossible(message);
     }
 }
 
@@ -56,7 +56,7 @@ async function handleCreativeCredits(message: Message): Promise<void> {
     }
 }
 
-interface CommandInfo {
+interface CommandInfoFromMessage {
     name: string;
     args: string[];
 }
@@ -77,7 +77,7 @@ async function executeCommandIfPossible(message: Message): Promise<void> {
     }
 }
 
-function getCommandInfoFromMessage(message: Message): CommandInfo {
+function getCommandInfoFromMessage(message: Message): CommandInfoFromMessage {
     const args = message.content.slice(config.prefix.length).split(/ +/);
 
     var commandName = args.shift();
@@ -89,7 +89,7 @@ function getCommandInfoFromMessage(message: Message): CommandInfo {
     return {name: commandName, args: args};
 }
 
-async function canCommandBeExecuted(message: Message, commandInfo: CommandInfo): Promise<boolean> {
+async function canCommandBeExecuted(message: Message, commandInfo: CommandInfoFromMessage): Promise<boolean> {
     if(!commands.has(commandInfo.name)) {
         return false;
     }
