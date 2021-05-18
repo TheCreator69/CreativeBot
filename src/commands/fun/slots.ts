@@ -70,7 +70,7 @@ async function finishAnimationAndAwardCoins(slotMessage: Message, message: Messa
     }, rollCycles * 4000 + 1000);
 }
 
-function selectSeeminglyRandomSymbols(): string[] {
+export function selectSeeminglyRandomSymbols(): string[] {
     var randomSymbols: string[] = [];
     for(let i = 0; i < 9; i++) { //Hard-coded stuff. Always a good idea.
         if(i === 0 || i === 3 || i === 6) {
@@ -94,7 +94,7 @@ export function determineCreditsWon(horizontalRows: number, diagonalRows: number
     return bet * betMultiplier;
 }
 
-function getHorizontalRowCount(randomSymbols: string[]): number {
+export function getHorizontalRowCount(randomSymbols: string[]): number {
     var numberOfHorizontalRows = 0;
     for(let i = 0; i <= 8; i += 3) {
         if(randomSymbols[i] === randomSymbols[i + 1] && randomSymbols[i] === randomSymbols[i + 2]) {
@@ -104,7 +104,7 @@ function getHorizontalRowCount(randomSymbols: string[]): number {
     return numberOfHorizontalRows;
 }
 
-function getDiagonalRowCount(randomSymbols: string[]): number {
+export function getDiagonalRowCount(randomSymbols: string[]): number {
     var numberOfDiagonalRows = 0;
     if(randomSymbols[0] === randomSymbols[4] && randomSymbols[0] === randomSymbols[8]) {
         numberOfDiagonalRows++;
