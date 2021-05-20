@@ -2,7 +2,7 @@ import {MessageEmbed, Message} from "discord.js";
 import * as Index from "../../index";
 import * as config from "../../config.json";
 import * as AdminCheck from "../../scripts/admincheck";
-import {CreativeCommandAttributes} from "../../scripts/commanddef";
+import {CreativeCommandAttributes, CreativeCommand} from "../../scripts/commanddef";
 
 var isCommandSenderAdmin = false;
 
@@ -30,6 +30,7 @@ function createCorrectHelpEmbed(message: Message, args: string[]): MessageEmbed 
     else {
         if(doesCommandExist(args)) {
             return createHelpEmbed("#499fff",
+            // @ts-ignore
             ":ledger: Help for: " + getCommandInstance(args).info.name,
             createCommandInfoString(args),
             "Arguments wrapped with \"<>\" are required, others wrapped with \"[]\" are optional.");
@@ -66,8 +67,8 @@ function listAllCommandsAlphabetically(message: Message): string {
     return commandList;
 }
 
-function sortCommandsAlphabetically(commands: any[]): any[] {
-    return commands.sort(function(a, b) {
+function sortCommandsAlphabetically(array: CreativeCommand[]): CreativeCommand[] {
+    return array.sort(function(a, b) {
         if(a.info.name < b.info.name) {
             return -1;
         }
@@ -78,7 +79,7 @@ function sortCommandsAlphabetically(commands: any[]): any[] {
     });
 }
 
-function listAdminCommandForAdminsOnlyInDM(message: Message, commandObject: any): string {
+function listAdminCommandForAdminsOnlyInDM(message: Message, commandObject: CreativeCommand): string {
     if(isCommandSenderAdmin && message.channel.type == "dm") {
         return "`" + commandObject.info.name + "`, ";
     }
@@ -86,32 +87,33 @@ function listAdminCommandForAdminsOnlyInDM(message: Message, commandObject: any)
 }
 
 function doesCommandExist(args: string[]): boolean {
-    if(!Index.commands.has(args[0])) {
+    var commandObject = getCommandInstance(args);
+    if(commandObject === undefined) {
         return false;
     }
-    var commandObject = getCommandInstance(args);
     if(commandObject.info.admin_only && !isCommandSenderAdmin) {
         return false;
     }
     else {
-        return commandObject;
+        return true;
     }
 }
 
-function getCommandInstance(args: string[]): any {
+function getCommandInstance(args: string[]): CreativeCommand | undefined {
     return Index.commands.get(args[0]);
 }
 
 function createCommandInfoString(args: string[]): string {
     var commandObject = getRequestedCommandObject(args);
-
+    // @ts-ignore
     return "**Description:** " + commandObject.info.description + "\n" + "**Syntax:** *" + config.prefix + commandObject.info.syntax + "*\n" + "**Category:** " + commandObject.info.category.replace(/^\w/, (c: any) => c.toUpperCase());
 }
 
-function getRequestedCommandObject(args: string[]): any {
+function getRequestedCommandObject(args: string[]): CreativeCommand | undefined {
     var requestedCommand = args[0];
 
     if(Index.commands.has(requestedCommand)) {
         return Index.commands.get(requestedCommand);
     }
+    return;
 }

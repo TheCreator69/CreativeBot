@@ -1,6 +1,7 @@
 import * as Discord from "discord.js";
 import * as credentials from "./credentials.json";
 import * as fs from "fs";
+import {CreativeCommand} from "./scripts/commanddef";
 
 export const client = new Discord.Client();
 
@@ -18,7 +19,7 @@ else if(process.platform === "linux") {
     process.chdir(`${process.cwd()}/${changeDirFolder}`);
 }
 
-export var commands: Discord.Collection<string, any> = new Discord.Collection();
+export var commands: Discord.Collection<string, CreativeCommand> = new Discord.Collection();
 const commandFolders = fs.readdirSync("./commands");
 for(const folder of commandFolders) {
     const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(function(file) {
@@ -31,7 +32,7 @@ for(const folder of commandFolders) {
         else return false;
     });
     for(const file of commandFiles) {
-        const command = require(`./commands/${folder}/${file}`);
+        const command: CreativeCommand = require(`./commands/${folder}/${file}`);
         command.info.category = folder;
         commands.set(command.info.name, command);
     }

@@ -66,12 +66,16 @@ async function executeCommandIfPossible(message: Message): Promise<void> {
 
     if(await canCommandBeExecuted(message, commandInfo)) {
         var command = commands.get(commandInfo.name);
+        //@ts-ignore
         if(command.info.min_args) {
+            //@ts-ignore
             if(await command.checkRequiredArgs(message, commandInfo.args)) {
+                //@ts-ignore
                 command.execute(message, commandInfo.args);
             }
         }
         else {
+            //@ts-ignore
             command.execute(message, commandInfo.args);
         }
     }
@@ -90,10 +94,8 @@ function getCommandInfoFromMessage(message: Message): CommandInfoFromMessage {
 }
 
 async function canCommandBeExecuted(message: Message, commandInfo: CommandInfoFromMessage): Promise<boolean> {
-    if(!commands.has(commandInfo.name)) {
-        return false;
-    }
     var command = commands.get(commandInfo.name);
+    if(command === undefined) return false;
     if(command.info.admin_only && !await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
         return false;
     }
