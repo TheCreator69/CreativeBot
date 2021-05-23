@@ -5,24 +5,22 @@ import {CreativeCommand} from "./scripts/commanddef";
 
 export const client = new Discord.Client();
 
-var changeDirFolder = "src";
-if(process.env.NODE_ENV === "development") {
-    changeDirFolder = "src";
-}
-else {
-    changeDirFolder = "build";
-}
-if(process.platform === "win32") {
-    process.chdir(`${process.cwd()}\\${changeDirFolder}`);
-}
-else if(process.platform === "linux") {
-    process.chdir(`${process.cwd()}/${changeDirFolder}`);
+var path = require("path");
+var srcDirPath = getSourceDirPath();
+
+function getSourceDirPath(): any {
+    if(process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+        return path.resolve(process.cwd(), "./src");
+    }
+    else {
+        return path.resolve(process.cwd(), "./build");
+    }
 }
 
 export var commands: Discord.Collection<string, CreativeCommand> = new Discord.Collection();
-const commandFolders = fs.readdirSync("./commands");
+const commandFolders = fs.readdirSync(srcDirPath + "/commands");
 for(const folder of commandFolders) {
-    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(function(file) {
+    const commandFiles = fs.readdirSync(`${srcDirPath}/commands/${folder}`).filter(function(file) {
         if(file.endsWith(".js") || file.endsWith(".ts")) {
             if(!file.endsWith(".test.ts")) {
                 return true;
@@ -38,7 +36,7 @@ for(const folder of commandFolders) {
     }
 }
 
-const eventFiles = fs.readdirSync("./events").filter(function(file) {
+const eventFiles = fs.readdirSync(srcDirPath + "/events").filter(function(file) {
     if(file.endsWith(".js") || file.endsWith(".ts")) {
         if(!file.endsWith(".test.ts")) {
             return true;
@@ -48,7 +46,7 @@ const eventFiles = fs.readdirSync("./events").filter(function(file) {
     else return false;
 });
 for(const file of eventFiles) {
-    const eventInstance = require(`./events/${file}`);
+    const eventInstance = require(`${srcDirPath}/events/${file}`);
     if(eventInstance.info.once) {
         client.once(eventInstance.info.name, (...args) => eventInstance.execute(...args, client));
     }
