@@ -1,19 +1,5 @@
 # Creative Bot
 
-## Refactoring Checklist
-Now that the TypeScript conversion has been successful, it is time to refactor!
-- [ ] Rename variables, functions and files if needed (remove words like "manager" and "handler")
-- [ ] DRY (don't repeat yourself): sequelize objects for instance, and any other duplicate code
-- [ ] Remove "hidden" input arguments like the active database connection used inside of functions
-- [ ] Make sure that state changes can be easily traced outside of the function responsible (functions changing state as input arguments)
-- [ ] Make use of interfaces to allow for mock objects (e.g. a mock database table for testing)
-- [ ] Remove any "anys" as types and define objects & interfaces for input arguments
-- [ ] Add return types for functions with TypeScript
-- [ ] Add classes for modules in the scripts folder
-- [ ] Split large execute() functions into smaller, more modular functions
-- [ ] Reorganize functions if needed, extract them maybe
-- [ ] Add enums if needed
-
 This discord bot is being created by TheCreator with [TypeScript](https://www.typescriptlang.org/), using discord.js.\
 **It is intended for my personal use only.**\
 I have still added support for multiple servers, just in case, even though I just have one at the moment. Sharding is not supported, however.
