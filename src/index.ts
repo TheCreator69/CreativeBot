@@ -2,6 +2,7 @@ import * as Discord from "discord.js";
 import * as credentials from "./credentials.json";
 import * as fs from "fs";
 import {CreativeCommand} from "./scripts/commanddef";
+import {CreativeEvent} from "./scripts/eventdef";
 import path from "path";
 
 export const client = new Discord.Client();
@@ -40,12 +41,12 @@ function readCommandFilesAndRegisterCommands(srcDirPath: string): void {
 function readEventFilesAndListenToEvents(srcDirPath: string): void {
     const eventFiles = fs.readdirSync(`${srcDirPath}/events`).filter(filterDirectoryForTSAndJSFilesWithoutTests);
     for(const file of eventFiles) {
-        const eventInstance = require(`./events/${file}`);
+        const eventInstance: CreativeEvent = require(`./events/${file}`);
         if(eventInstance.info.once) {
-            client.once(eventInstance.info.name, (...args) => eventInstance.execute(...args, client));
+            client.once(eventInstance.info.name, (...args) => eventInstance.execute(client, ...args));
         }
         else {
-            client.on(eventInstance.info.name, (...args) => eventInstance.execute(...args, client));
+            client.on(eventInstance.info.name, (...args) => eventInstance.execute(client, ...args));
         }
     }
 }
