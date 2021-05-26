@@ -9,7 +9,7 @@ export var info: EventAttributes = {
     name: "message",
 }
 
-export async function execute(message: Message, client: Client): Promise<void> {
+export async function execute(client: Client, message: Message): Promise<void> {
     await handleMessageInDifferentEnvironments(message);
 }
 

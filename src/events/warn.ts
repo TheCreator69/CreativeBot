@@ -6,6 +6,6 @@ export var info: EventAttributes = {
     name: "warn"
 }
 
-export function execute(message: Message, client: Client): void {
+export function execute(client: Client, message: Message): void {
     LogChamp.warn(message.content);
 }

@@ -6,6 +6,6 @@ export var info: EventAttributes = {
     name: "messageReactionAdd"
 }
 
-export async function execute(messageReaction: MessageReaction, user: User, client: Client) {
+export async function execute(client: Client, messageReaction: MessageReaction, user: User) {
     await CreditsHandler.incrementCreditsForUser(BigInt(user.id), 10);
 }
