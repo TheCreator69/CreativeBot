@@ -2,7 +2,7 @@ import * as CreditsHandler from "../../scripts/creditshandler";
 import {CreativeCommand} from "../../scripts/commanddef";
 import {Message, User} from "discord.js";
 
-export class Command implements CreativeCommand {
+export class ChangeCreditsCommand implements CreativeCommand {
     name = "changecredits";
     description = "Changes or sets Creative Credits for a specific user";
     syntax = "changecredits <add/remove/set> <amount> <user mention>";

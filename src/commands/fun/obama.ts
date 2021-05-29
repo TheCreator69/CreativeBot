@@ -4,7 +4,7 @@ import * as UIFunctions from "../../scripts/uifunctions";
 import * as fs from "fs";
 import {CreativeCommand} from "../../scripts/commanddef";
 
-export class Command implements CreativeCommand {
+export class ObamaCommand implements CreativeCommand {
     name = "obama";
     description = "Sends an inspiring Obama picture with an equally inspiring message (hopefully)";
     syntax = "obama <message>";

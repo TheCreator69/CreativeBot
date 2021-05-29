@@ -1,13 +1,11 @@
 import {MessageEmbed, Message, Collection} from "discord.js";
-import * as Index from "../../index";
 import * as config from "../../config.json";
 import * as AdminCheck from "../../scripts/admincheck";
 import {CreativeCommand} from "../../scripts/commanddef";
 
-export class Command implements CreativeCommand {
-    constructor(_commandCollection?: Collection<string, CreativeCommand>) {
-        if(_commandCollection !== undefined) this.commandCollection = _commandCollection;
-        else this.commandCollection = Index.commands;
+export class HelpCommand implements CreativeCommand {
+    constructor(_commandCollection: Collection<string, CreativeCommand>) {
+        this.commandCollection = _commandCollection;
     }
 
     name = "help";
@@ -68,7 +66,7 @@ export class Command implements CreativeCommand {
                 commandList += "`" + commandObject.name + "`, ";
             }
         }
-        commandList = commandList.substr(0, commandList.length - 2);
+        commandList = commandList.substr(0, commandList.length -2);
         return commandList;
     }
 

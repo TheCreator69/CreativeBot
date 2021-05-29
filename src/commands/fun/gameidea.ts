@@ -1,7 +1,7 @@
 import {CreativeCommand} from "../../scripts/commanddef";
 import {Message} from "discord.js";
 
-export class Command implements CreativeCommand {
+export class GameIdeaCommand implements CreativeCommand {
     name = "gameidea";
     description = "Generates a random game idea";
     syntax = "gameidea";

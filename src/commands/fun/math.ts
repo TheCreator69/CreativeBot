@@ -19,7 +19,7 @@ export class MathQuestion {
     }
 }
 
-export class Command implements CreativeCommand {
+export class MathCommand implements CreativeCommand {
     name = "math";
     description = "Tests your math skills and quick thinking with an exercise that needs to be solved in a few seconds";
     syntax = "math";

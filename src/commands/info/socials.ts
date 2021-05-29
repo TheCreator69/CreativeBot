@@ -1,7 +1,7 @@
 import {MessageEmbed, Message} from "discord.js";
 import {CreativeCommand} from "../../scripts/commanddef";
 
-export class Command implements CreativeCommand {
+export class SocialsCommand implements CreativeCommand {
     name = "socials";
     description = "Lists TheCreator's socials";
     syntax = "socials";

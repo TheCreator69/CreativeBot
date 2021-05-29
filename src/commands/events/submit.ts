@@ -4,7 +4,7 @@ import * as EventHandler from "../../scripts/eventhandler";
 import * as UIFunctions from "../../scripts/uifunctions";
 import {CreativeCommand} from "../../scripts/commanddef";
 
-export class Command implements CreativeCommand {
+export class SubmitCommand implements CreativeCommand {
     name = "submit";
     description = "Submits an entry for the current event in the server's event channel";
     syntax = "submit <link> <description>";

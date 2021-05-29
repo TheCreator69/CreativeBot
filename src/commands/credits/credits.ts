@@ -4,7 +4,7 @@ import * as CreditsHandler from "../../scripts/creditshandler";
 import * as UIFunctions from "../../scripts/uifunctions";
 import {CreativeCommand} from "../../scripts/commanddef";
 
-export class Command implements CreativeCommand {
+export class CreditsCommand implements CreativeCommand {
     name = "credits";
     description = "Checks your Creative Credits balance";
     syntax = "credits";

@@ -2,7 +2,7 @@ import * as Index from "../../index";
 import {Message, User} from "discord.js";
 import {CreativeCommand} from "../../scripts/commanddef";
 
-export class Command implements CreativeCommand {
+export class ThumbsupCommand implements CreativeCommand {
     name = "thumbsup";
     description = "Gives the user mentioned a thumbs up on their last message :thumbsup:";
     syntax = "thumbsup <user mention>";

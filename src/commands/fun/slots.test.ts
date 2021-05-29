@@ -1,6 +1,6 @@
 import * as Slots from "./slots";
 
-var slotsCommand = new Slots.Command();
+var slotsCommand = new Slots.SlotsCommand();
 
 test("Checks if a bet of 10 and no rows of symbols returns a win of 0", () => {
     expect(slotsCommand.determineCreditsWon(0, 0, 10)).toEqual(0);

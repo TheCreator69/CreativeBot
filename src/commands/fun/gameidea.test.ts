@@ -1,6 +1,6 @@
 import * as GameIdea from "./gameidea";
 
-var gameIdeaCommand = new GameIdea.Command();
+var gameIdeaCommand = new GameIdea.GameIdeaCommand();
 
 test("Processes the word 'Apple' and returns 'An '", () => {
     expect(gameIdeaCommand.getCorrectFormOfArticle("Apple")).toBe("An ");

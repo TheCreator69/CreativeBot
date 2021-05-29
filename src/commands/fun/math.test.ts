@@ -1,6 +1,6 @@
 import * as Math from "./math";
 
-var mathCommand = new Math.Command();
+var mathCommand = new Math.MathCommand();
 var mathQuestionToTest: Math.MathQuestion;
 
 beforeAll(() => {

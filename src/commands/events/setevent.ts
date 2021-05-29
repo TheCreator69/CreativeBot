@@ -2,7 +2,7 @@ import * as EventHandler from "../../scripts/eventhandler";
 import {CreativeCommand} from "../../scripts/commanddef";
 import {Message} from "discord.js";
 
-export class Command implements CreativeCommand {
+export class SetEventCommand implements CreativeCommand {
     name = "setevent";
     description = "Sets a server's event channel or deletes the event association of the current event channel";
     syntax = "setevent <channel ID/delete>";

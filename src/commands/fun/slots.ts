@@ -2,7 +2,7 @@ import {Message} from "discord.js";
 import * as CreditsHandler from "../../scripts/creditshandler";
 import {CreativeCommand} from "../../scripts/commanddef";
 
-export class Command implements CreativeCommand {
+export class SlotsCommand implements CreativeCommand {
     name = "slots";
     description = "Simulates a slot machine, but without the monetary losses...and gains. You win if there are horizontal or diagonal lines of matching symbols";
     syntax = "slots <bet>";

@@ -2,7 +2,7 @@
 import {Message} from "discord.js";
 import {CreativeCommand} from "../../scripts/commanddef";
 
-export class Command implements CreativeCommand {
+export class TestCommand implements CreativeCommand {
 
     constructor(_testMessage?: string) {
         if(_testMessage !== undefined) {

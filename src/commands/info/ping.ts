@@ -2,7 +2,7 @@ import {Message} from "discord.js";
 import * as Index from "../../index";
 import {CreativeCommand} from "../../scripts/commanddef";
 
-export class Command implements CreativeCommand {
+export class PingCommand implements CreativeCommand {
     name = "ping";
     description = "Checks the bot's ping";
     syntax = "ping";

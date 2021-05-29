@@ -2,7 +2,7 @@ import * as EventHandler from "../../scripts/eventhandler";
 import {CreativeCommand} from "../../scripts/commanddef";
 import {Message} from "discord.js";
 
-export class Command implements CreativeCommand {
+export class ToggleEventCommand implements CreativeCommand {
     name = "toggleevent";
     description = "Turns the event channel for a server on or off, allowing or disallowing submissions to be posted to said channel";
     syntax = "toggleevent <on/off>";
