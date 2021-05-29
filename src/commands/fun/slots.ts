@@ -3,14 +3,14 @@ import * as CreditsHandler from "../../scripts/creditshandler";
 import {CreativeCommand} from "../../scripts/commanddef";
 
 export class Command implements CreativeCommand {
-    rollCycles = 3;
-    symbols = [":grapes:", ":cherries:", ":lemon:", ":green_apple:", ":kiwi:", ":peach:"];
-
     name = "slots";
     description = "Simulates a slot machine, but without the monetary losses...and gains. You win if there are horizontal or diagonal lines of matching symbols";
     syntax = "slots <bet>";
     min_args = 1;
     admin_only = false;
+
+    rollCycles = 3;
+    symbols = [":grapes:", ":cherries:", ":lemon:", ":green_apple:", ":kiwi:", ":peach:"];
 
     async checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {
         var bet = parseInt(args[0]);
