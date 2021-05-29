@@ -4,6 +4,7 @@ import * as fs from "fs";
 import {CreativeCommand} from "./scripts/commanddef";
 import {CreativeEvent} from "./scripts/eventdef";
 import path from "path";
+import * as CommandFactory from "./scripts/commandfactory";
 
 export const client = new Discord.Client();
 export var commands: Discord.Collection<string, CreativeCommand> = new Discord.Collection();
@@ -32,7 +33,7 @@ function readCommandFilesAndRegisterCommands(srcDirPath: string): void {
         const commandFiles = fs.readdirSync(`${srcDirPath}/commands/${folder}`).filter(filterDirectoryForTSAndJSFilesWithoutTests);
         for(const file of commandFiles) {
             const commandModule = require(`./commands/${folder}/${file}`);
-            var commandInstance: CreativeCommand = new commandModule.Command();
+            var commandInstance: CreativeCommand = CommandFactory.createCommand(file, commandModule);
             commandInstance.category = folder;
             commands.set(commandInstance.name, commandInstance);
         }
