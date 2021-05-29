@@ -66,16 +66,15 @@ async function executeCommandIfPossible(message: Message): Promise<void> {
 
     if(await canCommandBeExecuted(message, commandInfo)) {
         var command = commands.get(commandInfo.name);
-        //@ts-ignore
-        if(command.info.min_args) {
-            //@ts-ignore
+        if(command === undefined) return;
+
+        if(command.min_args) {
+            if(!command.checkRequiredArgs) return;
             if(await command.checkRequiredArgs(message, commandInfo.args)) {
-                //@ts-ignore
                 command.execute(message, commandInfo.args);
             }
         }
         else {
-            //@ts-ignore
             command.execute(message, commandInfo.args);
         }
     }
@@ -96,11 +95,12 @@ function getCommandInfoFromMessage(message: Message): CommandInfoFromMessage {
 async function canCommandBeExecuted(message: Message, commandInfo: CommandInfoFromMessage): Promise<boolean> {
     var command = commands.get(commandInfo.name);
     if(command === undefined) return false;
-    if(command.info.admin_only && !await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
+
+    if(command.admin_only && !await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
         return false;
     }
-    if(commandInfo.args.length < command.info.min_args) {
-        message.channel.send("You need to provide the required arguments for the command to work! See `" + config.prefix + "help " + command.info.name + "` for details!");
+    if(commandInfo.args.length < command.min_args) {
+        message.channel.send("You need to provide the required arguments for the command to work! See `" + config.prefix + "help " + command.name + "` for details!");
         return false;
     }
     return true;

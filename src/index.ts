@@ -31,9 +31,10 @@ function readCommandFilesAndRegisterCommands(srcDirPath: string): void {
     for(const folder of commandFolders) {
         const commandFiles = fs.readdirSync(`${srcDirPath}/commands/${folder}`).filter(filterDirectoryForTSAndJSFilesWithoutTests);
         for(const file of commandFiles) {
-            const command: CreativeCommand = require(`./commands/${folder}/${file}`);
-            command.info.category = folder;
-            commands.set(command.info.name, command);
+            const commandModule = require(`./commands/${folder}/${file}`);
+            var commandInstance: CreativeCommand = new commandModule.Command();
+            commandInstance.category = folder;
+            commands.set(commandInstance.name, commandInstance);
         }
     }
 }
