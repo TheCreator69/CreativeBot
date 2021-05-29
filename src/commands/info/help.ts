@@ -102,23 +102,13 @@ export class HelpCommand implements CreativeCommand {
         }
     }
 
-    getCommandInstance(args: string[]): CreativeCommand | undefined {
-        return this.commandCollection.get(args[0]);
-    }
-
     createCommandInfoString(args: string[]): string {
-        var commandObject = this.getRequestedCommandObject(args);
+        var commandObject = this.getCommandInstance(args);
         // @ts-ignore
         return "**Description:** " + commandObject.description + "\n" + "**Syntax:** *" + config.prefix + commandObject.syntax + "*\n" + "**Category:** " + commandObject.category.replace(/^\w/, (c: any) => c.toUpperCase());
     }
 
-    getRequestedCommandObject(args: string[]): CreativeCommand | undefined {
-        var requestedCommand = args[0];
-
-        if(this.commandCollection.has(requestedCommand)) {
-            return this.commandCollection.get(requestedCommand);
-        }
-        return;
+    getCommandInstance(args: string[]): CreativeCommand | undefined {
+        return this.commandCollection.get(args[0]);
     }
-
 }
