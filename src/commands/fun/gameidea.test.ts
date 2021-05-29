@@ -1,9 +1,11 @@
-import {getCorrectFormOfArticle} from "./gameidea";
+import * as GameIdea from "./gameidea";
+
+var gameIdeaCommand = new GameIdea.Command();
 
 test("Processes the word 'Apple' and returns 'An '", () => {
-    expect(getCorrectFormOfArticle("Apple")).toBe("An ");
+    expect(gameIdeaCommand.getCorrectFormOfArticle("Apple")).toBe("An ");
 });
 
 test("Processes the word 'Mango' and returns 'A '", () => {
-    expect(getCorrectFormOfArticle("Mango")).toBe("A ");
+    expect(gameIdeaCommand.getCorrectFormOfArticle("Mango")).toBe("A ");
 });
