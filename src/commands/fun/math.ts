@@ -25,6 +25,7 @@ export class MathCommand implements CreativeCommand {
     syntax = "math";
     min_args = 0;
     admin_only = false;
+    guild_only = false;
 
     execute(message: Message, args: string[]): void {
         this.askMathQuestionAndProcessAnswer(message);

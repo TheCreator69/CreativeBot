@@ -10,6 +10,7 @@ export class CreditsCommand implements CreativeCommand {
     syntax = "credits";
     min_args = 0;
     admin_only = false;
+    guild_only = false;
 
     async execute(message: Message, args: string[]): Promise<void> {
         await this.displayUserInfoOnCreditsBadge(message.channel, message.author);

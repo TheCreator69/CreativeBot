@@ -7,6 +7,7 @@ export class GameIdeaCommand implements CreativeCommand {
     syntax = "gameidea";
     min_args = 0;
     admin_only = false;
+    guild_only = false;
 
     execute(message: Message, args: string[]): void {
         var gameIdea = this.generateGameIdea();

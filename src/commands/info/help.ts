@@ -13,6 +13,7 @@ export class HelpCommand implements CreativeCommand {
     syntax = "help [command]";
     min_args = 0;
     admin_only = false;
+    guild_only = false;
 
     isCommandSenderAdmin = false;
     commandCollection: Collection<string, CreativeCommand>;

@@ -7,6 +7,7 @@ export class SocialsCommand implements CreativeCommand {
     syntax = "socials";
     min_args = 0;
     admin_only = false;
+    guild_only = false;
 
     execute(message: Message, args: string[]): void {
         message.channel.send(this.constructEmbed());
