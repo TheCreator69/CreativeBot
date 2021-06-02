@@ -1,5 +1,5 @@
 import * as Help from "./help";
-import {CreativeCommand} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 import {Message, Collection} from "discord.js";
 
 const mockCollection = new Collection<string, CreativeCommand>();
@@ -7,18 +7,18 @@ var helpCommand = new Help.HelpCommand(mockCollection);
 
 beforeAll(() => {
     mockCollection.set("Banana", {
-        name: "Banana", description: "", syntax: "", min_args: 0, admin_only: false,
-        async checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {return true;},
+        name: "Banana", description: "", syntax: "", min_args: 0, admin_only: false, guild_only: false,
+        async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {return {valid: true};},
         execute(message: Message, args: string[]): void {}
     });
     mockCollection.set("Cherry", {
-        name: "Cherry", description: "", syntax: "", min_args: 0, admin_only: true,
-        async checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {return true;},
+        name: "Cherry", description: "", syntax: "", min_args: 0, admin_only: true, guild_only: false,
+        async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {return {valid: true};},
         execute(message: Message, args: string[]): void {}
     });
     mockCollection.set("Apple", {
-        name: "Apple", description: "", syntax: "", min_args: 0, admin_only: false,
-        async checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {return true;},
+        name: "Apple", description: "", syntax: "", min_args: 0, admin_only: false, guild_only: false,
+        async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {return {valid: true};},
         execute(message: Message, args: string[]): void {}
     });
     helpCommand = new Help.HelpCommand(mockCollection);
@@ -67,6 +67,6 @@ test("Attempts to get the command 'Null' from the list of commands and expects t
     expect(helpCommand.getCommandInstance(["Null"])).toBeUndefined();
 });
 
-test("Attempts to get the command 'Banana' from the list of commands and expects the return value not to be undefined", () => {
+test("Attempts to get the command 'Banana' from the list of commands and expects the return value not to be undefined - basically, to be defined", () => {
     expect(helpCommand.getCommandInstance(["Banana"])).not.toBeUndefined();
 });
