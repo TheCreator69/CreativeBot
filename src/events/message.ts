@@ -1,9 +1,10 @@
 import * as config from "../config.json";
 import * as AdminCheck from "../scripts/admincheck";
 import * as CreditsHandler from "../scripts/creditshandler";
-import {commands} from "../index";
+import {commands, client} from "../index";
 import {Message, Client} from "discord.js";
 import {EventAttributes} from "../scripts/eventdef";
+import {CommandExecutionInfo} from "../scripts/commanddef";
 
 export var info: EventAttributes = {
     name: "message",
@@ -68,10 +69,33 @@ async function executeCommandIfPossible(message: Message): Promise<void> {
         var command = commands.get(commandInfo.name);
         if(command === undefined) return;
 
+        if(command.guild_only) {
+            if(!message.guild || !message.guild.available) {
+                message.channel.send("Please send this command in an available server!");
+                return;
+            }
+        }
+
         if(command.min_args) {
             if(!command.checkRequiredArgs) return;
-            if(await command.checkRequiredArgs(message, commandInfo.args)) {
+            /*
+            Hack: I pass the required guild and author info into checkRequiredArgs() using the interface below
+            This accounts for all commands at the same time, which will cause the code to grow with each new command added
+            Can the factory pattern be used here? I will definitely change this in the future, but I'm too lazy now
+            Then again, it is said that nothing is more permanent than a temporary solution...
+            */
+            var commandExecutionInfo: CommandExecutionInfo = {
+                authorID: BigInt(message.author.id),
+                //@ts-ignore
+                guildID: BigInt(message.guild.id),
+                client: client
+            };
+            var argsCheckResult = await command.checkRequiredArgs(commandInfo.args, commandExecutionInfo);
+            if(argsCheckResult.valid) {
                 command.execute(message, commandInfo.args);
+            }
+            else {  //@ts-ignore
+                message.channel.send(argsCheckResult.replyMessage);
             }
         }
         else {
