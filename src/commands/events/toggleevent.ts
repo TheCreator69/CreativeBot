@@ -1,5 +1,5 @@
 import * as EventHandler from "../../scripts/eventhandler";
-import {CreativeCommand} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult, CommandExecutionInfo} from "../../scripts/commanddef";
 import {Message} from "discord.js";
 
 export class ToggleEventCommand implements CreativeCommand {
@@ -8,23 +8,18 @@ export class ToggleEventCommand implements CreativeCommand {
     syntax = "toggleevent <on/off>";
     min_args = 1;
     admin_only = true;
+    guild_only = true;
 
-    async checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {
-        if(!message.guild || !message.guild.available) {
-            message.channel.send("Please send this command in an available server!");
-            return false;
-        }
+    async checkRequiredArgs(args: string[], commandExecutionInfo: CommandExecutionInfo | undefined): Promise<ArgsCheckResult> {
         if(args[0] !== "on" && args[0] !== "off") {
-            message.channel.send("Please type either \"on\" or \"off\"!");
-            return false;
+            return {valid: false, replyMessage: "Please type either \"on\" or \"off\"!"};
         }
-        const guildID = BigInt(message.guild.id);
+        const guildID = BigInt(commandExecutionInfo?.guildID);
         const channelEntry = await EventHandler.getEventChannel(guildID);
         if(channelEntry === null) {
-            message.channel.send("This server doesn't have an event channel!");
-            return false;
+            return {valid: false, replyMessage: "This server doesn't have an event channel!"};
         }
-        return true;
+        return {valid: true};
     }
 
     async execute(message: Message, args: string[]): Promise<void> {

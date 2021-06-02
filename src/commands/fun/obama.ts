@@ -2,7 +2,7 @@ import {MessageAttachment, Message} from "discord.js";
 import * as Canvas from "canvas";
 import * as UIFunctions from "../../scripts/uifunctions";
 import * as fs from "fs";
-import {CreativeCommand} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 
 export class ObamaCommand implements CreativeCommand {
     name = "obama";
@@ -10,9 +10,10 @@ export class ObamaCommand implements CreativeCommand {
     syntax = "obama <message>";
     min_args = 1;
     admin_only = false;
+    guild_only = false;
 
-    async checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {
-        return true;
+    async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {
+        return {valid: true};
     }
 
     async execute(message: Message, args: string[]): Promise<void> {

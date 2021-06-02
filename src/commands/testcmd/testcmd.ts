@@ -1,6 +1,6 @@
 //import * as LogChamp from "../../scripts/logchamp";
 import {Message} from "discord.js";
-import {CreativeCommand} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 
 export class TestCommand implements CreativeCommand {
 
@@ -15,9 +15,10 @@ export class TestCommand implements CreativeCommand {
     syntax = "test";
     min_args = 0;
     admin_only = true;
+    guild_only = false;
 
-    async checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {
-        return true;
+    async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {
+        return {valid: true};
     }
 
     execute(message: Message, args: string[]): void {

@@ -1,6 +1,7 @@
 import * as CreditsHandler from "../../scripts/creditshandler";
-import {CreativeCommand} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 import {Message, User} from "discord.js";
+import {getUserFromMention} from "../../scripts/discordutil";
 
 export class ChangeCreditsCommand implements CreativeCommand {
     name = "changecredits";
@@ -8,27 +9,24 @@ export class ChangeCreditsCommand implements CreativeCommand {
     syntax = "changecredits <add/remove/set> <amount> <user mention>";
     min_args = 3;
     admin_only = true;
+    guild_only = false;
 
-    async checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {
+    async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {
         if(args[0] !== "add" && args[0] !== "remove" && args[0] !== "set") {
-            message.channel.send("Please use either \"add\", \"remove\" or \"set\" to change a user's Creative Credits!");
-            return false;
+            return {valid: false, replyMessage: "Please use either \"add\", \"remove\" or \"set\" to change a user's Creative Credits!"};
         }
         var amount = parseInt(args[1]);
         if(isNaN(amount)) {
-            message.channel.send("Please enter a valid amount of Creative Credits!");
-            return false;
+            return {valid: false, replyMessage: "Please enter a valid amount of Creative Credits!"};
         }
-        const mention: User = message.mentions.users.values().next().value;
-        if(mention === undefined) {
-            message.channel.send("Please mention a user!");
-            return false;
+        const mentionedUser = getUserFromMention(args[2]);
+        if(mentionedUser === undefined) {
+            return {valid: false, replyMessage: "Please mention a user!"};
         }
         if(args[0] === "set" && amount < 0) {
-            message.channel.send("You can't set someone's Creative Credits to be negative! They'll be in debt and that's just cruel :pleading_face:");
-            return false;
+            return {valid: false, replyMessage: "You can't set someone's Creative Credits to be negative! They'll be in debt and that's just cruel :pleading_face:"};
         }
-        return true;
+        return {valid: true};
     }
 
     async execute(message: Message, args: string[]): Promise<void> {

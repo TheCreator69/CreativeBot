@@ -2,7 +2,7 @@ import * as Index from "../../index";
 import {MessageEmbed, TextChannel, Message, User} from "discord.js";
 import * as EventHandler from "../../scripts/eventhandler";
 import * as UIFunctions from "../../scripts/uifunctions";
-import {CreativeCommand} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult, CommandExecutionInfo} from "../../scripts/commanddef";
 
 export class SubmitCommand implements CreativeCommand {
     name = "submit";
@@ -10,22 +10,18 @@ export class SubmitCommand implements CreativeCommand {
     syntax = "submit <link> <description>";
     min_args = 2;
     admin_only = false;
+    guild_only = true;
 
-    async checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {
-        if(!message.guild || !message.guild.available) {
-            message.channel.send("Please send this command in an available server!");
-            return false;
-        }
-        const channelEntry = await EventHandler.getEventChannel(BigInt(message.guild.id));
+    async checkRequiredArgs(args: string[], commandExecutionInfo: CommandExecutionInfo | undefined): Promise<ArgsCheckResult> {
+        //@ts-ignore
+        const channelEntry = await EventHandler.getEventChannel(commandExecutionInfo.guildID);
         if(channelEntry === null) {
-            message.channel.send("This server doesn't have an event channel!");
-            return false;
+            return {valid: false, replyMessage: "This server doesn't have an event channel!"};
         }
         if(!EventHandler.checkIfEventChannelIsActive(channelEntry)) {
-            message.channel.send("There is currently no active event. Please return later.");
-            return false;
+            return {valid: false, replyMessage: "There is currently no active event. Please return later."};
         }
-        return true;
+        return {valid: true};
     }
 
     async execute(message: Message, args: string[]): Promise<void> {

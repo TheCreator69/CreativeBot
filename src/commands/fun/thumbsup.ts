@@ -1,6 +1,6 @@
-import * as Index from "../../index";
 import {Message, User} from "discord.js";
-import {CreativeCommand} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import {getUserFromMention} from "../../scripts/discordutil";
 
 export class ThumbsupCommand implements CreativeCommand {
     name = "thumbsup";
@@ -8,29 +8,20 @@ export class ThumbsupCommand implements CreativeCommand {
     syntax = "thumbsup <user mention>";
     min_args = 1;
     admin_only = false;
+    guild_only = false;
 
-    async checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {
-        var mentionedUser = this.getUserFromMention(args[0]);
+    async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {
+        var mentionedUser = getUserFromMention(args[0]);
         if(mentionedUser === undefined) {
-            message.channel.send("You just specified an invalid user! Who am I supposed to react to? :frowning:");
-            return false;
+            return {valid: false, replyMessage: "You just specified an invalid user! Who am I supposed to react to? :frowning:"};
         }
-        return true;
+        return {valid: true};
     }
 
     execute(message: Message, args: string[]): void {
-        var mentionedUser = this.getUserFromMention(args[0]);
+        var mentionedUser = getUserFromMention(args[0]);
         if(mentionedUser === undefined) return;
         this.reactToLastMessageFromMentionedUser(message, mentionedUser);
-    }
-
-    getUserFromMention(mention: string): User | undefined {
-        const matches = mention.match(/^<@!?(\d+)>$/);
-        if(!matches) {
-            return;
-        }
-        const id = matches[1];
-        return Index.client.users.cache.get(id);
     }
 
     reactToLastMessageFromMentionedUser(message: Message, mentionedUser: User): void {

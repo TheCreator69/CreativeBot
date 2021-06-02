@@ -1,6 +1,6 @@
 import {Message} from "discord.js";
 import * as CreditsHandler from "../../scripts/creditshandler";
-import {CreativeCommand} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult, CommandExecutionInfo} from "../../scripts/commanddef";
 
 export class SlotsCommand implements CreativeCommand {
     name = "slots";
@@ -8,26 +8,25 @@ export class SlotsCommand implements CreativeCommand {
     syntax = "slots <bet>";
     min_args = 1;
     admin_only = false;
+    guild_only = false;
 
     rollCycles = 3;
     symbols = [":grapes:", ":cherries:", ":lemon:", ":green_apple:", ":kiwi:", ":peach:"];
 
-    async checkRequiredArgs(message: Message, args: string[]): Promise<boolean> {
+    async checkRequiredArgs(args: string[], commandExecutionInfo: CommandExecutionInfo | undefined): Promise<ArgsCheckResult> {
         var bet = parseInt(args[0]);
         if(isNaN(bet)) {
-            message.channel.send("Please enter a number as a bet!");
-            return false;
+            return {valid: false, replyMessage: "Please enter a number as a bet!"};
         }
         if(bet <= 0) {
-            message.channel.send("Nice try, but I thought of that. Please enter a bet above 0.");
-            return false;
+            return {valid: false, replyMessage: "Nice try, but I thought of that. Please enter a bet above 0."};
         }
-        var creditsOfAuthor = await CreditsHandler.getCreditsForUser(BigInt(message.author.id));
+        //@ts-ignore
+        var creditsOfAuthor = await CreditsHandler.getCreditsForUser(commandExecutionInfo.authorID);
         if(bet > creditsOfAuthor) {
-            message.channel.send("Your bet exceeds the amount of Creative Credits you have!");
-            return false;
+            return {valid: false, replyMessage: "Your bet exceeds the amount of Creative Credits you have!"};
         }
-        return true;
+        return {valid: true};
     }
 
     async execute(message: Message, args: string[]): Promise<void> {
