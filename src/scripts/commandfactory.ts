@@ -1,6 +1,7 @@
 import {commands} from "../index";
+import {CreativeCommand} from "./commanddef";
 
-export function createCommand(file: string, commandModule: any): any {
+export function createCommand(file: string, commandModule: any): CreativeCommand | undefined {
     file = file.substr(0, file.length - 3);
     switch(file) {
         case "changecredits": return new commandModule.ChangeCreditsCommand();
@@ -17,5 +18,6 @@ export function createCommand(file: string, commandModule: any): any {
         case "ping": return new commandModule.PingCommand();
         case "socials": return new commandModule.SocialsCommand();
         case "testcmd": return new commandModule.TestCommand();
+        default: return undefined;
     }
 }
