@@ -12,6 +12,8 @@ export class SlotsCommand implements CreativeCommand {
 
     rollCycles = 3;
     symbols = [":grapes:", ":cherries:", ":lemon:", ":green_apple:", ":kiwi:", ":peach:"];
+    slotColumns = 3;
+    slotRows = 3;
 
     async checkRequiredArgs(args: string[], commandExecutionInfo: CommandExecutionInfo | undefined): Promise<ArgsCheckResult> {
         var bet = parseInt(args[0]);
@@ -70,13 +72,13 @@ export class SlotsCommand implements CreativeCommand {
 
     selectSeeminglyRandomSymbols(): string[] {
         var randomSymbols: string[] = [];
-        for(let i = 0; i < 9; i++) { //Hard-coded stuff. Always a good idea.
-            if(i === 0 || i === 3 || i === 6) {
+        for(let i = 0; i < this.slotRows * this.slotColumns; i++) {
+            if(i % this.slotColumns == 0) {
                 randomSymbols.push(this.symbols[Math.floor(Math.random() * this.symbols.length)]);
             }
             else {
                 if(Math.random() < 0.25) {
-                    var differenceBetweenIndexOfFirstSymbolOnRow = Math.floor(i % 3); //Probably the best variable name in existance
+                    var differenceBetweenIndexOfFirstSymbolOnRow = Math.floor(i % this.slotColumns);
                     randomSymbols.push(randomSymbols[i - differenceBetweenIndexOfFirstSymbolOnRow]);
                 }
                 else {
@@ -94,21 +96,42 @@ export class SlotsCommand implements CreativeCommand {
 
     getHorizontalRowCount(randomSymbols: string[]): number {
         var numberOfHorizontalRows = 0;
-        for(let i = 0; i <= 8; i += 3) {
-            if(randomSymbols[i] === randomSymbols[i + 1] && randomSymbols[i] === randomSymbols[i + 2]) {
-                numberOfHorizontalRows++;
+        for(let rowStartIndex = 0; rowStartIndex < this.slotRows * this.slotColumns; rowStartIndex += this.slotColumns) {
+
+            for(let rowColumnIndex = 0; rowColumnIndex < this.slotColumns; rowColumnIndex++) {
+                if(randomSymbols[rowStartIndex] !== randomSymbols[rowStartIndex + rowColumnIndex]) {
+                    break;
+                }
+                if(rowColumnIndex === this.slotColumns - 1) numberOfHorizontalRows++;
             }
+
         }
         return numberOfHorizontalRows;
     }
 
     getDiagonalRowCount(randomSymbols: string[]): number {
         var numberOfDiagonalRows = 0;
-        if(randomSymbols[0] === randomSymbols[4] && randomSymbols[0] === randomSymbols[8]) {
-            numberOfDiagonalRows++;
+        //Check lines from top left to bottom right along top row
+        for(let i = 0; i < this.slotColumns - 2; i++) {
+
+            for(let j = 1; j < this.slotRows; j++) {
+                if(randomSymbols[i] !== randomSymbols[j * this.slotColumns + j]) {
+                    break;
+                }
+                if(j === this.slotRows - 1) numberOfDiagonalRows++;
+            }
+
         }
-        if(randomSymbols[6] === randomSymbols[4] && randomSymbols[6] === randomSymbols[2]) {
-            numberOfDiagonalRows++;
+        //Check lines from top right to bottom left along top row
+        for(let i = this.slotColumns - 1; i > 1; i--) {
+
+            for(let j = 1; j < this.slotRows; j++) {
+                if(randomSymbols[i] !== randomSymbols[j * this.slotColumns + (this.slotColumns - 1 - j)]) {
+                    break;
+                }
+                if(j === this.slotRows - 1) numberOfDiagonalRows++;
+            }
+
         }
         return numberOfDiagonalRows;
     }
@@ -122,7 +145,7 @@ export class SlotsCommand implements CreativeCommand {
         else {
             finishedSlotMessage += "You've won " + creditsWon + " Creative Credits! Hooray!\n" + slotMachineBorder;
         }
-        for(let i = 0; i <= 8; i += 3) {
+        for(let i = 0; i < this.slotRows * this.slotColumns; i += 3) {
             var slotMachineRow = "  " + randomSymbols[i] + " " + randomSymbols[i + 1] + " " + randomSymbols[i + 2] + "  \n";
             finishedSlotMessage += slotMachineRow;
         }
