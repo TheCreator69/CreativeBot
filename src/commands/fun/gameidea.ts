@@ -74,18 +74,18 @@ export class GameIdeaCommand implements CreativeCommand {
         message.channel.send(gameIdea);
     }
 
+    formatters: GameIdeaFormatter[] = [
+        new TwoGenresFormatter(this),
+        new OneGenreFormatter(this),
+        new GenreWithModifierFormatter(this),
+        new ThemeWithModifierFormatter(this),
+        new GenreWithThemeFormatter(this)
+    ];
+
     generateGameIdea(): string {
-        var formatters: GameIdeaFormatter[] = [
-            new TwoGenresFormatter(this),
-            new OneGenreFormatter(this),
-            new GenreWithModifierFormatter(this),
-            new ThemeWithModifierFormatter(this),
-            new GenreWithThemeFormatter(this)
-        ];
-        var randomformatIndex = Math.floor(Math.random() * formatters.length);
-        
+        var randomformatIndex = Math.floor(Math.random() * this.formatters.length);
         var ideaString = "**Game Idea:** \n";
-        ideaString += formatters[randomformatIndex].format();
+        ideaString += this.formatters[randomformatIndex].format();
         return ideaString;
     }
 
