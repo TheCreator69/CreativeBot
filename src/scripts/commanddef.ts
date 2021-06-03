@@ -19,6 +19,6 @@ export interface ArgsCheckResult {
 
 export interface CommandExecutionInfo {
     authorID: bigint,
-    guildID: bigint,
+    guildID: bigint | undefined,
     client: Client
 }
