@@ -1,10 +1,11 @@
 import {commands} from "../index";
 import {CreativeCommand} from "./commanddef";
+import {getUserFromMention} from "./discordutil";
 
 export function createCommand(file: string, commandModule: any): CreativeCommand | undefined {
     file = file.substr(0, file.length - 3);
     switch(file) {
-        case "changecredits": return new commandModule.ChangeCreditsCommand();
+        case "changecredits": return new commandModule.ChangeCreditsCommand(getUserFromMention);
         case "credits": return new commandModule.CreditsCommand();
         case "setevent": return new commandModule.SetEventCommand();
         case "submit": return new commandModule.SubmitCommand();

@@ -1,15 +1,20 @@
 import * as CreditsHandler from "../../scripts/creditshandler";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 import {Message, User} from "discord.js";
-import {getUserFromMention} from "../../scripts/discordutil";
 
 export class ChangeCreditsCommand implements CreativeCommand {
+    constructor(_userFromMentionCallback: (argument: string) => User | undefined) {
+        this.userFromMentionCallback = _userFromMentionCallback;
+    }
+
     name = "changecredits";
     description = "Changes or sets Creative Credits for a specific user";
     syntax = "changecredits <add/remove/set> <amount> <user mention>";
     min_args = 3;
     admin_only = true;
     guild_only = false;
+
+    userFromMentionCallback: (argument: string) => User | undefined;
 
     async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {
         if(args[0] !== "add" && args[0] !== "remove" && args[0] !== "set") {
@@ -19,7 +24,7 @@ export class ChangeCreditsCommand implements CreativeCommand {
         if(isNaN(amount)) {
             return {valid: false, replyMessage: "Please enter a valid amount of Creative Credits!"};
         }
-        const mentionedUser = getUserFromMention(args[2]);
+        const mentionedUser = this.userFromMentionCallback(args[2]);
         if(mentionedUser === undefined) {
             return {valid: false, replyMessage: "Please mention a user!"};
         }
