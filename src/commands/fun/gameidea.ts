@@ -1,6 +1,66 @@
 import {CreativeCommand} from "../../scripts/commanddef";
 import {Message} from "discord.js";
 
+export interface GameIdeaFormatter {
+    format: () => string
+}
+
+export class BaseFormatter implements GameIdeaFormatter {
+    gameIdeaCommand;
+    constructor(_gameIdeaCommand: GameIdeaCommand) {
+        this.gameIdeaCommand = _gameIdeaCommand;
+    }
+
+    format() {
+        return "";
+    }
+}
+
+export class TwoGenresFormatter extends BaseFormatter {
+    format() {
+        var genre0 = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
+        var genre1 = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
+
+        if(genre1 == genre0) {
+            var modifiedGenreArray = this.gameIdeaCommand.genres.slice();
+            var genre0Index = modifiedGenreArray.indexOf(genre0);
+            modifiedGenreArray.splice(genre0Index, 1);
+            genre1 = this.gameIdeaCommand.getRandomArrayElement(modifiedGenreArray);
+        }
+
+        return "A mix of " + genre0 + " and " + genre1 + " set " + this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.locations);
+    }
+}
+
+export class OneGenreFormatter extends BaseFormatter {
+    format() {
+        var genre = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
+        return this.gameIdeaCommand.getCorrectFormOfArticle(genre) + genre + " set " + this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.locations);
+    }
+}
+
+export class GenreWithModifierFormatter extends BaseFormatter {
+    format() {
+        var genre = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
+        return this.gameIdeaCommand.getCorrectFormOfArticle(genre) + genre + " where " + this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.modifiers);
+    }
+}
+
+export class ThemeWithModifierFormatter extends BaseFormatter {
+    format() {
+        var theme = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.themes);
+        theme = theme.replace(/^\w/, (c: string) => c.toUpperCase());
+        return theme + ", but " + this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.modifiers);
+    }
+}
+
+export class GenreWithThemeFormatter extends BaseFormatter {
+    format() {
+        var genre = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
+        return this.gameIdeaCommand.getCorrectFormOfArticle(genre) + genre + " about " + this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.themes);
+    }
+}
+
 export class GameIdeaCommand implements CreativeCommand {
     name = "gameidea";
     description = "Generates a random game idea";
@@ -15,69 +75,18 @@ export class GameIdeaCommand implements CreativeCommand {
     }
 
     generateGameIdea(): string {
-        var format = Math.floor(Math.random() * 4);
-        //Format #0: A mix of GENRE and GENRE set (in) LOCATION
-        //Format #1: A GENRE set (in) LOCATION
-        //Format #2: A GENRE where MODIFIER
-        //Format #3: THEME, but MODIFIER
-        //Format #4: A GENRE about (a) THEME
+        var formatters: GameIdeaFormatter[] = [
+            new TwoGenresFormatter(this),
+            new OneGenreFormatter(this),
+            new GenreWithModifierFormatter(this),
+            new ThemeWithModifierFormatter(this),
+            new GenreWithThemeFormatter(this)
+        ];
+        var randomformatIndex = Math.floor(Math.random() * formatters.length);
+        
         var ideaString = "**Game Idea:** \n";
-        switch(format) {
-        case 0:
-            ideaString = this.formatZero(ideaString);
-            break;
-        case 1:
-            ideaString = this.formatOne(ideaString);
-            break;
-        case 2:
-            ideaString = this.formatTwo(ideaString);
-            break;
-        case 3:
-            ideaString = this.formatThree(ideaString);
-            break;
-        case 4:
-            ideaString = this.formatFour(ideaString);
-            break;
-        default:
-            ideaString = ideaString + "Just make GTA 6 lol";
-            break;
-        }
+        ideaString += formatters[randomformatIndex].format();
         return ideaString;
-    }
-
-    formatZero(ideaString: string): string {
-        var genre0 = this.getRandomArrayElement(this.genres);
-        var genre1 = this.getRandomArrayElement(this.genres);
-
-        if(genre1 == genre0) {
-            var modifiedGenreArray = this.genres.slice();
-            var genre0Index = modifiedGenreArray.indexOf(genre0);
-            modifiedGenreArray.splice(genre0Index, 1);
-            genre1 = this.getRandomArrayElement(modifiedGenreArray);
-        }
-
-        return ideaString += "A mix of " + genre0 + " and " + genre1 + " set " + this.getRandomArrayElement(this.locations);
-    }
-
-    formatOne(ideaString: string): string {
-        var genre = this.getRandomArrayElement(this.genres);
-        return ideaString += this.getCorrectFormOfArticle(genre) + genre + " set " + this.getRandomArrayElement(this.locations);
-    }
-
-    formatTwo(ideaString: string): string {
-        var genre = this.getRandomArrayElement(this.genres);
-        return ideaString += this.getCorrectFormOfArticle(genre) + genre + " where " + this.getRandomArrayElement(this.modifiers);
-    }
-
-    formatThree(ideaString: string): string {
-        var theme = this.getRandomArrayElement(this.themes);
-        theme = theme.replace(/^\w/, (c: string) => c.toUpperCase());
-        return ideaString += theme + ", but " + this.getRandomArrayElement(this.modifiers);
-    }
-
-    formatFour(ideaString: string): string {
-        var genre = this.getRandomArrayElement(this.genres);
-        return ideaString += this.getCorrectFormOfArticle(genre) + genre + " about " + this.getRandomArrayElement(this.themes);
     }
 
     getCorrectFormOfArticle(nextWord: string): string {
