@@ -31,7 +31,7 @@ test("Checks if a bet of 10, 3 horizontal, and 2 diagonal rows of symbols return
 });
 
 test("Checks if array output by function is of expected length", () => {
-    expect(slotsCommand.selectSeeminglyRandomSymbols()).toHaveLength(9);
+    expect(slotsCommand.selectSeeminglyRandomSymbols()).toHaveLength(slotsCommand.slotRows * slotsCommand.slotColumns);
 });
 
 test("Checks if no horizontal row gets detected in random symbol array", () => {
