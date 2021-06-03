@@ -1,5 +1,5 @@
 import * as EventHandler from "../../scripts/eventhandler";
-import {CreativeCommand, ArgsCheckResult, CommandExecutionInfo} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 import {Message} from "discord.js";
 
 export class ToggleEventCommand implements CreativeCommand {
@@ -10,11 +10,12 @@ export class ToggleEventCommand implements CreativeCommand {
     admin_only = true;
     guild_only = true;
 
-    async checkRequiredArgs(args: string[], commandExecutionInfo: CommandExecutionInfo | undefined): Promise<ArgsCheckResult> {
+    async checkRequiredArgs(args: string[], message: Message | undefined): Promise<ArgsCheckResult> {
         if(args[0] !== "on" && args[0] !== "off") {
             return {valid: false, replyMessage: "Please type either \"on\" or \"off\"!"};
         }
-        const guildID = BigInt(commandExecutionInfo?.guildID);
+        //@ts-ignore
+        const guildID = BigInt(message.guild.id);
         const channelEntry = await EventHandler.getEventChannel(guildID);
         if(channelEntry === null) {
             return {valid: false, replyMessage: "This server doesn't have an event channel!"};

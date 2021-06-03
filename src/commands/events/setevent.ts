@@ -1,5 +1,5 @@
 import * as EventHandler from "../../scripts/eventhandler";
-import {CreativeCommand, ArgsCheckResult, CommandExecutionInfo} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 import {Message} from "discord.js";
 
 export class SetEventCommand implements CreativeCommand {
@@ -10,7 +10,7 @@ export class SetEventCommand implements CreativeCommand {
     admin_only = true;
     guild_only = true;
 
-    async checkRequiredArgs(args: string[], commandExecutionInfo: CommandExecutionInfo | undefined): Promise<ArgsCheckResult> {
+    async checkRequiredArgs(args: string[], message: Message | undefined): Promise<ArgsCheckResult> {
         if(args[0] === "delete") {
             return {valid: true};
         }
@@ -20,9 +20,7 @@ export class SetEventCommand implements CreativeCommand {
                 return {valid: false, replyMessage: "You need to enter a number as a channel ID!"};
             }
             //@ts-ignore
-            var commandGuild = commandExecutionInfo.client.guilds.cache.get(args[0]);
-            //@ts-ignore
-            if(commandGuild.channels.cache.get(args[0]) === undefined) {
+            if(message.guild.channels.cache.get(args[0]) === undefined) {
                 return {valid: false, replyMessage: "Couldn't find channel by ID!"};
             }
             return {valid: true};

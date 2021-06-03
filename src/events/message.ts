@@ -4,7 +4,6 @@ import * as CreditsHandler from "../scripts/creditshandler";
 import {commands, client} from "../index";
 import {Message, Client} from "discord.js";
 import {EventAttributes} from "../scripts/eventdef";
-import {CommandExecutionInfo} from "../scripts/commanddef";
 
 export var info: EventAttributes = {
     name: "message",
@@ -78,28 +77,7 @@ async function executeCommandIfPossible(message: Message): Promise<void> {
 
         if(command.min_args) {
             if(!command.checkRequiredArgs) return;
-            /*
-            Hack: I pass the required guild and author info into checkRequiredArgs() using the interface below
-            This accounts for all commands at the same time, which will cause the code to grow with each new command added
-            Can the factory pattern be used here? I will definitely change this in the future, but I'm too lazy now
-            Then again, it is said that nothing is more permanent than a temporary solution...
-            */
-            var commandExecutionInfo: CommandExecutionInfo;
-            if(!message.guild || !message.guild.available) {
-                commandExecutionInfo = {
-                    authorID: BigInt(message.author.id),
-                    guildID: undefined,
-                    client: client
-                };
-            }
-            else {
-                commandExecutionInfo = {
-                    authorID: BigInt(message.author.id),
-                    guildID: BigInt(message.guild.id),
-                    client: client
-                };
-            }
-            var argsCheckResult = await command.checkRequiredArgs(commandInfo.args, commandExecutionInfo);
+            var argsCheckResult = await command.checkRequiredArgs(commandInfo.args, message);
             if(argsCheckResult.valid) {
                 command.execute(message, commandInfo.args);
             }

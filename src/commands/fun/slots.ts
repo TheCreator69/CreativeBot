@@ -1,6 +1,6 @@
 import {Message} from "discord.js";
 import * as CreditsHandler from "../../scripts/creditshandler";
-import {CreativeCommand, ArgsCheckResult, CommandExecutionInfo} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 
 export class SlotsCommand implements CreativeCommand {
     name = "slots";
@@ -15,7 +15,7 @@ export class SlotsCommand implements CreativeCommand {
     slotColumns = 3;
     slotRows = 3;
 
-    async checkRequiredArgs(args: string[], commandExecutionInfo: CommandExecutionInfo | undefined): Promise<ArgsCheckResult> {
+    async checkRequiredArgs(args: string[], message: Message | undefined): Promise<ArgsCheckResult> {
         var bet = parseInt(args[0]);
         if(isNaN(bet)) {
             return {valid: false, replyMessage: "Please enter a number as a bet!"};
@@ -24,7 +24,7 @@ export class SlotsCommand implements CreativeCommand {
             return {valid: false, replyMessage: "Nice try, but I thought of that. Please enter a bet above 0."};
         }
         //@ts-ignore
-        var creditsOfAuthor = await CreditsHandler.getCreditsForUser(commandExecutionInfo.authorID);
+        var creditsOfAuthor = await CreditsHandler.getCreditsForUser(message.author.id);
         if(bet > creditsOfAuthor) {
             return {valid: false, replyMessage: "Your bet exceeds the amount of Creative Credits you have!"};
         }

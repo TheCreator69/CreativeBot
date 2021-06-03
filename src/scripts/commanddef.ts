@@ -1,4 +1,4 @@
-import {Message, Client} from "discord.js";
+import {Message} from "discord.js";
 
 export interface CreativeCommand {
     name: string,
@@ -8,17 +8,11 @@ export interface CreativeCommand {
     admin_only: boolean,
     guild_only: boolean
     category?: string,
-    checkRequiredArgs?: (args: string[], commandExecutionInfo?: CommandExecutionInfo) => Promise<ArgsCheckResult>,
+    checkRequiredArgs?: (args: string[], message?: Message) => Promise<ArgsCheckResult>,
     execute: (message: Message, args: string[]) => void
 }
 
 export interface ArgsCheckResult {
     valid: boolean,
     replyMessage?: string
-}
-
-export interface CommandExecutionInfo {
-    authorID: bigint,
-    guildID: bigint | undefined,
-    client: Client
 }

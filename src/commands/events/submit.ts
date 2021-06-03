@@ -2,7 +2,7 @@ import * as Index from "../../index";
 import {MessageEmbed, TextChannel, Message, User} from "discord.js";
 import * as EventHandler from "../../scripts/eventhandler";
 import * as UIFunctions from "../../scripts/uifunctions";
-import {CreativeCommand, ArgsCheckResult, CommandExecutionInfo} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 
 export class SubmitCommand implements CreativeCommand {
     name = "submit";
@@ -12,9 +12,9 @@ export class SubmitCommand implements CreativeCommand {
     admin_only = false;
     guild_only = true;
 
-    async checkRequiredArgs(args: string[], commandExecutionInfo: CommandExecutionInfo | undefined): Promise<ArgsCheckResult> {
+    async checkRequiredArgs(args: string[], message: Message | undefined): Promise<ArgsCheckResult> {
         //@ts-ignore
-        const channelEntry = await EventHandler.getEventChannel(commandExecutionInfo.guildID);
+        const channelEntry = await EventHandler.getEventChannel(message.guild.id);
         if(channelEntry === null) {
             return {valid: false, replyMessage: "This server doesn't have an event channel!"};
         }
