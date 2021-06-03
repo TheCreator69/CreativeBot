@@ -26,23 +26,29 @@ export class HelpCommand implements CreativeCommand {
 
     createCorrectHelpEmbed(message: Message, args: string[]): MessageEmbed {
         if(!args.length) {
-            return this.createHelpEmbed("#52ce7b",
-            ":page_facing_up: List of possible commands:",
-            this.listAllCommandsAlphabetically(message),
-            "To learn more about individual commands, use " + config.prefix + "help [command]!");
+            return this.createHelpEmbed(
+                "#52ce7b",
+                ":page_facing_up: List of possible commands:",
+                this.listAllCommandsAlphabetically(message),
+                "To learn more about individual commands, use " + config.prefix + "help [command]!"
+            );
         }
         else {
-            if(this.doesCommandExist(args)) {
-                return this.createHelpEmbed("#499fff",
-                // @ts-ignore
-                ":ledger: Help for: " + this.getCommandInstance(args).name,
-                this.createCommandInfoString(args),
-                "Arguments wrapped with \"<>\" are required, others wrapped with \"[]\" are optional.");
+            if(this.doesCommandExistForAuthor(args)) {
+                return this.createHelpEmbed(
+                    "#499fff",
+                    // @ts-ignore
+                    ":ledger: Help for: " + this.getCommandInstance(args).name,
+                    this.createCommandInfoString(args),
+                    "Arguments wrapped with \"<>\" are required, others wrapped with \"[]\" are optional."
+                );
             }
             else {
-                return this.createHelpEmbed("#ff0000",
-                ":interrobang: Invalid command!",
-                "Sorry, but this command doesn't exist :frowning:");
+                return this.createHelpEmbed(
+                    "#ff0000",
+                    ":interrobang: Invalid command!",
+                    "Sorry, but this command doesn't exist :frowning:"
+                );
             }
         }
     }
@@ -90,7 +96,7 @@ export class HelpCommand implements CreativeCommand {
         return "";
     }
 
-    doesCommandExist(args: string[]): boolean {
+    doesCommandExistForAuthor(args: string[]): boolean {
         var commandObject = this.getCommandInstance(args);
         if(commandObject === undefined) {
             return false;
