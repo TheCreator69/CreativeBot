@@ -5,13 +5,15 @@ import {CreativeCommand} from "./scripts/commanddef";
 import {CreativeEvent} from "./scripts/eventdef";
 import path from "path";
 import * as CommandFactory from "./scripts/commandfactory";
+import * as Localizer from "./scripts/localizer";
 
 export const client = new Discord.Client();
 export var commands: Discord.Collection<string, CreativeCommand> = new Discord.Collection();
 
 startBot();
 
-function startBot() {
+async function startBot() {
+    await Localizer.initializeLocalizer();
     var srcDirPath = getAbsoluteSourceDirPathForEnv();
     readCommandFilesAndRegisterCommands(srcDirPath);
     readEventFilesAndListenToEvents(srcDirPath);
