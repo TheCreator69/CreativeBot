@@ -46,7 +46,7 @@ export class CreditsCommand implements CreativeCommand {
     }
 
     drawUserInfo(context: Canvas.CanvasRenderingContext2D, user: User, credits: number, creditsRank: CreditsHandler.CreditsRanking): void {
-        context.font = "50px Arial";
+        context.font = "45px Bahnschrift";
         context.fillStyle = "#ffffff";
         context.fillText(user.username, 280, 100);
         context.font = "40px Arial"
@@ -54,6 +54,6 @@ export class CreditsCommand implements CreativeCommand {
         context.fillText(credits.toString(), 340, 180);
         context.font = "40px Arial"
         context.fillStyle = "#ff0000";
-        context.fillText(creditsRank.position + " of " + creditsRank.max, 605, 180);
+        context.fillText(creditsRank.position + " of " + creditsRank.max, 640, 180);
     }
 }
