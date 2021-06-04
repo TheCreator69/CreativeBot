@@ -1,7 +1,6 @@
 import {MessageAttachment, Message, User, TextChannel, DMChannel, NewsChannel} from "discord.js";
 import * as Canvas from "canvas";
 import * as CreditsHandler from "../../scripts/creditshandler";
-import * as UIFunctions from "../../scripts/uifunctions";
 import {CreativeCommand} from "../../scripts/commanddef";
 
 export class CreditsCommand implements CreativeCommand {
@@ -13,10 +12,10 @@ export class CreditsCommand implements CreativeCommand {
     guild_only = false;
 
     async execute(message: Message, args: string[]): Promise<void> {
-        await this.displayUserInfoOnCreditsBadge(message.channel, message.author);
+        this.displayUserInfoOnCreditsBanner(message.channel, message.author);
     }
 
-    async displayUserInfoOnCreditsBadge(channel: TextChannel | DMChannel | NewsChannel, user: User): Promise<void> {
+    async displayUserInfoOnCreditsBanner(channel: TextChannel | DMChannel | NewsChannel, user: User): Promise<void> {
         var userCredits = await CreditsHandler.getCreditsForUser(BigInt(user.id));
         var creditsRank = await CreditsHandler.getCreditsRankForUser(BigInt(user.id));
         var creditsBadge = await this.drawCreditsBadge(user, userCredits, creditsRank);
@@ -26,41 +25,35 @@ export class CreditsCommand implements CreativeCommand {
     }
 
     async drawCreditsBadge(user: User, credits: number, creditsRank: CreditsHandler.CreditsRanking): Promise<Buffer> {
-        const canvas = Canvas.createCanvas(750, 200);
+        const canvas = Canvas.createCanvas(1000, 250);
         const context = canvas.getContext("2d");
 
-        this.drawBackground(canvas, context);
-        await this.drawAuthorAvatar(canvas, context, user);
-        this.drawUserInfo(canvas, context, user, credits, creditsRank);
+        await this.drawBackground(canvas, context);
+        await this.drawAuthorAvatar(context, user);
+        this.drawUserInfo(context, user, credits, creditsRank);
 
         return canvas.toBuffer();
     }
 
-    drawBackground(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D): void {
-        context.fillStyle = "#666666";
-        context.fillRect(0, 0, canvas.width, canvas.height);
+    async drawBackground(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D): Promise<void> {
+        const creditsBanner = await Canvas.loadImage("./media/CreativeCreditsBanner.png");
+        context.drawImage(creditsBanner, 0, 0, canvas.width, canvas.height);
     }
 
-    async drawAuthorAvatar(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D, user: User): Promise<void> {
+    async drawAuthorAvatar(context: Canvas.CanvasRenderingContext2D, user: User): Promise<void> {
         const avatar = await Canvas.loadImage(user.displayAvatarURL({format: "png"}));
-        context.drawImage(avatar, 25, 25, 150, 150);
-        context.strokeStyle = "#ffffff";
-        context.lineWidth = 10;
-        context.strokeRect(0, 0, canvas.width, canvas.height);
-        context.lineWidth = 5;
-        context.strokeRect(25, 25, 150, 150);
+        context.drawImage(avatar, 85, 50, 150, 150);
     }
 
-    drawUserInfo(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D, user: User, credits: number, creditsRank: CreditsHandler.CreditsRanking): void {
-        context.font = UIFunctions.getFittingFontSize(canvas, context, user.username, 65);
+    drawUserInfo(context: Canvas.CanvasRenderingContext2D, user: User, credits: number, creditsRank: CreditsHandler.CreditsRanking): void {
+        context.font = "50px Arial";
         context.fillStyle = "#ffffff";
-        context.fillText(user.username, 210, 75);
-        context.font = UIFunctions.getFittingFontSize(canvas, context, credits.toString(), 45);
+        context.fillText(user.username, 280, 100);
+        context.font = "40px Arial"
         context.fillStyle = "#ffff00";
-        context.fillText("Creative Credits: " + credits, 210, 125);
-        var rankText = "Credits Rank: #" + creditsRank.position + " out of " + creditsRank.max;
-        context.font = UIFunctions.getFittingFontSize(canvas, context, rankText, 45);
+        context.fillText(credits.toString(), 340, 180);
+        context.font = "40px Arial"
         context.fillStyle = "#ff0000";
-        context.fillText(rankText, 210, 175);
+        context.fillText(creditsRank.position + " of " + creditsRank.max, 600, 180);
     }
 }
