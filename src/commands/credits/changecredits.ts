@@ -24,6 +24,9 @@ export class ChangeCreditsCommand implements CreativeCommand {
         if(isNaN(amount)) {
             return {valid: false, replyMessage: "Please enter a valid amount of Creative Credits!"};
         }
+        if(amount > 2147483647) {
+            return {valid: false, replyMessage: "Can't set Creative Credits to more than 2147483647!"};
+        }
         const mentionedUser = this.userFromMentionCallback(args[2]);
         if(mentionedUser === undefined) {
             return {valid: false, replyMessage: "Please mention a user!"};
