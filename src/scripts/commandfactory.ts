@@ -15,6 +15,7 @@ export function createCommand(file: string, commandModule: any): CreativeCommand
         case "obama": return new commandModule.ObamaCommand();
         case "slots": return new commandModule.SlotsCommand();
         case "thumbsup": return new commandModule.ThumbsupCommand();
+        case "changelog": return new commandModule.ChangelogCommand();
         case "help": return new commandModule.HelpCommand(commands);
         case "ping": return new commandModule.PingCommand();
         case "socials": return new commandModule.SocialsCommand();
