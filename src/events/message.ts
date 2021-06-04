@@ -35,8 +35,15 @@ async function handleMessageInProduction(message: Message): Promise<void> {
 }
 
 async function handleMessageInDevAndBuild(message: Message): Promise<void> {
-    if(message.content.startsWith(config.prefix) && !message.author.bot && await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
-        await executeCommandIfPossible(message);
+    if(message.content.startsWith(config.prefix) && !message.author.bot) {
+        if(await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
+            if(message.channel.type == "dm") {
+                await executeCommandIfPossible(message);
+            }
+            else if(message.guild && message.guild.available && message.guild.id == "822898508495323196") {
+                await executeCommandIfPossible(message);
+            }
+        }
     }
 }
 
