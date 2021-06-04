@@ -54,6 +54,6 @@ export class CreditsCommand implements CreativeCommand {
         context.fillText(credits.toString(), 340, 180);
         context.font = "40px Arial"
         context.fillStyle = "#ff0000";
-        context.fillText(creditsRank.position + " of " + creditsRank.max, 600, 180);
+        context.fillText(creditsRank.position + " of " + creditsRank.max, 605, 180);
     }
 }
