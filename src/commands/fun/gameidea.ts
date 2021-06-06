@@ -19,8 +19,9 @@ export class BaseFormatter implements GameIdeaFormatter {
 
 export class TwoGenresFormatter extends BaseFormatter {
     format() {
-        var genre0 = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
-        var genre1 = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
+        let genre0 = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
+        let genre1 = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
+        let location = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.locations);
 
         if(genre1 == genre0) {
             var modifiedGenreArray = this.gameIdeaCommand.genres.slice();
@@ -29,36 +30,43 @@ export class TwoGenresFormatter extends BaseFormatter {
             genre1 = this.gameIdeaCommand.getRandomArrayElement(modifiedGenreArray);
         }
 
-        return "A mix of " + genre0 + " and " + genre1 + " set " + this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.locations);
+        return Localizer.translate("gameidea.twoGenresFormat", {genre0: genre0, genre1: genre1, location: location});
     }
 }
 
 export class OneGenreFormatter extends BaseFormatter {
     format() {
-        var genre = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
-        return this.gameIdeaCommand.getCorrectFormOfArticle(genre) + genre + " set " + this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.locations);
+        let genre = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
+        let article = this.gameIdeaCommand.getCorrectFormOfArticle(genre);
+        let location = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.locations);
+        return Localizer.translate("gameidea.oneGenreFormat", {article: article, genre: genre, location: location});
     }
 }
 
 export class GenreWithModifierFormatter extends BaseFormatter {
     format() {
-        var genre = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
-        return this.gameIdeaCommand.getCorrectFormOfArticle(genre) + genre + " where " + this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.modifiers);
+        let genre = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
+        let article = this.gameIdeaCommand.getCorrectFormOfArticle(genre);
+        let modifier = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.modifiers);
+        return Localizer.translate("gameidea.genreWithModifierFormat", {article: article, genre: genre, modifier: modifier});
     }
 }
 
 export class ThemeWithModifierFormatter extends BaseFormatter {
     format() {
-        var theme = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.themes);
+        let theme = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.themes);
         theme = theme.replace(/^\w/, (c: string) => c.toUpperCase());
-        return theme + ", but " + this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.modifiers);
+        let modifier = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.modifiers)
+        return Localizer.translate("gameidea.themeWithModiferFormat", {theme: theme, modifier: modifier});
     }
 }
 
 export class GenreWithThemeFormatter extends BaseFormatter {
     format() {
-        var genre = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
-        return this.gameIdeaCommand.getCorrectFormOfArticle(genre) + genre + " about " + this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.themes);
+        let genre = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.genres);
+        let article = this.gameIdeaCommand.getCorrectFormOfArticle(genre);
+        let theme = this.gameIdeaCommand.getRandomArrayElement(this.gameIdeaCommand.themes);
+        return Localizer.translate("gameidea.genreWithThemeFormat", {article: article, genre: genre, theme: theme});
     }
 }
 
@@ -85,7 +93,7 @@ export class GameIdeaCommand implements CreativeCommand {
 
     generateGameIdea(): string {
         var randomformatIndex = Math.floor(Math.random() * this.formatters.length);
-        var ideaString = "**Game Idea:** \n";
+        var ideaString = Localizer.translate("gameidea.gameIdeaHeader");
         ideaString += this.formatters[randomformatIndex].format();
         return ideaString;
     }
@@ -95,10 +103,10 @@ export class GameIdeaCommand implements CreativeCommand {
         var vowels = ["a", "e", "i", "o", "u"];
         for(let vowel of vowels) {
             if(nextWord.startsWith(vowel)) {
-                return "An ";
+                return Localizer.translate("gameidea.article0");
             }
         }
-        return "A ";
+        return Localizer.translate("gameidea.article1");
     }
 
     getRandomArrayElement(array: string[]): string {
@@ -133,7 +141,7 @@ export class GameIdeaCommand implements CreativeCommand {
         "Drawing bame",
         "Browser-based game",
         "Card game",
-        "Webcam/Mic game",
+        "Webcam or Mic game",
         "VR game",
         "Flying game",
         "Sound-based game",
