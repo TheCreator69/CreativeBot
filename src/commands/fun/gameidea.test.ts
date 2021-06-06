@@ -13,12 +13,12 @@ beforeAll(() => {
     gameIdeaCommandWithoutFormatters.formatters = [];
 });
 
-test("Processes the word 'Apple' and returns 'An '", () => {
-    expect(gameIdeaCommand.getCorrectFormOfArticle("Apple")).toBe("An ");
+test("Processes the word 'Apple' and returns 'An'", () => {
+    expect(gameIdeaCommand.getCorrectFormOfArticle("Apple")).toBe("An");
 });
 
-test("Processes the word 'Mango' and returns 'A '", () => {
-    expect(gameIdeaCommand.getCorrectFormOfArticle("Mango")).toBe("A ");
+test("Processes the word 'Mango' and returns 'A'", () => {
+    expect(gameIdeaCommand.getCorrectFormOfArticle("Mango")).toBe("A");
 });
 
 test("Adds a formatter to command and tests returned string", () => {
