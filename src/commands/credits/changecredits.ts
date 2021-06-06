@@ -56,18 +56,18 @@ export class ChangeCreditsCommand implements CreativeCommand {
     }
 
     async addCreditsAndNotifyUser(message: Message, amount: number, mention: User): Promise<void> {
-        message.channel.send("Added " + amount + " Creative Credits to " + mention.username + "!");
+        message.channel.send(Localizer.translate("changecredits.addedCredits", {amount: amount, username: mention.username}));
         await CreditsHandler.incrementCreditsForUser(BigInt(mention.id), amount);
     }
 
     async removeCreditsAndNotifyUser(message: Message, amount: number, mention: User): Promise<void> {
-        message.channel.send("Removed " + amount + " Creative Credits from " + mention.username + "!");
+        message.channel.send(Localizer.translate("changecredits.removedCredits", {amount: amount, username: mention.username}));
         var amountToRemove = amount * -1 as number;
         await CreditsHandler.incrementCreditsForUser(BigInt(mention.id), amountToRemove);
     }
 
     async setCreditsAndNotifyUser(message: Message, amount: number, mention: User): Promise<void> {
-        message.channel.send("Set Creative Credits to " + amount + " for " + mention.username + "!");
+        message.channel.send(Localizer.translate("changecredits.setCredits", {amount: amount, username: mention.username}));
         await CreditsHandler.setCreditsForUser(BigInt(mention.id), amount);
     }
 }
