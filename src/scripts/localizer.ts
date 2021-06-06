@@ -9,6 +9,9 @@ export async function initializeLocalizer(): Promise<void> {
         preload: ["en"],
         ns: ["translation"],
         returnObjects: true,
+        interpolation: {
+            escapeValue: false
+        },
         backend: {
             loadPath: "./locales/{{lng}}/{{ns}}.json"
         }
