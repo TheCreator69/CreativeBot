@@ -1,0 +1,108 @@
+{
+    "changecredits": {
+        "name": "changecredits",
+        "description": "Changes or sets Creative Credits for a specific user",
+        "syntax": "changecredits <add/remove/set> <amount> <user mention>",
+        "invalidArg0": "Please use either \"add\", \"remove\" or \"set\" to change a user's Creative Credits!",
+        "arg1NaN": "Please enter a valid amount of Creative Credits!",
+        "arg1TooLarge": "Can't set Creative Credits to more than 2147483647!",
+        "invalidArg2": "Please mention a valid user!",
+        "setNegative": "You can't set someone's Creative Credits to be negative! They'll be in debt and that's just cruel :pleading_face:"
+    },
+    "credits": {
+        "name": "credits",
+        "description": "Checks your Creative Credits balance",
+        "syntax": "credits"
+    },
+    "setevent": {
+        "name": "setevent",
+        "description": "Sets a server's event channel or deletes the event association of the current event channel",
+        "syntax": "setevent <channel ID/delete>",
+        "arg0NaN": "You need to enter a number as a channel ID!",
+        "invalidChannel": "Couldn't find channel by ID!",
+        "deletedChannel": "Previous event channel is no longer considered an event channel!",
+        "addedChannel": "Set up new event channel!",
+        "changedChannel": "Changed current event channel!"
+    },
+    "submit": {
+        "name": "submit",
+        "description": "Submits an entry for the current event in the server's event channel",
+        "syntax": "submit <link> <description>",
+        "noEventChannel": "This server doesn't have an event channel!",
+        "noActiveEvent": "There is currently no active event. Please return later.",
+        "successfulPost": "Posted submission in event channel!"
+    },
+    "toggleevent": {
+        "name": "toggleevent",
+        "description": "Turns the event channel for a server on or off, allowing or disallowing submissions to be posted to said channel",
+        "syntax": "toggleevent <on/off>",
+        "invalidArg0": "Please type either \"on\" or \"off\"!",
+        "noEventChannel": "This server doesn't have an event channel!",
+        "enabledEventChannel": "Event channel has been enabled!",
+        "disabledEventChannel": "Event channel has been disabled!"
+    },
+    "gameidea": {
+        "name": "gameidea",
+        "description": "Generates a random game idea",
+        "syntax": "gameidea"
+    },
+    "math": {
+        "name": "math",
+        "description": "Tests your math skills and quick thinking with an exercise that needs to be solved in a few seconds",
+        "syntax": "math"
+    },
+    "obama": {
+        "name": "obama",
+        "description": "Sends an inspiring Obama picture with an equally inspiring message (hopefully)",
+        "syntax": "obama <message>",
+        "imageName": "obama-is-very-inspiring"
+    },
+    "slots": {
+        "name": "slots",
+        "description": "Simulates a slot machine, but without the monetary losses...and gains. You win if there are horizontal or diagonal lines of matching symbols",
+        "syntax": "slots <bet>",
+        "arg0NaN": "Please enter a number as a bet!",
+        "negativeBet": "Nice try, but I thought of that. Please enter a bet above 0.",
+        "tooLargeBet": "Your bet exceeds the amount of Creative Credits you have!",
+        "rolling": "Rolling",
+        "lostBet": "Unfortunately, you lost your bet :frowning:\nBetter luck next time!\n"
+    },
+    "thumbsup": {
+        "name": "thumbsup",
+        "description": "Gives the user mentioned a thumbs up on their last message :thumbsup:",
+        "syntax": "thumbsup <user mention>",
+        "invalidUser": "You just specified an invalid user! Who am I supposed to react to? :frowning:",
+        "cantFindLastMessage": "Couldn't find the last message of the specified user, sorry! :flushed:"
+    },
+    "changelog": {
+        "name": "changelog",
+        "description": "Lists everything that's new in the latest version of the Creative Bot",
+        "syntax": "changelog"
+    },
+    "help": {
+        "name": "help",
+        "description": "Lists all possible commands or info about a specific command if one is specified",
+        "syntax": "help [command]",
+        "commandListTitle": ":page_facing_up: List of possible commands:",
+        "invalidCommandTitle": ":interrobang: Invalid command!",
+        "invalidCommandDescription": "Sorry, but this command doesn't exist :frowning:"
+    },
+    "ping": {
+        "name": "ping",
+        "description": "Checks the bot's ping",
+        "syntax": "ping"
+    },
+    "socials": {
+        "name": "socials",
+        "description": "Lists TheCreator's socials",
+        "syntax": "socials",
+        "embedTitle": "Follow me on social media!",
+        "embedDescription": "I post little to nothing, but seeing my follower count increase is incredibly satisfying.",
+        "embedFooter": "Please follow me, I need the gratification!"
+    },
+    "test": {
+        "name": "test",
+        "description": "Tests functionality in a clean .ts file",
+        "syntax": "test"
+    }
+}
