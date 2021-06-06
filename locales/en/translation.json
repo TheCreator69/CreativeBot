@@ -134,9 +134,7 @@
     },
     "messageEvent": {
         "maintenanceReply": "Bot is currently under maintenance, you can't use any commands right now! Sorry! :frowning:",
-        "guildOnlyCommand": "Please send this command in an available server!"
-    },
-    "readyEvent": {
-        "maintenanceStatus": "Bot is currently undergoing maintenance!"
+        "guildOnlyCommand": "Please send this command in an available server!",
+        "missingArgs": "You need to provide the required arguments for the command to work! See `{{prefix}}help {{commandName}}` for details!"
     }
 }
