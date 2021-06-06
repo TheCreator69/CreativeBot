@@ -8,6 +8,7 @@ export async function initializeLocalizer(): Promise<void> {
         fallbackLng: "en",
         preload: ["en"],
         ns: ["translation"],
+        returnObjects: true,
         backend: {
             loadPath: "./locales/{{lng}}/{{ns}}.json"
         }
@@ -20,5 +21,9 @@ export async function initializeLocalizer(): Promise<void> {
 }
 
 export function translate(key: string | string[], options?: object): string {
+    return i18next.t(key, options);
+}
+
+export function translateArray(key: string | string[], options?: object): object {
     return i18next.t(key, options);
 }
