@@ -104,5 +104,12 @@
         "name": "test",
         "description": "Tests functionality in a clean .ts file",
         "syntax": "test"
+    },
+    "messageEvent": {
+        "maintenanceReply": "Bot is currently under maintenance, you can't use any commands right now! Sorry! :frowning:",
+        "guildOnlyCommand": "Please send this command in an available server!"
+    },
+    "readyEvent": {
+        "maintenanceStatus": "Bot is currently undergoing maintenance!"
     }
 }
