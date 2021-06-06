@@ -119,7 +119,7 @@ async function canCommandBeExecuted(message: Message, commandInfo: CommandInfoFr
         return false;
     }
     if(commandInfo.args.length < command.min_args) {
-        message.channel.send("You need to provide the required arguments for the command to work! See `" + config.prefix + "help " + command.name + "` for details!");
+        message.channel.send(Localizer.translate("messageEvent.missingArgs", {prefix: config.prefix, commandName: command.name}));
         return false;
     }
     return true;
