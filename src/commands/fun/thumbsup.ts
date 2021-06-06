@@ -1,11 +1,12 @@
 import {Message, User} from "discord.js";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 import {getUserFromMention} from "../../scripts/discordutil";
+import * as Localizer from "../../scripts/localizer";
 
 export class ThumbsupCommand implements CreativeCommand {
-    name = "thumbsup";
-    description = "Gives the user mentioned a thumbs up on their last message :thumbsup:";
-    syntax = "thumbsup <user mention>";
+    name = Localizer.translate("thumbsup.name");
+    description = Localizer.translate("thumbsup.description");
+    syntax = Localizer.translate("thumbsup.syntax");
     min_args = 1;
     admin_only = false;
     guild_only = false;
@@ -13,7 +14,7 @@ export class ThumbsupCommand implements CreativeCommand {
     async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {
         var mentionedUser = getUserFromMention(args[0]);
         if(mentionedUser === undefined) {
-            return {valid: false, replyMessage: "You just specified an invalid user! Who am I supposed to react to? :frowning:"};
+            return {valid: false, replyMessage: Localizer.translate("thumbsup.invalidUser")};
         }
         return {valid: true};
     }
@@ -28,7 +29,7 @@ export class ThumbsupCommand implements CreativeCommand {
         message.channel.messages.fetch().then(function(messageMap: any) {
             var messagesByMentionedUser = messageMap.filter((m: any) => m.author.id == mentionedUser.id);
             if(!messagesByMentionedUser.size) {
-                message.channel.send("This user hasn't posted here in a while, I can't react to them :flushed:");
+                message.channel.send(Localizer.translate("thumbsup.cantFindLastMessage"));
                 return;
             }
             messagesByMentionedUser.first().react("👍");

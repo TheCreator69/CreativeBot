@@ -3,11 +3,12 @@ import {MessageEmbed, TextChannel, Message, User} from "discord.js";
 import * as EventHandler from "../../scripts/eventhandler";
 import * as UIFunctions from "../../scripts/uifunctions";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import * as Localizer from "../../scripts/localizer";
 
 export class SubmitCommand implements CreativeCommand {
-    name = "submit";
-    description = "Submits an entry for the current event in the server's event channel";
-    syntax = "submit <link> <description>";
+    name = Localizer.translate("submit.name");
+    description = Localizer.translate("submit.description");
+    syntax = Localizer.translate("submit.syntax");
     min_args = 2;
     admin_only = false;
     guild_only = true;
@@ -16,10 +17,10 @@ export class SubmitCommand implements CreativeCommand {
         //@ts-ignore
         const channelEntry = await EventHandler.getEventChannel(message.guild.id);
         if(channelEntry === null) {
-            return {valid: false, replyMessage: "This server doesn't have an event channel!"};
+            return {valid: false, replyMessage: Localizer.translate("submit.noEventChannel")};
         }
         if(!EventHandler.checkIfEventChannelIsActive(channelEntry)) {
-            return {valid: false, replyMessage: "There is currently no active event. Please return later."};
+            return {valid: false, replyMessage: Localizer.translate("submit.noActiveEvent")};
         }
         return {valid: true};
     }
@@ -28,7 +29,7 @@ export class SubmitCommand implements CreativeCommand {
         if(message.guild === null) return;
         const channelEntry = await EventHandler.getEventChannel(BigInt(message.guild.id));
         this.constructAndSendSubmissionEmbed(message, args, channelEntry.eventChannelID);
-        message.channel.send("Posted submission in event channel!");
+        message.channel.send(Localizer.translate("submit.successfulPost"));
     }
 
     constructAndSendSubmissionEmbed(message: Message, args: string[], channelID: bigint): void {

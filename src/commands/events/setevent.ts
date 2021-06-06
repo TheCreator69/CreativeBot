@@ -1,11 +1,12 @@
 import * as EventHandler from "../../scripts/eventhandler";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 import {Message} from "discord.js";
+import * as Localizer from "../../scripts/localizer";
 
 export class SetEventCommand implements CreativeCommand {
-    name = "setevent";
-    description = "Sets a server's event channel or deletes the event association of the current event channel";
-    syntax = "setevent <channel ID/delete>";
+    name = Localizer.translate("setevent.name");
+    description = Localizer.translate("setevent.description");
+    syntax = Localizer.translate("setevent.syntax");
     min_args = 1;
     admin_only = true;
     guild_only = true;
@@ -17,11 +18,11 @@ export class SetEventCommand implements CreativeCommand {
         else {
             var channelIDAsNumber = Number(args[0]);
             if(isNaN(channelIDAsNumber)) {
-                return {valid: false, replyMessage: "You need to enter a number as a channel ID!"};
+                return {valid: false, replyMessage: Localizer.translate("setevent.arg0NaN")};
             }
             //@ts-ignore
             if(message.guild.channels.cache.get(args[0]) === undefined) {
-                return {valid: false, replyMessage: "Couldn't find channel by ID!"};
+                return {valid: false, replyMessage: Localizer.translate("setevent.invalidChannel")};
             }
             return {valid: true};
         }
@@ -34,7 +35,7 @@ export class SetEventCommand implements CreativeCommand {
 
         if(channelEntry !== null && args[0] === "delete") {
             EventHandler.deleteEventChannel(serverID);
-            message.channel.send("Previous event channel is no longer considered an event channel!");
+            message.channel.send(Localizer.translate("setevent.deletedChannel"));
             return;
         }
 
@@ -42,12 +43,12 @@ export class SetEventCommand implements CreativeCommand {
         var channelID = BigInt(args[0]);
         if(channelEntry === null) {
             await EventHandler.createEventChannel(serverID, channelID);
-            message.channel.send("Set up new event channel!");
+            message.channel.send(Localizer.translate("setevent.addedChannel"));
             return;
         }
 
         await EventHandler.changeEventChannel(serverID, channelID);
-        message.channel.send("Changed current event channel!");
+        message.channel.send(Localizer.translate("setevent.changedChannel"));
         return;
     }
 }

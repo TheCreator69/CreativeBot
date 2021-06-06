@@ -1,5 +1,6 @@
 import {CreativeCommand} from "../../scripts/commanddef";
 import {Message} from "discord.js";
+import * as Localizer from "../../scripts/localizer";
 
 export interface GameIdeaFormatter {
     format: () => string
@@ -62,9 +63,9 @@ export class GenreWithThemeFormatter extends BaseFormatter {
 }
 
 export class GameIdeaCommand implements CreativeCommand {
-    name = "gameidea";
-    description = "Generates a random game idea";
-    syntax = "gameidea";
+    name = Localizer.translate("gameidea.name");
+    description = Localizer.translate("gameidea.description");
+    syntax = Localizer.translate("gameidea.syntax");
     min_args = 0;
     admin_only = false;
     guild_only = false;

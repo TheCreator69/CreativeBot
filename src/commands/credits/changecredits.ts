@@ -1,15 +1,16 @@
 import * as CreditsHandler from "../../scripts/creditshandler";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 import {Message, User} from "discord.js";
+import * as Localizer from "../../scripts/localizer";
 
 export class ChangeCreditsCommand implements CreativeCommand {
     constructor(_userFromMentionCallback: (argument: string) => User | undefined) {
         this.userFromMentionCallback = _userFromMentionCallback;
     }
 
-    name = "changecredits";
-    description = "Changes or sets Creative Credits for a specific user";
-    syntax = "changecredits <add/remove/set> <amount> <user mention>";
+    name = Localizer.translate("changecredits.name");
+    description = Localizer.translate("changecredits.description");
+    syntax = Localizer.translate("changecredits.syntax");
     min_args = 3;
     admin_only = true;
     guild_only = false;
@@ -18,21 +19,21 @@ export class ChangeCreditsCommand implements CreativeCommand {
 
     async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {
         if(args[0] !== "add" && args[0] !== "remove" && args[0] !== "set") {
-            return {valid: false, replyMessage: "Please use either \"add\", \"remove\" or \"set\" to change a user's Creative Credits!"};
+            return {valid: false, replyMessage: Localizer.translate("changecredits.invalidArg0")};
         }
         var amount = parseInt(args[1]);
         if(isNaN(amount)) {
-            return {valid: false, replyMessage: "Please enter a valid amount of Creative Credits!"};
+            return {valid: false, replyMessage: Localizer.translate("changecredits.arg1NaN")};
         }
         if(amount > 2147483647) {
-            return {valid: false, replyMessage: "Can't set Creative Credits to more than 2147483647!"};
+            return {valid: false, replyMessage: Localizer.translate("changecredits.arg1TooLarge")};
         }
         const mentionedUser = this.userFromMentionCallback(args[2]);
         if(mentionedUser === undefined) {
-            return {valid: false, replyMessage: "Please mention a user!"};
+            return {valid: false, replyMessage: Localizer.translate("changecredits.invalidArg2")};
         }
         if(args[0] === "set" && amount < 0) {
-            return {valid: false, replyMessage: "You can't set someone's Creative Credits to be negative! They'll be in debt and that's just cruel :pleading_face:"};
+            return {valid: false, replyMessage: Localizer.translate("changecredits.setNegative")};
         }
         return {valid: true};
     }
@@ -60,7 +61,7 @@ export class ChangeCreditsCommand implements CreativeCommand {
     }
 
     async removeCreditsAndNotifyUser(message: Message, amount: number, mention: User): Promise<void> {
-        message.channel.send("Removed " + amount + " Creative Credits from" + mention.username + "!");
+        message.channel.send("Removed " + amount + " Creative Credits from " + mention.username + "!");
         var amountToRemove = amount * -1 as number;
         await CreditsHandler.incrementCreditsForUser(BigInt(mention.id), amountToRemove);
     }

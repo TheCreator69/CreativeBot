@@ -1,11 +1,12 @@
 import {Message} from "discord.js";
 import * as CreditsHandler from "../../scripts/creditshandler";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import * as Localizer from "../../scripts/localizer";
 
 export class SlotsCommand implements CreativeCommand {
-    name = "slots";
-    description = "Simulates a slot machine, but without the monetary losses...and gains. You win if there are horizontal or diagonal lines of matching symbols";
-    syntax = "slots <bet>";
+    name = Localizer.translate("slots.name");
+    description = Localizer.translate("slots.description");
+    syntax = Localizer.translate("slots.syntax");
     min_args = 1;
     admin_only = false;
     guild_only = false;
@@ -18,15 +19,15 @@ export class SlotsCommand implements CreativeCommand {
     async checkRequiredArgs(args: string[], message: Message | undefined): Promise<ArgsCheckResult> {
         var bet = parseInt(args[0]);
         if(isNaN(bet)) {
-            return {valid: false, replyMessage: "Please enter a number as a bet!"};
+            return {valid: false, replyMessage: Localizer.translate("slots.arg0NaN")};
         }
         if(bet <= 0) {
-            return {valid: false, replyMessage: "Nice try, but I thought of that. Please enter a bet above 0."};
+            return {valid: false, replyMessage: Localizer.translate("slots.negativeBet")};
         }
         //@ts-ignore
         var creditsOfAuthor = await CreditsHandler.getCreditsForUser(message.author.id);
         if(bet > creditsOfAuthor) {
-            return {valid: false, replyMessage: "Your bet exceeds the amount of Creative Credits you have!"};
+            return {valid: false, replyMessage: Localizer.translate("slots.tooLargeBet")};
         }
         return {valid: true};
     }
@@ -37,7 +38,7 @@ export class SlotsCommand implements CreativeCommand {
     }
 
     async createAndEditMessageOverTime(message: Message, bet: number): Promise<void> {
-        var slotMessage = await message.channel.send("Rolling");
+        var slotMessage = await message.channel.send(Localizer.translate("slots.rolling"));
         this.animateRollingMessage(slotMessage);
         await this.finishAnimationAndAwardCoins(slotMessage, message, bet);
     }
@@ -45,13 +46,13 @@ export class SlotsCommand implements CreativeCommand {
     async animateRollingMessage(slotMessage: Message): Promise<void> {
         for(let i = 0; i < this.rollCycles; i++) {
             await this.sleep(1000);
-            slotMessage.edit("Rolling.");
+            slotMessage.edit(Localizer.translate("slots.rolling") + ".");
             await this.sleep(1000);
-            slotMessage.edit("Rolling..");
+            slotMessage.edit(Localizer.translate("slots.rolling") + "..");
             await this.sleep(1000);
-            slotMessage.edit("Rolling...");
+            slotMessage.edit(Localizer.translate("slots.rolling") + "...");
             await this.sleep(1000);
-            slotMessage.edit("Rolling");
+            slotMessage.edit(Localizer.translate("slots.rolling"));
         }
     }
 
@@ -140,7 +141,7 @@ export class SlotsCommand implements CreativeCommand {
         var slotMachineBorder = " - - - - - - - - -\n";
         var finishedSlotMessage = "";
         if(creditsWon == 0) {
-            finishedSlotMessage += "Unfortunately, you lost your bet :frowning:\nBetter luck next time!\n" + slotMachineBorder;
+            finishedSlotMessage += Localizer.translate("slots.lostBet") + slotMachineBorder;
         }
         else {
             finishedSlotMessage += "You've won " + creditsWon + " Creative Credits! Hooray!\n" + slotMachineBorder;

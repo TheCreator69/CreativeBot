@@ -3,11 +3,12 @@ import * as Canvas from "canvas";
 import * as UIFunctions from "../../scripts/uifunctions";
 import * as fs from "fs";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import * as Localizer from "../../scripts/localizer";
 
 export class ObamaCommand implements CreativeCommand {
-    name = "obama";
-    description = "Sends an inspiring Obama picture with an equally inspiring message (hopefully)";
-    syntax = "obama <message>";
+    name = Localizer.translate("obama.name");
+    description = Localizer.translate("obama.description");
+    syntax = Localizer.translate("obama.syntax");
     min_args = 1;
     admin_only = false;
     guild_only = false;
@@ -22,7 +23,7 @@ export class ObamaCommand implements CreativeCommand {
 
     async sendObamaImageWithText(message: Message, args: string[]): Promise<void> {
         var obamaImageBuffer = await this.createObamaImageBuffer(args);
-        var attachment = new MessageAttachment(obamaImageBuffer, "obama-is-very-inspiring.png");
+        var attachment = new MessageAttachment(obamaImageBuffer, Localizer.translate("obama.imageName") + ".png");
         message.channel.send(attachment);
     }
 

@@ -1,6 +1,7 @@
 //import * as LogChamp from "../../scripts/logchamp";
 import {Message} from "discord.js";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import * as Localizer from "../../scripts/localizer";
 
 export class TestCommand implements CreativeCommand {
 
@@ -10,9 +11,9 @@ export class TestCommand implements CreativeCommand {
         }
     }
 
-    name = "test";
-    description = "Tests functionality in a clean ts file";
-    syntax = "test";
+    name = Localizer.translate("test.name");
+    description = Localizer.translate("test.description");
+    syntax = Localizer.translate("test.syntax");
     min_args = 0;
     admin_only = true;
     guild_only = false;

@@ -2,11 +2,12 @@ import {MessageAttachment, Message, User, TextChannel, DMChannel, NewsChannel} f
 import * as Canvas from "canvas";
 import * as CreditsHandler from "../../scripts/creditshandler";
 import {CreativeCommand} from "../../scripts/commanddef";
+import * as Localizer from "../../scripts/localizer";
 
 export class CreditsCommand implements CreativeCommand {
-    name = "credits";
-    description = "Checks your Creative Credits balance";
-    syntax = "credits";
+    name = Localizer.translate("credits.name");
+    description = Localizer.translate("credits.description");
+    syntax = Localizer.translate("credits.syntax");
     min_args = 0;
     admin_only = false;
     guild_only = false;

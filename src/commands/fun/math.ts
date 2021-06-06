@@ -1,6 +1,7 @@
 import {Message} from "discord.js";
 import * as CreditsHandler from "../../scripts/creditshandler";
 import {CreativeCommand} from "../../scripts/commanddef";
+import * as Localizer from "../../scripts/localizer";
 
 export class MathQuestion {
     initialValue: number;
@@ -20,9 +21,9 @@ export class MathQuestion {
 }
 
 export class MathCommand implements CreativeCommand {
-    name = "math";
-    description = "Tests your math skills and quick thinking with an exercise that needs to be solved in a few seconds";
-    syntax = "math";
+    name = Localizer.translate("math.name");
+    description = Localizer.translate("math.description");
+    syntax = Localizer.translate("math.syntax");
     min_args = 0;
     admin_only = false;
     guild_only = false;

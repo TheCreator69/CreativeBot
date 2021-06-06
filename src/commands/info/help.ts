@@ -2,15 +2,16 @@ import {MessageEmbed, Message, Collection} from "discord.js";
 import * as config from "../../config.json";
 import * as AdminCheck from "../../scripts/admincheck";
 import {CreativeCommand} from "../../scripts/commanddef";
+import * as Localizer from "../../scripts/localizer";
 
 export class HelpCommand implements CreativeCommand {
     constructor(_commandCollection: Collection<string, CreativeCommand>) {
         this.commandCollection = _commandCollection;
     }
 
-    name = "help";
-    description = "Lists all possible commands or info about a specific command if one is specified";
-    syntax = "help [command]";
+    name = Localizer.translate("help.name");
+    description = Localizer.translate("help.description");
+    syntax = Localizer.translate("help.syntax");
     min_args = 0;
     admin_only = false;
     guild_only = false;
@@ -28,7 +29,7 @@ export class HelpCommand implements CreativeCommand {
         if(!args.length) {
             return this.createHelpEmbed(
                 "#52ce7b",
-                ":page_facing_up: List of possible commands:",
+                Localizer.translate("help.commandListTitle"),
                 this.listAllCommandsAlphabetically(message),
                 "To learn more about individual commands, use " + config.prefix + "help [command]!"
             );
@@ -46,14 +47,15 @@ export class HelpCommand implements CreativeCommand {
             else {
                 return this.createHelpEmbed(
                     "#ff0000",
-                    ":interrobang: Invalid command!",
-                    "Sorry, but this command doesn't exist :frowning:"
+                    Localizer.translate("help.invalidCommandTitle"),
+                    Localizer.translate("help.invalidCommandDescription"),
+                    ""
                 );
             }
         }
     }
 
-    createHelpEmbed(colorInHex: string, title: string, description: string, footer?: string): MessageEmbed {
+    createHelpEmbed(colorInHex: string, title: string, description: string, footer: string): MessageEmbed {
         var helpEmbed = new MessageEmbed();
         helpEmbed.setColor(colorInHex);
         helpEmbed.setTitle(title);
