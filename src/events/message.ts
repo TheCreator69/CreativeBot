@@ -4,6 +4,7 @@ import * as CreditsHandler from "../scripts/creditshandler";
 import {commands, client} from "../index";
 import {Message, Client} from "discord.js";
 import {EventAttributes} from "../scripts/eventdef";
+import * as Localizer from "../scripts/localizer";
 
 export var info: EventAttributes = {
     name: "message",
@@ -52,7 +53,7 @@ async function handleMessageInMaintenance(message: Message): Promise<void> {
         var commandInfo = getCommandInfoFromMessage(message);
 
         if(await canCommandBeExecuted(message, commandInfo)) {
-            message.channel.send("Bot is currently under maintenance, you can't use any commands right now! Sorry! :frowning:");
+            message.channel.send(Localizer.translate("messageEvent.maintenanceReply"));
         }
     }
 }
@@ -77,7 +78,7 @@ async function executeCommandIfPossible(message: Message): Promise<void> {
 
         if(command.guild_only) {
             if(!message.guild || !message.guild.available) {
-                message.channel.send("Please send this command in an available server!");
+                message.channel.send(Localizer.translate("messageEvent.guildOnlyCommand"));
                 return;
             }
         }

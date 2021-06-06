@@ -31,7 +31,7 @@ export class HelpCommand implements CreativeCommand {
                 "#52ce7b",
                 Localizer.translate("help.commandListTitle"),
                 this.listAllCommandsAlphabetically(message),
-                "To learn more about individual commands, use " + config.prefix + "help [command]!"
+                Localizer.translate("help.commandListFooter", {prefix: config.prefix})
             );
         }
         else {
@@ -39,9 +39,9 @@ export class HelpCommand implements CreativeCommand {
                 return this.createHelpEmbed(
                     "#499fff",
                     // @ts-ignore
-                    ":ledger: Help for: " + this.getCommandInstance(args).name,
+                    Localizer.translate("help.commandDetailsTitle", {commandName: this.getCommandInstance(args).name}),
                     this.createCommandInfoString(args),
-                    "Arguments wrapped with \"<>\" are required, others wrapped with \"[]\" are optional."
+                    Localizer.translate("help.commandDetailsFooter")
                 );
             }
             else {
@@ -113,8 +113,10 @@ export class HelpCommand implements CreativeCommand {
 
     createCommandInfoString(args: string[]): string {
         var commandObject = this.getCommandInstance(args);
-        // @ts-ignore
-        return "**Description:** " + commandObject.description + "\n" + "**Syntax:** *" + config.prefix + commandObject.syntax + "*\n" + "**Category:** " + commandObject.category.replace(/^\w/, (c: any) => c.toUpperCase());
+        //@ts-ignore
+        var category = commandObject.category.replace(/^\w/, (c: any) => c.toUpperCase());
+        //@ts-ignore
+        return Localizer.translate("help.commandInfoString", {description: commandObject.description, prefix: config.prefix, syntax: commandObject.syntax, category: category});
     }
 
     getCommandInstance(args: string[]): CreativeCommand | undefined {

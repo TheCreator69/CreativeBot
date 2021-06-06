@@ -70,9 +70,9 @@ export class MathCommand implements CreativeCommand {
 
     createQuestionMessage(question: MathQuestion): string {
         var mathOperator;
-        if(question.isPlusOperator) mathOperator = " + ";
-        else mathOperator = " - ";
-        return "**Question:** " + question.initialValue + mathOperator + question.term + " = ?\nQuick, you only have " + question.timeForAnswering / 1000 + " seconds to answer!";
+        if(question.isPlusOperator) mathOperator = "+";
+        else mathOperator = "-";
+        return Localizer.translate("math.questionMessage", {initialValue: question.initialValue, mathOperator: mathOperator, term: question.term, timeForAnswering: question.timeForAnswering / 1000});
     }
 
     collectAndResolveAnswer(message: Message, question: MathQuestion): void {
@@ -90,18 +90,18 @@ export class MathCommand implements CreativeCommand {
 
     replyBasedOnValidityOfAnswer(message: Message, question: MathQuestion): void {
         if(parseInt(message.content) == question.result) {
-            message.channel.send("Correct answer! :smile:\nYou have been granted " + question.timeForAnswering / 1000 + " Creative Credits for answering correctly!");
+            message.channel.send(Localizer.translate("math.correctAnswer", {amount: question.timeForAnswering / 1000}));
             CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), question.timeForAnswering / 1000);
         }
         else {
-            message.channel.send("Wrong answer! The result was " + question.result + "! :frowning:\nYou have lost " + question.timeForAnswering / 1000 + " Creative Credits as a result!");
+            message.channel.send(Localizer.translate("math.wrongAnswer", {result: question.result, amount: question.timeForAnswering / 1000}));
             CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), question.timeForAnswering / 1000 * -1);
         }
     }
 
     replyIfNoMessagesWereSent(message: Message, question: MathQuestion, collectedMessages: any): void {
         if(collectedMessages.size == 0) {
-            message.channel.send("You didn't answer in time! The correct answer would have been " + question.result + "! :sweat:\nYou have lost " + question.timeForAnswering / 1000 * 2 + " Creative Credits as a result!");
+            message.channel.send(Localizer.translate("math.noAnswer", {result: question.result, amount: question.timeForAnswering / 1000 * 2}));
             CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), question.timeForAnswering / 1000 * -2);
         }
     }

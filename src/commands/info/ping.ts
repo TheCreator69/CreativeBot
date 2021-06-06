@@ -12,6 +12,6 @@ export class PingCommand implements CreativeCommand {
     guild_only = false;
 
     execute(message: Message, args: string[]): void {
-        message.channel.send("My ping is: __" + Index.client.ws.ping + "ms__!");
+        message.channel.send(Localizer.translate("ping.pingMessage", {ping: Index.client.ws.ping}));
     }
 }

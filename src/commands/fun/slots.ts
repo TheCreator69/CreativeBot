@@ -144,7 +144,7 @@ export class SlotsCommand implements CreativeCommand {
             finishedSlotMessage += Localizer.translate("slots.lostBet") + slotMachineBorder;
         }
         else {
-            finishedSlotMessage += "You've won " + creditsWon + " Creative Credits! Hooray!\n" + slotMachineBorder;
+            finishedSlotMessage += Localizer.translate("slots.wonBet", {amount: creditsWon}) + slotMachineBorder;
         }
         for(let i = 0; i < this.slotRows * this.slotColumns; i += 3) {
             var slotMachineRow = "  " + randomSymbols[i] + " " + randomSymbols[i + 1] + " " + randomSymbols[i + 2] + "  \n";

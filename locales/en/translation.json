@@ -7,7 +7,10 @@
         "arg1NaN": "Please enter a valid amount of Creative Credits!",
         "arg1TooLarge": "Can't set Creative Credits to more than 2147483647!",
         "invalidArg2": "Please mention a valid user!",
-        "setNegative": "You can't set someone's Creative Credits to be negative! They'll be in debt and that's just cruel :pleading_face:"
+        "setNegative": "You can't set someone's Creative Credits to be negative! They'll be in debt and that's just cruel :pleading_face:",
+        "addedCredits": "Added {{amount}} Creative Credits to {{username}}!",
+        "removedCredits": "Removed {{amount}} Creative Credits from {{username}}!",
+        "setCredits": "Set Creative Credits to {{amount}} for {{username}}!"
     },
     "credits": {
         "name": "credits",
@@ -44,12 +47,24 @@
     "gameidea": {
         "name": "gameidea",
         "description": "Generates a random game idea",
-        "syntax": "gameidea"
+        "syntax": "gameidea",
+        "twoGenresFormat": "A mix of {{genre0}} and {{genre1}} set {{location}}",
+        "oneGenreFormat": "{{article}} {{genre}} set {{location}}",
+        "genreWithModifierFormat": "{{article}} {{genre}} where {{modifier}}",
+        "themeWithModiferFormat": "{{theme}}, but {{modifier}}",
+        "genreWithThemeFormat": "{{article}} {{genre}} about {{theme}}",
+        "gameIdeaHeader": "**Game Idea:** \n",
+        "article0": "An",
+        "article1": "A"
     },
     "math": {
         "name": "math",
         "description": "Tests your math skills and quick thinking with an exercise that needs to be solved in a few seconds",
-        "syntax": "math"
+        "syntax": "math",
+        "questionMessage": "**Question:** {{initialValue}} {{mathOperator}} {{term}} = ?\nQuick, you only have {{timeForAnswering}} seconds to answer!",
+        "correctAnswer": "Correct answer! :smile:\nYou have been granted {{amount}} Creative Credits for answering correctly!",
+        "wrongAnswer": "Wrong answer! The result was {{result}}! :frowning:\nYou have lost {{amount}} Creative Credits as a result!",
+        "noAnswer": "You didn't answer in time! The correct answer would have been {{result}}! :sweat:\nYou have lost {{amount}} Creative Credits as a result!"
     },
     "obama": {
         "name": "obama",
@@ -65,7 +80,8 @@
         "negativeBet": "Nice try, but I thought of that. Please enter a bet above 0.",
         "tooLargeBet": "Your bet exceeds the amount of Creative Credits you have!",
         "rolling": "Rolling",
-        "lostBet": "Unfortunately, you lost your bet :frowning:\nBetter luck next time!\n"
+        "lostBet": "Unfortunately, you lost your bet :frowning:\nBetter luck next time!\n",
+        "wonBet": "You've won {{amount}} Creative Credits! Hooray!\n"
     },
     "thumbsup": {
         "name": "thumbsup",
@@ -77,20 +93,31 @@
     "changelog": {
         "name": "changelog",
         "description": "Lists everything that's new in the latest version of the Creative Bot",
-        "syntax": "changelog"
+        "syntax": "changelog",
+        "embedTitle": ":bell: New in Version 1.1!",
+        "embedFooter": "Last updated on: 4th July 2021",
+        "changelog": [
+            "**Added** this very command!",
+            "**Replaced** old credits banner with new sleek one. \nThis also fixed the issues with names not fitting inside of it."
+        ]
     },
     "help": {
         "name": "help",
         "description": "Lists all possible commands or info about a specific command if one is specified",
         "syntax": "help [command]",
         "commandListTitle": ":page_facing_up: List of possible commands:",
+        "commandListFooter": "To learn more about individual commands, use {{prefix}}help [command]!",
+        "commandDetailsTitle": ":ledger: Help for: {{commandName}}",
+        "commandDetailsFooter": "Arguments wrapped with \"<>\" are required, others wrapped with \"[]\" are optional.",
         "invalidCommandTitle": ":interrobang: Invalid command!",
-        "invalidCommandDescription": "Sorry, but this command doesn't exist :frowning:"
+        "invalidCommandDescription": "Sorry, but this command doesn't exist :frowning:",
+        "commandInfoString": "**Description:** {{description}}\n**Syntax:** *{{prefix}}{{syntax}}*\n**Category:** {{category}}"
     },
     "ping": {
         "name": "ping",
         "description": "Checks the bot's ping",
-        "syntax": "ping"
+        "syntax": "ping",
+        "pingMessage": "My ping is: __{{ping}}ms__!"
     },
     "socials": {
         "name": "socials",

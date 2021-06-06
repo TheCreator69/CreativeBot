@@ -17,22 +17,18 @@ export class ChangelogCommand implements CreativeCommand {
     constructChangelogEmbed(): MessageEmbed {
         const changelogEmbed = new MessageEmbed();
         changelogEmbed.setColor("#ffff00");
-        changelogEmbed.setTitle(":bell: New in Version 1.1!");
+        changelogEmbed.setTitle(Localizer.translate("changelog.embedTitle"));
         changelogEmbed.setDescription(this.constructListOfChanges());
-        changelogEmbed.setFooter("Last updated on: 4th July 2021");
+        changelogEmbed.setFooter(Localizer.translate("changelog.embedFooter"));
         return changelogEmbed;
     }
 
     constructListOfChanges(): string {
         var listOfChanges = "";
-        for(let changeEntry of this.changes) {
+        var changeArray: string[] = Object.values(Localizer.translateArray("changelog.changelog"));
+        for(let changeEntry of changeArray) {
             listOfChanges += changeEntry + "\n";
         }
         return listOfChanges;
     }
-
-    changes = [
-        "**Added** this very command!",
-        "**Replaced** old credits banner with new sleek one. \nThis also fixed the issues with names not fitting inside of it."
-    ];
 }
