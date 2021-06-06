@@ -9,7 +9,7 @@ export async function initializeLocalizer(): Promise<void> {
         preload: ["en"],
         ns: ["translation"],
         backend: {
-            loadPath: "./src/locales/{{lng}}/{{ns}}.json"
+            loadPath: "./locales/{{lng}}/{{ns}}.json"
         }
     }, (err, t) => {
         if(err) {
@@ -19,6 +19,6 @@ export async function initializeLocalizer(): Promise<void> {
     });
 }
 
-export function translate(key: string, ...args: string[]): string {
-    return i18next.t(key);
+export function translate(key: string | string[], options?: object): string {
+    return i18next.t(key, options);
 }
