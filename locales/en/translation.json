@@ -14,8 +14,9 @@
     },
     "credits": {
         "name": "credits",
-        "description": "Checks your Creative Credits balance",
-        "syntax": "credits"
+        "description": "Checks your own Creative Credits balance or those of other users",
+        "syntax": "credits [user mention]",
+        "invalidUser": "Couldn't find the user you were looking for!"
     },
     "setevent": {
         "name": "setevent",
@@ -95,10 +96,11 @@
         "description": "Lists everything that's new in the latest version of the Creative Bot",
         "syntax": "changelog",
         "embedTitle": ":bell: New in Version 1.1!",
-        "embedFooter": "Last updated on: 4th July 2021",
+        "embedFooter": "Last updated on: 7th July 2021",
         "changelog": [
             "**Added** this very command!",
-            "**Replaced** old credits banner with new sleek one. \nThis also fixed the issues with names not fitting inside of it."
+            "**Replaced** old credits banner with new sleek one. \nThis also fixed the issues with names not fitting inside of it.",
+            "**Added** the ability to check other people's Creative Credits balance"
         ]
     },
     "help": {
