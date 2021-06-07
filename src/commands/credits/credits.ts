@@ -3,6 +3,7 @@ import * as Canvas from "canvas";
 import * as CreditsHandler from "../../scripts/creditshandler";
 import {CreativeCommand} from "../../scripts/commanddef";
 import * as Localizer from "../../scripts/localizer";
+import * as DiscordUtil from "../../scripts/discordutil";
 
 export class CreditsCommand implements CreativeCommand {
     name = Localizer.translate("credits.name");
@@ -13,7 +14,19 @@ export class CreditsCommand implements CreativeCommand {
     guild_only = false;
 
     async execute(message: Message, args: string[]): Promise<void> {
-        this.displayUserInfoOnCreditsBanner(message.channel, message.author);
+        this.displayInfoOfCorrectUser(message, args);
+    }
+
+    async displayInfoOfCorrectUser(message: Message, args: string[]): Promise<void> {
+        if(!args.length) await this.displayUserInfoOnCreditsBanner(message.channel, message.author);
+        else {
+            var mentionedUser = DiscordUtil.getUserFromMention(args[0]);
+            if(mentionedUser === undefined) {
+                message.channel.send(Localizer.translate("credits.invalidUser"));
+                return;
+            }
+            await this.displayUserInfoOnCreditsBanner(message.channel, mentionedUser);
+        }
     }
 
     async displayUserInfoOnCreditsBanner(channel: TextChannel | DMChannel | NewsChannel, user: User): Promise<void> {
