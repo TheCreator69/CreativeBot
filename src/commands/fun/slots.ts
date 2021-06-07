@@ -65,7 +65,8 @@ export class SlotsCommand implements CreativeCommand {
             var randomSymbols = this.selectSeeminglyRandomSymbols();
             var horizontalLines = this.getHorizontalLineCount(randomSymbols);
             var diagonalLines = this.getDiagonalLineCount(randomSymbols);
-            var creditsWon = this.determineCreditsWon(horizontalLines, diagonalLines, bet);
+            var verticalLines = this.getVerticalLineCount(randomSymbols);
+            var creditsWon = this.determineCreditsWon(horizontalLines, diagonalLines, verticalLines, bet);
             this.finishEditingMessage(slotMessage, randomSymbols, creditsWon);
             this.withdrawOrAwardCredits(message, creditsWon, bet);
         }, this.rollCycles * 4000 + 1000);
@@ -90,51 +91,32 @@ export class SlotsCommand implements CreativeCommand {
         return randomSymbols;
     }
 
-    determineCreditsWon(horizontalLines: number, diagonalLines: number, bet: number): number {
-        var betMultiplier = horizontalLines * 2 + diagonalLines * 4;
-        return bet * betMultiplier;
-    }
-
-    getHorizontalLineCount(randomSymbols: string[]): number {
+    getHorizontalLineCount(symbols: string[]): number {
         var numberOfHorizontalLines = 0;
-        for(let rowStartIndex = 0; rowStartIndex < this.slotRows * this.slotColumns; rowStartIndex += this.slotColumns) {
-
-            for(let rowColumnIndex = 0; rowColumnIndex < this.slotColumns; rowColumnIndex++) {
-                if(randomSymbols[rowStartIndex] !== randomSymbols[rowStartIndex + rowColumnIndex]) {
-                    break;
-                }
-                if(rowColumnIndex === this.slotColumns - 1) numberOfHorizontalLines++;
-            }
-
+        for(let i = 0; i < this.slotRows * this.slotColumns; i += 3) {
+            if(symbols[i] === symbols[i + 1] && symbols[i] === symbols[i + 2]) numberOfHorizontalLines++;
         }
         return numberOfHorizontalLines;
     }
 
-    getDiagonalLineCount(randomSymbols: string[]): number {
+    getDiagonalLineCount(symbols: string[]): number {
         var numberOfDiagonalLines = 0;
-        //Check lines from top left to bottom right along top row
-        for(let i = 0; i < this.slotColumns - 2; i++) {
-
-            for(let j = 1; j < this.slotRows; j++) {
-                if(randomSymbols[i] !== randomSymbols[j * this.slotColumns + j]) {
-                    break;
-                }
-                if(j === this.slotRows - 1) numberOfDiagonalLines++;
-            }
-
-        }
-        //Check lines from top right to bottom left along top row
-        for(let i = this.slotColumns - 1; i > 1; i--) {
-
-            for(let j = 1; j < this.slotRows; j++) {
-                if(randomSymbols[i] !== randomSymbols[j * this.slotColumns + (this.slotColumns - 1 - j)]) {
-                    break;
-                }
-                if(j === this.slotRows - 1) numberOfDiagonalLines++;
-            }
-
-        }
+        if(symbols[0] === symbols[4] && symbols[0] === symbols[8]) numberOfDiagonalLines++;
+        if(symbols[2] === symbols[4] && symbols[2] === symbols[6]) numberOfDiagonalLines++;
         return numberOfDiagonalLines;
+    }
+
+    getVerticalLineCount(symbols: string[]): number {
+        var numberOfVerticalLines = 0;
+        for(let i = 0; i < this.slotColumns; i++) {
+            if(symbols[i] === symbols[i + 3] && symbols[i] === symbols[i + 6]) numberOfVerticalLines++;
+        }
+        return numberOfVerticalLines;
+    }
+
+    determineCreditsWon(horizontalLines: number, diagonalLines: number, verticalLines: number, bet: number): number {
+        var betMultiplier = horizontalLines * 2 + diagonalLines * 4 + verticalLines * 2;
+        return bet * betMultiplier;
     }
 
     finishEditingMessage(slotMessage: Message, randomSymbols: string[], creditsWon: number): void {
