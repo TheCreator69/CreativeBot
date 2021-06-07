@@ -98,7 +98,8 @@
         "changelog": [
             "**Added** this very command!",
             "**Replaced** old credits banner with new sleek one. \nThis also fixed the issues with names not fitting inside of it.",
-            "**Added** the ability to check other people's Creative Credits balance"
+            "**Added** the ability to check other people's Creative Credits balance",
+            "**Fixed** slot machine \"stuttering\""
         ]
     },
     "help": {
