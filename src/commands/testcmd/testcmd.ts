@@ -4,13 +4,6 @@ import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 import * as Localizer from "../../scripts/localizer";
 
 export class TestCommand implements CreativeCommand {
-
-    constructor(_testMessage?: string) {
-        if(_testMessage !== undefined) {
-            this.description = _testMessage;
-        }
-    }
-
     name = Localizer.translate("test.name");
     description = Localizer.translate("test.description");
     syntax = Localizer.translate("test.syntax");
@@ -24,9 +17,5 @@ export class TestCommand implements CreativeCommand {
 
     execute(message: Message, args: string[]): void {
         //Nothing to test.
-    }
-
-    getDescription(): string {
-        return this.description;
     }
 }
