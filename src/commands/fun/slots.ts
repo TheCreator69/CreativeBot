@@ -63,9 +63,9 @@ export class SlotsCommand implements CreativeCommand {
     async finishAnimationAndAwardCoins(slotMessage: Message, message: Message, bet: number): Promise<void> {
         setTimeout(() => {
             var randomSymbols = this.selectSeeminglyRandomSymbols();
-            var horizontalRows = this.getHorizontalRowCount(randomSymbols);
-            var diagonalRows = this.getDiagonalRowCount(randomSymbols);
-            var creditsWon = this.determineCreditsWon(horizontalRows, diagonalRows, bet);
+            var horizontalLines = this.getHorizontalLineCount(randomSymbols);
+            var diagonalLines = this.getDiagonalLineCount(randomSymbols);
+            var creditsWon = this.determineCreditsWon(horizontalLines, diagonalLines, bet);
             this.finishEditingMessage(slotMessage, randomSymbols, creditsWon);
             this.withdrawOrAwardCredits(message, creditsWon, bet);
         }, this.rollCycles * 4000 + 1000);
@@ -90,28 +90,28 @@ export class SlotsCommand implements CreativeCommand {
         return randomSymbols;
     }
 
-    determineCreditsWon(horizontalRows: number, diagonalRows: number, bet: number): number {
-        var betMultiplier = horizontalRows * 2 + diagonalRows * 4;
+    determineCreditsWon(horizontalLines: number, diagonalLines: number, bet: number): number {
+        var betMultiplier = horizontalLines * 2 + diagonalLines * 4;
         return bet * betMultiplier;
     }
 
-    getHorizontalRowCount(randomSymbols: string[]): number {
-        var numberOfHorizontalRows = 0;
+    getHorizontalLineCount(randomSymbols: string[]): number {
+        var numberOfHorizontalLines = 0;
         for(let rowStartIndex = 0; rowStartIndex < this.slotRows * this.slotColumns; rowStartIndex += this.slotColumns) {
 
             for(let rowColumnIndex = 0; rowColumnIndex < this.slotColumns; rowColumnIndex++) {
                 if(randomSymbols[rowStartIndex] !== randomSymbols[rowStartIndex + rowColumnIndex]) {
                     break;
                 }
-                if(rowColumnIndex === this.slotColumns - 1) numberOfHorizontalRows++;
+                if(rowColumnIndex === this.slotColumns - 1) numberOfHorizontalLines++;
             }
 
         }
-        return numberOfHorizontalRows;
+        return numberOfHorizontalLines;
     }
 
-    getDiagonalRowCount(randomSymbols: string[]): number {
-        var numberOfDiagonalRows = 0;
+    getDiagonalLineCount(randomSymbols: string[]): number {
+        var numberOfDiagonalLines = 0;
         //Check lines from top left to bottom right along top row
         for(let i = 0; i < this.slotColumns - 2; i++) {
 
@@ -119,7 +119,7 @@ export class SlotsCommand implements CreativeCommand {
                 if(randomSymbols[i] !== randomSymbols[j * this.slotColumns + j]) {
                     break;
                 }
-                if(j === this.slotRows - 1) numberOfDiagonalRows++;
+                if(j === this.slotRows - 1) numberOfDiagonalLines++;
             }
 
         }
@@ -130,11 +130,11 @@ export class SlotsCommand implements CreativeCommand {
                 if(randomSymbols[i] !== randomSymbols[j * this.slotColumns + (this.slotColumns - 1 - j)]) {
                     break;
                 }
-                if(j === this.slotRows - 1) numberOfDiagonalRows++;
+                if(j === this.slotRows - 1) numberOfDiagonalLines++;
             }
 
         }
-        return numberOfDiagonalRows;
+        return numberOfDiagonalLines;
     }
 
     finishEditingMessage(slotMessage: Message, randomSymbols: string[], creditsWon: number): void {

@@ -36,51 +36,51 @@ test("Checks if array output by function is of expected length", () => {
 
 test("Checks if no horizontal row gets detected in random symbol array", () => {
     const mockSymbols: string[] = ["same", "different", "same", "1", "2", "3", "4", "5", "6"];
-    expect(slotsCommand.getHorizontalRowCount(mockSymbols)).toEqual(0);
+    expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toEqual(0);
 });
 
 test("Checks if first horizontal row gets detected in random symbol array", () => {
     const mockSymbols: string[] = ["same", "same", "same", "1", "2", "3", "4", "5", "6"];
-    expect(slotsCommand.getHorizontalRowCount(mockSymbols)).toEqual(1);
+    expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toEqual(1);
 });
 
 test("Checks if second horizontal row gets detected in random symbol array", () => {
     const mockSymbols: string[] = ["0", "1", "2", "same", "same", "same", "6", "7", "8"];
-    expect(slotsCommand.getHorizontalRowCount(mockSymbols)).toEqual(1);
+    expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toEqual(1);
 });
 
 test("Checks if 2 horizontal rows get detected in random symbol array", () => {
     const mockSymbols: string[] = ["0", "1", "2", "same", "same", "same", "alsoSame", "alsoSame", "alsoSame"];
-    expect(slotsCommand.getHorizontalRowCount(mockSymbols)).toEqual(2);
+    expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toEqual(2);
 });
 
 test("Checks if 3 horizontal rows get detected in random symbol array", () => {
     const mockSymbols: string[] = ["same", "same", "same", "alsoSame", "alsoSame", "alsoSame", "stillSame", "stillSame", "stillSame"];
-    expect(slotsCommand.getHorizontalRowCount(mockSymbols)).toEqual(3);
+    expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toEqual(3);
 });
 
 test("Checks if 1 diagonal row from the top left gets detected in random symbol array", () => {
     const mockSymbols: string[] = ["same", "1", "2", "3", "same", "5", "6", "7", "same"];
-    expect(slotsCommand.getDiagonalRowCount(mockSymbols)).toEqual(1);
+    expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toEqual(1);
 });
 
 test("Checks if 1 diagonal row from the top right gets detected in random symbol array", () => {
     const mockSymbols: string[] = ["0", "1", "same", "3", "same", "5", "same", "7", "8"];
-    expect(slotsCommand.getDiagonalRowCount(mockSymbols)).toEqual(1);
+    expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toEqual(1);
 });
 
 test("Checks if 2 diagonal rows get detected in random symbol array", () => {
     const mockSymbols: string[] = ["same", "1", "same", "3", "same", "5", "same", "7", "same"];
-    expect(slotsCommand.getDiagonalRowCount(mockSymbols)).toEqual(2);
+    expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toEqual(2);
 });
 
 test("Checks if 2 diagonal rows get detected in random symbol array", () => {
     const mockSymbols: string[] = ["same", "1", "same", "3", "same", "5", "same", "7", "same"];
-    expect(slotsCommand.getDiagonalRowCount(mockSymbols)).toEqual(2);
+    expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toEqual(2);
 });
 
 test("Checks if 2 diagonal rows and 3 horizontal rows get detected in random symbol array", () => {
     const mockSymbols: string[] = ["same", "same", "same", "same", "same", "same", "same", "same", "same"];
-    expect(slotsCommand.getDiagonalRowCount(mockSymbols)).toEqual(2);
-    expect(slotsCommand.getHorizontalRowCount(mockSymbols)).toEqual(3);
+    expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toEqual(2);
+    expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toEqual(3);
 });
