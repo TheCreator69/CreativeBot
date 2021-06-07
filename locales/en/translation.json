@@ -54,9 +54,7 @@
         "genreWithModifierFormat": "{{article}} {{genre}} where {{modifier}}",
         "themeWithModiferFormat": "{{theme}}, but {{modifier}}",
         "genreWithThemeFormat": "{{article}} {{genre}} about {{theme}}",
-        "gameIdeaHeader": "**Game Idea:** \n",
-        "article0": "An",
-        "article1": "A"
+        "gameIdeaHeader": "**Game Idea:** \n"
     },
     "math": {
         "name": "math",

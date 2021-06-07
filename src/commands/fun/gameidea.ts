@@ -103,10 +103,10 @@ export class GameIdeaCommand implements CreativeCommand {
         var vowels = ["a", "e", "i", "o", "u"];
         for(let vowel of vowels) {
             if(nextWord.startsWith(vowel)) {
-                return Localizer.translate("gameidea.article0");
+                return "An";
             }
         }
-        return Localizer.translate("gameidea.article1");
+        return "A";
     }
 
     getRandomArrayElement(array: string[]): string {
