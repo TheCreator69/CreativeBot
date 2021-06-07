@@ -11,7 +11,7 @@ export class SlotsCommand implements CreativeCommand {
     admin_only = false;
     guild_only = false;
 
-    rollCycles = 3;
+    rollCycles = 2;
     symbols = [":grapes:", ":cherries:", ":lemon:", ":green_apple:", ":kiwi:", ":peach:"];
     slotColumns = 3;
     slotRows = 3;
@@ -45,14 +45,14 @@ export class SlotsCommand implements CreativeCommand {
 
     async animateRollingMessage(slotMessage: Message): Promise<void> {
         for(let i = 0; i < this.rollCycles; i++) {
-            await this.sleep(1000);
-            slotMessage.edit(Localizer.translate("slots.rolling") + ".");
-            await this.sleep(1000);
-            slotMessage.edit(Localizer.translate("slots.rolling") + "..");
-            await this.sleep(1000);
-            slotMessage.edit(Localizer.translate("slots.rolling") + "...");
-            await this.sleep(1000);
+            await this.sleep(1500);
             slotMessage.edit(Localizer.translate("slots.rolling"));
+            await this.sleep(1500);
+            slotMessage.edit(Localizer.translate("slots.rolling") + ".");
+            await this.sleep(1500);
+            slotMessage.edit(Localizer.translate("slots.rolling") + "..");
+            await this.sleep(1500);
+            slotMessage.edit(Localizer.translate("slots.rolling") + "...");
         }
     }
 
@@ -69,7 +69,7 @@ export class SlotsCommand implements CreativeCommand {
             var creditsWon = this.determineCreditsWon(horizontalLines, diagonalLines, verticalLines, bet);
             this.finishEditingMessage(slotMessage, randomSymbols, creditsWon);
             this.withdrawOrAwardCredits(message, creditsWon, bet);
-        }, this.rollCycles * 4000 + 1000);
+        }, this.rollCycles * 6000 + 1000);
     }
 
     selectSeeminglyRandomSymbols(): string[] {
