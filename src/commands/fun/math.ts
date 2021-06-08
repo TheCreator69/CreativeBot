@@ -8,7 +8,6 @@ export interface MathOperation {
     generateMathQuestion: () => MathQuestion
     getEquation: () => string
     getResult: () => number
-    getTimeForAnswering: () => number
 }
 
 export class Addition implements MathOperation {
@@ -50,10 +49,6 @@ export class Addition implements MathOperation {
 
     getResult() {
         return this.mathQuestion.value + this.mathQuestion.term;
-    }
-
-    getTimeForAnswering() {
-        return this.mathQuestion.timeForAnswering;
     }
 }
 
@@ -98,10 +93,6 @@ export class Subtraction implements MathOperation {
     getResult() {
         return this.mathQuestion.value - this.mathQuestion.term;
     }
-
-    getTimeForAnswering() {
-        return this.mathQuestion.timeForAnswering;
-    }
 }
 
 export class Multiplication implements MathOperation {
@@ -143,10 +134,6 @@ export class Multiplication implements MathOperation {
     getResult() {
         return this.mathQuestion.value * this.mathQuestion.term;
     }
-
-    getTimeForAnswering() {
-        return this.mathQuestion.timeForAnswering;
-    }
 }
 
 export class Division implements MathOperation {
@@ -184,10 +171,6 @@ export class Division implements MathOperation {
     getResult() {
         return this.mathQuestion.value / this.mathQuestion.term;
     }
-
-    getTimeForAnswering() {
-        return this.mathQuestion.timeForAnswering;
-    }
 }
 
 export class Modulo implements MathOperation {
@@ -221,10 +204,6 @@ export class Modulo implements MathOperation {
 
     getResult() {
         return this.mathQuestion.value % this.mathQuestion.term;
-    }
-
-    getTimeForAnswering() {
-        return this.mathQuestion.timeForAnswering;
     }
 }
 
@@ -260,7 +239,7 @@ export class MathCommand implements CreativeCommand {
 
         mathOperation.generateMathQuestion();
         var equation = mathOperation.getEquation();
-        let timeForAnsweringInSeconds = mathOperation.getTimeForAnswering() / 1000;
+        let timeForAnsweringInSeconds = mathOperation.mathQuestion.timeForAnswering / 1000;
 
         if(mathOperation instanceof Modulo) {
             message.channel.send(Localizer.translate("math.questionMessageModulo", {equation: equation, timeForAnswering: timeForAnsweringInSeconds}));
@@ -273,7 +252,7 @@ export class MathCommand implements CreativeCommand {
 
     collectAndResolveAnswer(message: Message, operation: MathOperation): void {
         const filter = (filteredMessage: Message) => filteredMessage.author.id === message.author.id;
-        const collector = message.channel.createMessageCollector(filter, {max: 1, time: operation.getTimeForAnswering()});
+        const collector = message.channel.createMessageCollector(filter, {max: 1, time: operation.mathQuestion.timeForAnswering});
 
         collector.on("collect", (collectedMessage: any) => {
             this.replyBasedOnValidityOfAnswer(collectedMessage, operation);
@@ -284,7 +263,7 @@ export class MathCommand implements CreativeCommand {
     }
 
     replyBasedOnValidityOfAnswer(message: Message, operation: MathOperation): void {
-        let timeForAnsweringInSeconds = operation.getTimeForAnswering() / 1000;
+        let timeForAnsweringInSeconds = operation.mathQuestion.timeForAnswering / 1000;
         if(parseInt(message.content) == operation.getResult()) {
             message.channel.send(Localizer.translate("math.correctAnswer", {amount: timeForAnsweringInSeconds}));
             CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), timeForAnsweringInSeconds);
@@ -296,7 +275,7 @@ export class MathCommand implements CreativeCommand {
     }
 
     replyIfNoMessagesWereSent(message: Message, operation: MathOperation, collectedMessages: any): void {
-        let timeForAnsweringInSeconds = operation.getTimeForAnswering() / 1000;
+        let timeForAnsweringInSeconds = operation.mathQuestion.timeForAnswering / 1000;
         if(collectedMessages.size == 0) {
             message.channel.send(Localizer.translate("math.noAnswer", {result: operation.getResult(), amount: timeForAnsweringInSeconds * 2}));
             CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), timeForAnsweringInSeconds * -2);
