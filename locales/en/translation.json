@@ -60,7 +60,7 @@
         "name": "math",
         "description": "Tests your math skills and quick thinking with an exercise that needs to be solved in a few seconds",
         "syntax": "math",
-        "questionMessage": "**Question:** {{initialValue}} {{mathOperator}} {{term}} = ?\nQuick, you only have {{timeForAnswering}} seconds to answer!",
+        "questionMessage": "**Question:** {{equation}} = ?\nQuick, you only have __{{timeForAnswering}} seconds__ to answer!",
         "correctAnswer": "Correct answer! :smile:\nYou have been granted {{amount}} Creative Credits for answering correctly!",
         "wrongAnswer": "Wrong answer! The result was {{result}}! :frowning:\nYou have lost {{amount}} Creative Credits as a result!",
         "noAnswer": "You didn't answer in time! The correct answer would have been {{result}}! :sweat:\nYou have lost {{amount}} Creative Credits as a result!"
@@ -73,7 +73,7 @@
     },
     "slots": {
         "name": "slots",
-        "description": "Simulates a slot machine, but without the monetary losses...and gains. You win if there are horizontal or diagonal lines of matching symbols",
+        "description": "Simulates a slot machine, but without the monetary losses...and gains.\n You win if there are horizontal, diagonal or vertical lines of matching symbols",
         "syntax": "slots <bet>",
         "arg0NaN": "Please enter a number as a bet!",
         "negativeBet": "Nice try, but I thought of that. Please enter a bet above 0.",
@@ -94,12 +94,13 @@
         "description": "Lists everything that's new in the latest version of the Creative Bot",
         "syntax": "changelog",
         "embedTitle": ":bell: New in Version 1.1!",
-        "embedFooter": "Last updated on: 7th July 2021",
+        "embedFooter": "Last updated on: 8th July 2021",
         "changelog": [
             "**Added** this very command!",
-            "**Replaced** old credits banner with new sleek one. \nThis also fixed the issues with names not fitting inside of it.",
+            "**Replaced** old credits banner with new sleek one. \nThis also fixes the issue with names not fitting inside of it.",
             "**Added** the ability to check other people's Creative Credits balance",
-            "**Fixed** slot machine \"stuttering\""
+            "**Fixed** slot machine \"stuttering\"",
+            "**Improved** time to answer for math command"
         ]
     },
     "help": {
