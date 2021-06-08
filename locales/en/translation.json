@@ -61,6 +61,7 @@
         "description": "Tests your math skills and quick thinking with an exercise that needs to be solved in a few seconds",
         "syntax": "math",
         "questionMessage": "**Question:** {{equation}} = ?\nQuick, you only have __{{timeForAnswering}} seconds__ to answer!",
+        "questionMessageModulo": ":warning: This question might be tricky! :warning:\n\n**Question:** {{equation}} = ?\nQuick, you only have __{{timeForAnswering}} seconds__ to answer!",
         "correctAnswer": "Correct answer! :smile:\nYou have been granted {{amount}} Creative Credits for answering correctly!",
         "wrongAnswer": "Wrong answer! The result was {{result}}! :frowning:\nYou have lost {{amount}} Creative Credits as a result!",
         "noAnswer": "You didn't answer in time! The correct answer would have been {{result}}! :sweat:\nYou have lost {{amount}} Creative Credits as a result!"
@@ -100,7 +101,8 @@
             "**Replaced** old credits banner with new sleek one. \nThis also fixes the issue with names not fitting inside of it.",
             "**Added** the ability to check other people's Creative Credits balance",
             "**Fixed** slot machine \"stuttering\"",
-            "**Improved** time to answer for math command"
+            "**Improved** answer times for Math command",
+            "**Added** new math operations: multiplication, division and modulo!"
         ]
     },
     "help": {
