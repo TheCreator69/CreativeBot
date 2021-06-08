@@ -6,12 +6,12 @@ import * as Localizer from "../../scripts/localizer";
 export interface MathOperation {
     mathQuestion: MathQuestion
     generateMathQuestion: () => MathQuestion
-    getEquationString: () => string
+    getEquation: () => string
     getResult: () => number
     getTimeForAnswering: () => number
 }
 
-export class PlusOperation implements MathOperation {
+export class Addition implements MathOperation {
     //@ts-ignore
     mathQuestion: MathQuestion;
 
@@ -25,10 +25,10 @@ export class PlusOperation implements MathOperation {
     }
 
     private calculateTimeForAnswering(value: number, term: number): number {
-        var timeForAnswering = 2000;
-
         if(value < 10 && term < 10) return 3000;
         else if(value < 10 || term < 10) return 4000;
+
+        var timeForAnswering = 2000;
 
         if(isNumberMultipleOf(value, 10)) timeForAnswering += 1000;
         else if(isNumberMultipleOf(value, 5)) timeForAnswering += 2000;
@@ -44,7 +44,7 @@ export class PlusOperation implements MathOperation {
         return timeForAnswering;
     }
 
-    getEquationString() {
+    getEquation() {
         return this.mathQuestion.value + " + " + this.mathQuestion.term;
     }
 
@@ -57,9 +57,9 @@ export class PlusOperation implements MathOperation {
     }
 }
 
-export class MinusOperation implements MathOperation {
+export class Subtraction implements MathOperation {
     //@ts-ignore
-    mathQuestion: MathQuestionType;
+    mathQuestion: MathQuestion;
 
     generateMathQuestion() {
         var value = Math.floor(Math.random() * 100) + 1;
@@ -71,11 +71,11 @@ export class MinusOperation implements MathOperation {
     }
 
     private calculateTimeForAnswering(value: number, term: number): number {
-        var timeForAnswering = 4000;
-
         if(value < 10 && term < 10) return 4000;
         else if(value < 10 || term < 10) return 5000;
         else if(value - term < 10 && value - term > -10) return 5000;
+
+        var timeForAnswering = 4000;
 
         if(isNumberMultipleOf(value, 10)) timeForAnswering += 1000;
         else if(isNumberMultipleOf(value, 5)) timeForAnswering += 2000;
@@ -91,12 +91,57 @@ export class MinusOperation implements MathOperation {
         return timeForAnswering;
     }
 
-    getEquationString() {
+    getEquation() {
         return this.mathQuestion.value + " - " + this.mathQuestion.term;
     }
 
     getResult() {
         return this.mathQuestion.value - this.mathQuestion.term;
+    }
+
+    getTimeForAnswering() {
+        return this.mathQuestion.timeForAnswering;
+    }
+}
+
+export class Multiplication implements MathOperation {
+    //@ts-ignore
+    mathQuestion: MathQuestion;
+
+    generateMathQuestion() {
+        var value = Math.floor(Math.random() * 14) + 2;
+        var term = Math.floor(Math.random() * 14) + 2;
+        var timeForAnswering = this.calculateTimeForAnswering(value, term);
+
+        this.mathQuestion = {value: value, term: term, timeForAnswering: timeForAnswering};
+        return this.mathQuestion;
+    }
+
+    private calculateTimeForAnswering(value: number, term: number): number {
+        if(value === 10 && term === 10) return 3000;
+        if(value === 10 || term === 10) return 4000;
+        if(value === 5) return 4000 + (Math.floor(term / 3) * 1000);
+        if(term === 5) return 4000 + (Math.floor(value / 3) * 1000);
+        if(value < 5 && term < 5) return 5000;
+        if(value < 5 || term < 5) return 7000;
+        if(value === term) return 5000 + (Math.floor(value / 3) * 1000);
+
+        var timeForAnswering = 5000;
+
+        if(value > term) timeForAnswering += 3000;
+        else timeForAnswering += 5000;
+
+        if((value === 9 || value === 11) || (term === 9 || term === 1)) timeForAnswering -= 2000;
+
+        return timeForAnswering;
+    }
+
+    getEquation() {
+        return this.mathQuestion.value + " * " + this.mathQuestion.term;
+    }
+
+    getResult() {
+        return this.mathQuestion.value * this.mathQuestion.term;
     }
 
     getTimeForAnswering() {
@@ -119,8 +164,9 @@ export class MathCommand implements CreativeCommand {
     guild_only = false;
 
     operations: MathOperation[] = [
-        new PlusOperation(),
-        new MinusOperation()
+        new Addition(),
+        new Subtraction(),
+        new Multiplication()
     ];
 
     execute(message: Message, args: string[]): void {
@@ -132,41 +178,41 @@ export class MathCommand implements CreativeCommand {
         var mathOperation = this.operations[randomOperationIndex];
 
         mathOperation.generateMathQuestion();
-        var equation = mathOperation.getEquationString();
+        var equation = mathOperation.getEquation();
         let timeForAnsweringInSeconds = mathOperation.getTimeForAnswering() / 1000;
 
         message.channel.send(Localizer.translate("math.questionMessage", {equation: equation, timeForAnswering: timeForAnsweringInSeconds}));
         this.collectAndResolveAnswer(message, mathOperation);
     }
 
-    collectAndResolveAnswer(message: Message, question: MathOperation): void {
+    collectAndResolveAnswer(message: Message, operation: MathOperation): void {
         const filter = (filteredMessage: Message) => filteredMessage.author.id === message.author.id;
-        const collector = message.channel.createMessageCollector(filter, {max: 1, time: question.getTimeForAnswering()});
+        const collector = message.channel.createMessageCollector(filter, {max: 1, time: operation.getTimeForAnswering()});
 
         collector.on("collect", (collectedMessage: any) => {
-            this.replyBasedOnValidityOfAnswer(collectedMessage, question);
+            this.replyBasedOnValidityOfAnswer(collectedMessage, operation);
         });
         collector.on("end", (collectedMessages: any) => {
-            this.replyIfNoMessagesWereSent(message, question, collectedMessages);
+            this.replyIfNoMessagesWereSent(message, operation, collectedMessages);
         });
     }
 
-    replyBasedOnValidityOfAnswer(message: Message, question: MathOperation): void {
-        let timeForAnsweringInSeconds = question.getTimeForAnswering() / 1000;
-        if(parseInt(message.content) == question.getResult()) {
+    replyBasedOnValidityOfAnswer(message: Message, operation: MathOperation): void {
+        let timeForAnsweringInSeconds = operation.getTimeForAnswering() / 1000;
+        if(parseInt(message.content) == operation.getResult()) {
             message.channel.send(Localizer.translate("math.correctAnswer", {amount: timeForAnsweringInSeconds}));
             CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), timeForAnsweringInSeconds);
         }
         else {
-            message.channel.send(Localizer.translate("math.wrongAnswer", {result: question.getResult(), amount: timeForAnsweringInSeconds}));
+            message.channel.send(Localizer.translate("math.wrongAnswer", {result: operation.getResult(), amount: timeForAnsweringInSeconds}));
             CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), timeForAnsweringInSeconds * -1);
         }
     }
 
-    replyIfNoMessagesWereSent(message: Message, question: MathOperation, collectedMessages: any): void {
-        let timeForAnsweringInSeconds = question.getTimeForAnswering() / 1000;
+    replyIfNoMessagesWereSent(message: Message, operation: MathOperation, collectedMessages: any): void {
+        let timeForAnsweringInSeconds = operation.getTimeForAnswering() / 1000;
         if(collectedMessages.size == 0) {
-            message.channel.send(Localizer.translate("math.noAnswer", {result: question.getResult(), amount: timeForAnsweringInSeconds * 2}));
+            message.channel.send(Localizer.translate("math.noAnswer", {result: operation.getResult(), amount: timeForAnsweringInSeconds * 2}));
             CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), timeForAnsweringInSeconds * -2);
         }
     }
