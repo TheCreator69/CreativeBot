@@ -190,6 +190,44 @@ export class Division implements MathOperation {
     }
 }
 
+export class Modulo implements MathOperation {
+    //@ts-ignore
+    mathQuestion: MathQuestion;
+
+    generateMathQuestion() {
+        var term = Math.floor(Math.random() * 9) + 2;
+        var value = 1;
+        while(value < term) {
+            value = Math.floor(Math.random() * 19) + 2;
+        }
+        var timeForAnswering = this.calculateTimeForAnswering(value, term);
+
+        this.mathQuestion = {value: value, term: term, timeForAnswering: timeForAnswering};
+        return this.mathQuestion;
+    }
+
+    private calculateTimeForAnswering(value: number, term: number): number {
+        var timeForAnswering = 6000;
+
+        if(value / term < 2) timeForAnswering += 2000;
+        else timeForAnswering += Math.floor(value / term) * 1000;
+
+        return timeForAnswering;
+    }
+
+    getEquation() {
+        return this.mathQuestion.value + " % " + this.mathQuestion.term;
+    }
+
+    getResult() {
+        return this.mathQuestion.value % this.mathQuestion.term;
+    }
+
+    getTimeForAnswering() {
+        return this.mathQuestion.timeForAnswering;
+    }
+}
+
 export type MathQuestion = {
     value: number
     term: number
@@ -208,7 +246,8 @@ export class MathCommand implements CreativeCommand {
         new Addition(),
         new Subtraction(),
         new Multiplication(),
-        new Division()
+        new Division(),
+        new Modulo()
     ];
 
     execute(message: Message, args: string[]): void {
@@ -223,7 +262,12 @@ export class MathCommand implements CreativeCommand {
         var equation = mathOperation.getEquation();
         let timeForAnsweringInSeconds = mathOperation.getTimeForAnswering() / 1000;
 
-        message.channel.send(Localizer.translate("math.questionMessage", {equation: equation, timeForAnswering: timeForAnsweringInSeconds}));
+        if(mathOperation instanceof Modulo) {
+            message.channel.send(Localizer.translate("math.questionMessageModulo", {equation: equation, timeForAnswering: timeForAnsweringInSeconds}));
+        }
+        else {
+            message.channel.send(Localizer.translate("math.questionMessage", {equation: equation, timeForAnswering: timeForAnsweringInSeconds}));
+        }
         this.collectAndResolveAnswer(message, mathOperation);
     }
 
