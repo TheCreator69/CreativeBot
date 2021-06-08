@@ -131,7 +131,7 @@ export class Multiplication implements MathOperation {
         if(value > term) timeForAnswering += 3000;
         else timeForAnswering += 5000;
 
-        if((value === 9 || value === 11) || (term === 9 || term === 1)) timeForAnswering -= 2000;
+        if((value === 9 || value === 11) || (term === 9 || term === 11)) timeForAnswering -= 2000;
 
         return timeForAnswering;
     }
@@ -142,6 +142,47 @@ export class Multiplication implements MathOperation {
 
     getResult() {
         return this.mathQuestion.value * this.mathQuestion.term;
+    }
+
+    getTimeForAnswering() {
+        return this.mathQuestion.timeForAnswering;
+    }
+}
+
+export class Division implements MathOperation {
+    //@ts-ignore
+    mathQuestion: MathQuestion;
+
+    generateMathQuestion() {
+        var term = Math.floor(Math.random() * 9) + 2;
+        var value = 1;
+        while(value % term !== 0 && value !== term) {
+            value = Math.floor(Math.random() * 98) + 3;
+        }
+        var timeForAnswering = this.calculateTimeForAnswering(value, term);
+
+        this.mathQuestion = {value: value, term: term, timeForAnswering: timeForAnswering};
+        return this.mathQuestion;
+    }
+
+    private calculateTimeForAnswering(value: number, term: number): number {
+        if(term === 10) return 4000;
+        if(value < 10) return 6000;
+
+        var timeForAnswering = 6000;
+
+        if(term === 5) timeForAnswering += 1000
+        else timeForAnswering += Math.floor(term / 2) * 1000;
+
+        return timeForAnswering;
+    }
+
+    getEquation() {
+        return this.mathQuestion.value + " / " + this.mathQuestion.term;
+    }
+
+    getResult() {
+        return this.mathQuestion.value / this.mathQuestion.term;
     }
 
     getTimeForAnswering() {
@@ -166,7 +207,8 @@ export class MathCommand implements CreativeCommand {
     operations: MathOperation[] = [
         new Addition(),
         new Subtraction(),
-        new Multiplication()
+        new Multiplication(),
+        new Division()
     ];
 
     execute(message: Message, args: string[]): void {
