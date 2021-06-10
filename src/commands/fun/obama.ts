@@ -18,10 +18,6 @@ export class ObamaCommand implements CreativeCommand {
     }
 
     async execute(message: Message, args: string[]): Promise<void> {
-        await this.sendObamaImageWithText(message, args);
-    }
-
-    async sendObamaImageWithText(message: Message, args: string[]): Promise<void> {
         var obamaImageBuffer = await this.createObamaImageBuffer(args);
         var attachment = new MessageAttachment(obamaImageBuffer, Localizer.translate("obama.imageName") + ".png");
         message.channel.send(attachment);
@@ -33,7 +29,7 @@ export class ObamaCommand implements CreativeCommand {
         const canvas = Canvas.createCanvas(obamaImage.width, obamaImage.height);
         const context = canvas.getContext("2d");
 
-        await this.drawImage(canvas, context, obamaImage);
+        context.drawImage(obamaImage, 0, 0, canvas.width, canvas.height);
         this.drawText(canvas, context, args);
 
         return canvas.toBuffer();
@@ -43,13 +39,9 @@ export class ObamaCommand implements CreativeCommand {
         const obamaImages = fs.readdirSync("./media").filter(function(file) {
             return file.endsWith(".png");
         });
-        const randomObamaIndex = Math.floor(Math.random() * obamaImages.length);
+        const randomObamaIndex = Math.floor(Math.random() * (obamaImages.length - 1));
         let obamaImage = await Canvas.loadImage("./media/obama_" + randomObamaIndex + ".png");
         return obamaImage;
-    }
-
-    async drawImage(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D, obamaImage: Canvas.Image): Promise<void> {
-        context.drawImage(obamaImage, 0, 0, canvas.width, canvas.height);
     }
 
     drawText(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D, args: string[]): void {
@@ -60,5 +52,4 @@ export class ObamaCommand implements CreativeCommand {
         context.font = UIFunctions.getFittingFontSize(canvas, context, imageText, Math.floor(canvas.width / 17));
         context.fillText(imageText, canvas.width / 2, Math.floor(canvas.height / 5));
     }
-
 }
