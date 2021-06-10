@@ -7,10 +7,16 @@ export interface CreditsRanking {
     max: number
 }
 
+export interface UserEntry {
+    userID: bigint,
+    credits: number
+}
+
 export async function getCreditsForUser(userID: bigint): Promise<number> {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
+    sequelize.close();
     return userEntry.credits;
 }
 
@@ -19,18 +25,31 @@ export async function incrementCreditsForUser(userID: bigint, incrementAmount: n
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     const userEntry = await returnExistingEntryOrCreateNewOne(userID, Credits);
     await updateUserCredits(userID, userEntry.credits + incrementAmount, Credits);
+    sequelize.close();
 }
 
 export async function setCreditsForUser(userID: bigint, amount: number): Promise<void> {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
     await updateUserCredits(userID, amount, Credits);
+    sequelize.close();
 }
 
 export async function getCreditsRankForUser(userID: bigint): Promise<CreditsRanking> {
     const sequelize = establishDatabaseConnection();
     const Credits = await defineAndSyncCreditsTableModel(sequelize);
-    return await sortTableEntriesAndReturnRank(Credits, userID);
+    const creditsRank = await sortTableEntriesAndReturnRank(Credits, userID);
+    sequelize.close();
+    return creditsRank;
+}
+
+export async function getUserEntryAtRank(rank: number): Promise<UserEntry | undefined> {
+    const sequelize = establishDatabaseConnection();
+    const Credits = await defineAndSyncCreditsTableModel(sequelize);
+    const userEntry = await sortTableEntriesAndReturnEntryAtRank(Credits, rank);
+    sequelize.close();
+    if(userEntry !== undefined) return userEntry;
+    else return;
 }
 
 function establishDatabaseConnection(): SequelizeConstructor {
@@ -81,11 +100,7 @@ async function updateUserCredits(userID: bigint, newCredits: number, Credits: an
 }
 
 async function sortTableEntriesAndReturnRank(Credits: any, userID: bigint): Promise<CreditsRanking> {
-    const sortedEntries = await Credits.findAll({
-        order: [
-            ["credits", "DESC"]
-        ]
-    });
+    const sortedEntries = await sortTableEntriesByRank(Credits);
     var position = 0;
     var userIDConverted = userID.toString();
     for(var i = 0; i < sortedEntries.length; i++) {
@@ -98,4 +113,24 @@ async function sortTableEntriesAndReturnRank(Credits: any, userID: bigint): Prom
         max: sortedEntries.length
     };
     return rankObject;
+}
+
+async function sortTableEntriesAndReturnEntryAtRank(Credits: any, rank: number): Promise<UserEntry | undefined> {
+    const sortedEntries = await sortTableEntriesByRank(Credits);
+    const entry = sortedEntries[rank - 1];
+    if(entry === undefined) return;
+    var userEntry: UserEntry = {
+        userID: entry.userID,
+        credits: entry.credits
+    };
+    return userEntry;
+}
+
+async function sortTableEntriesByRank(Credits: any): Promise<any> {
+    const sortedEntries = await Credits.findAll({
+        order: [
+            ["credits", "DESC"]
+        ]
+    });
+    return sortedEntries;
 }
