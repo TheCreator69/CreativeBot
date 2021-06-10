@@ -18,6 +18,11 @@
         "syntax": "credits [user mention]",
         "invalidUser": "Couldn't find the user you were looking for!"
     },
+    "leaderboard": {
+        "name": "leaderboard",
+        "description": "Displays a leaderboard of the top 10 users with the most credits",
+        "syntax": "leaderboard"
+    },
     "setevent": {
         "name": "setevent",
         "description": "Sets a server's event channel or deletes the event association of the current event channel",
@@ -95,14 +100,15 @@
         "description": "Lists everything that's new in the latest version of the Creative Bot",
         "syntax": "changelog",
         "embedTitle": ":bell: New in Version 1.1!",
-        "embedFooter": "Last updated on: 8th July 2021",
+        "embedFooter": "Last updated on: 10th July 2021",
         "changelog": [
             "**Added** this very command!",
-            "**Replaced** old credits banner with new sleek one. \nThis also fixes the issue with names not fitting inside of it.",
-            "**Added** the ability to check other people's Creative Credits balance",
-            "**Fixed** slot machine \"stuttering\"",
-            "**Improved** answer times for Math command",
-            "**Added** new math operations: multiplication, division and modulo!"
+            "**Replaced** old credits banner with new sleek one.\nThis also fixes the issue with names not fitting inside of it.",
+            "**Added** the ability to check other people's Creative Credits balance.",
+            "**Fixed** slot machine \"stuttering\".",
+            "**Improved** answer times for Math command, making it fairer.",
+            "**Added** new math operations: multiplication, division and modulo!",
+            "**Added** leaderboard command to check the top earners!"
         ]
     },
     "help": {
