@@ -7,5 +7,7 @@ export var info: EventAttributes = {
 }
 
 export async function execute(client: Client, messageReaction: MessageReaction, user: User) {
-    await CreditsHandler.incrementCreditsForUser(BigInt(user.id), 10);
+    if(!messageReaction.me && !user.bot) {
+        await CreditsHandler.incrementCreditsForUser(BigInt(user.id), 10);
+    }
 }
