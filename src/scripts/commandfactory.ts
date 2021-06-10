@@ -7,6 +7,7 @@ export function createCommand(file: string, commandModule: any): CreativeCommand
     switch(file) {
         case "changecredits": return new commandModule.ChangeCreditsCommand(getUserFromMention);
         case "credits": return new commandModule.CreditsCommand();
+        case "leaderboard": return new commandModule.LeaderboardCommand();
         case "setevent": return new commandModule.SetEventCommand();
         case "submit": return new commandModule.SubmitCommand();
         case "toggleevent": return new commandModule.ToggleEventCommand();
