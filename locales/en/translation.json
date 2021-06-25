@@ -100,15 +100,16 @@
         "description": "Lists everything that's new in the latest version of the Creative Bot",
         "syntax": "changelog",
         "embedTitle": ":bell: New in Version 1.1!",
-        "embedFooter": "Last updated on: 10th July 2021",
+        "embedFooter": "Last updated on: 25th June 2021",
         "changelog": [
             "**Rebranded** Creative Credits as Creative Tokens",
-            "**Replaced** old token banner with new sleek one.\nThis also fixes the issue with names not fitting inside of it.",
+            "**Replaced** old credits banner with new sleek token banner.\nThis also fixes the issue with names not fitting inside of it.",
             "**Added** the ability to check other people's Creative Tokens balance.",
+            "**Removed** the ability to gain creative credits by chatting, reacting or using the math or slots commands",
+            "**Added** a leaderboard command to check the top \"earners\"!",
             "**Fixed** slot machine \"stuttering\".",
             "**Improved** answer times for Math command, making it fairer.",
             "**Added** new math operations: multiplication, division and modulo!",
-            "**Added** leaderboard command to check the top earners!",
             "**Added** this very command!"
         ]
     },
