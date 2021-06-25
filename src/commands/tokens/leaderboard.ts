@@ -34,7 +34,7 @@ export class LeaderboardCommand implements CreativeCommand {
     async drawLeaderboard(topUserEntries: CreditsHandler.UserEntry[]): Promise<Buffer> {
         const canvas = Canvas.createCanvas(1000, topUserEntries.length * 150);
         const context = canvas.getContext("2d");
-        const leaderboardImage = await Canvas.loadImage("./media/CreditsLeaderboard.png");
+        const leaderboardImage = await Canvas.loadImage("./media/TokensLeaderboard.png");
         context.drawImage(leaderboardImage, 0, 0, canvas.width, 1500);
 
         for(let i = 0; i < topUserEntries.length; i++) {

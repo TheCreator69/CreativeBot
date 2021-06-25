@@ -34,7 +34,7 @@ export class TokensCommand implements CreativeCommand {
         var tokenRank = await CreditsHandler.getCreditsRankForUser(BigInt(user.id));
         var tokensBadge = await this.drawTokensBadge(user, userTokens, tokenRank);
 
-        const attachment = new MessageAttachment(tokensBadge, user.username + "tokens.png");
+        const attachment = new MessageAttachment(tokensBadge, user.username + "_tokens.png");
         channel.send(attachment);
     }
 
@@ -50,7 +50,7 @@ export class TokensCommand implements CreativeCommand {
     }
 
     async drawBackground(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D): Promise<void> {
-        const tokenBanner = await Canvas.loadImage("./media/CreativeCreditsBanner.png");
+        const tokenBanner = await Canvas.loadImage("./media/CreativeTokensBanner.png");
         context.drawImage(tokenBanner, 0, 0, canvas.width, canvas.height);
     }
 
