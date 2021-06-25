@@ -1,6 +1,6 @@
 import {MessageAttachment, Message, User, TextChannel, DMChannel, NewsChannel} from "discord.js";
 import * as Canvas from "canvas";
-import * as CreditsHandler from "../../scripts/creditshandler";
+import * as TokenTableAccessor from "../../scripts/tokentableaccessor";
 import {CreativeCommand} from "../../scripts/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import * as DiscordUtil from "../../scripts/discordutil";
@@ -30,15 +30,15 @@ export class TokensCommand implements CreativeCommand {
     }
 
     async displayUserInfoOnTokensBanner(channel: TextChannel | DMChannel | NewsChannel, user: User): Promise<void> {
-        var userTokens = await CreditsHandler.getCreditsForUser(BigInt(user.id));
-        var tokenRank = await CreditsHandler.getCreditsRankForUser(BigInt(user.id));
+        var userTokens = await TokenTableAccessor.getTokensOfUser(BigInt(user.id));
+        var tokenRank = await TokenTableAccessor.getTokenRankOfUser(BigInt(user.id));
         var tokensBadge = await this.drawTokensBadge(user, userTokens, tokenRank);
 
         const attachment = new MessageAttachment(tokensBadge, user.username + "_tokens.png");
         channel.send(attachment);
     }
 
-    async drawTokensBadge(user: User, tokens: number, tokenRank: CreditsHandler.CreditsRanking): Promise<Buffer> {
+    async drawTokensBadge(user: User, tokens: number, tokenRank: TokenTableAccessor.TokenRanking): Promise<Buffer> {
         const canvas = Canvas.createCanvas(1000, 250);
         const context = canvas.getContext("2d");
 
@@ -59,7 +59,7 @@ export class TokensCommand implements CreativeCommand {
         context.drawImage(avatar, 85, 50, 150, 150);
     }
 
-    drawUserInfo(context: Canvas.CanvasRenderingContext2D, user: User, tokens: number, tokenRank: CreditsHandler.CreditsRanking): void {
+    drawUserInfo(context: Canvas.CanvasRenderingContext2D, user: User, tokens: number, tokenRank: TokenTableAccessor.TokenRanking): void {
         context.font = "45px Bahnschrift";
         context.fillStyle = "#ffffff";
         context.fillText(user.username, 280, 100);

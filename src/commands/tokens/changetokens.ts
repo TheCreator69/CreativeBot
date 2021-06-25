@@ -1,4 +1,4 @@
-import * as CreditsHandler from "../../scripts/creditshandler";
+import * as TokenTableAccessor from "../../scripts/tokentableaccessor";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 import {Message, User} from "discord.js";
 import * as Localizer from "../../scripts/localizer";
@@ -32,7 +32,7 @@ export class ChangeTokensCommand implements CreativeCommand {
         if(amount > 2147483647 && args[0] === "set") {
             return {valid: false, replyMessage: Localizer.translate("changetokens.arg1TooLarge")};
         }
-        if(await CreditsHandler.getCreditsForUser(BigInt(mentionedUser.id)) + amount > 2147483647 && args[0] !== "set") {
+        if(await TokenTableAccessor.getTokensOfUser(BigInt(mentionedUser.id)) + amount > 2147483647 && args[0] !== "set") {
             return {valid: false, replyMessage: Localizer.translate("changetokens.arg1TooLarge")};
         }
         if(args[0] === "set" && amount < 0) {
@@ -60,17 +60,17 @@ export class ChangeTokensCommand implements CreativeCommand {
 
     async addTokensAndNotifyUser(message: Message, amount: number, mention: User): Promise<void> {
         message.channel.send(Localizer.translate("changetokens.addedTokens", {amount: amount, username: mention.username}));
-        await CreditsHandler.incrementCreditsForUser(BigInt(mention.id), amount);
+        await TokenTableAccessor.incrementTokensOfUser(BigInt(mention.id), amount);
     }
 
     async removeTokensAndNotifyUser(message: Message, amount: number, mention: User): Promise<void> {
         message.channel.send(Localizer.translate("changetokens.removedTokens", {amount: amount, username: mention.username}));
         var amountToRemove = amount * -1 as number;
-        await CreditsHandler.incrementCreditsForUser(BigInt(mention.id), amountToRemove);
+        await TokenTableAccessor.incrementTokensOfUser(BigInt(mention.id), amountToRemove);
     }
 
     async setTokensAndNotifyUser(message: Message, amount: number, mention: User): Promise<void> {
         message.channel.send(Localizer.translate("changetokens.setTokens", {amount: amount, username: mention.username}));
-        await CreditsHandler.setCreditsForUser(BigInt(mention.id), amount);
+        await TokenTableAccessor.setTokensOfUser(BigInt(mention.id), amount);
     }
 }
