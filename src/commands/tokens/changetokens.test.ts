@@ -1,4 +1,4 @@
-import * as ChangeCredits from "./changecredits";
+import * as ChangeCredits from "./changetokens";
 import {User, Client} from "discord.js";
 
 function getFakeUserFromMention(argument: string): User | undefined {
