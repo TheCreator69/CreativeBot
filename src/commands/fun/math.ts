@@ -1,11 +1,9 @@
 import {Message} from "discord.js";
-import * as CreditsHandler from "../../scripts/creditshandler";
 import {CreativeCommand} from "../../scripts/commanddef";
 import * as Localizer from "../../scripts/localizer";
 
 export interface MathOperation {
     mathQuestion: MathQuestion
-    creditsMultiplier: number
     generateMathQuestion: () => MathQuestion
     getEquation: () => string
     getResult: () => number
@@ -14,7 +12,6 @@ export interface MathOperation {
 export class Addition implements MathOperation {
     //@ts-ignore
     mathQuestion: MathQuestion;
-    creditsMultiplier = 1;
 
     generateMathQuestion() {
         var value = Math.floor(Math.random() * 100) + 1;
@@ -57,7 +54,6 @@ export class Addition implements MathOperation {
 export class Subtraction implements MathOperation {
     //@ts-ignore
     mathQuestion: MathQuestion;
-    creditsMultiplier = 1;
 
     generateMathQuestion() {
         var value = Math.floor(Math.random() * 100) + 1;
@@ -101,7 +97,6 @@ export class Subtraction implements MathOperation {
 export class Multiplication implements MathOperation {
     //@ts-ignore
     mathQuestion: MathQuestion;
-    creditsMultiplier = 2;
 
     generateMathQuestion() {
         var value = Math.floor(Math.random() * 14) + 2;
@@ -143,7 +138,6 @@ export class Multiplication implements MathOperation {
 export class Division implements MathOperation {
     //@ts-ignore
     mathQuestion: MathQuestion;
-    creditsMultiplier = 3;
 
     generateMathQuestion() {
         var term = Math.floor(Math.random() * 9) + 2;
@@ -181,7 +175,6 @@ export class Division implements MathOperation {
 export class Modulo implements MathOperation {
     //@ts-ignore
     mathQuestion: MathQuestion;
-    creditsMultiplier = 4;
 
     generateMathQuestion() {
         var term = Math.floor(Math.random() * 9) + 2;
@@ -269,24 +262,17 @@ export class MathCommand implements CreativeCommand {
     }
 
     replyBasedOnValidityOfAnswer(message: Message, operation: MathOperation): void {
-        let timeForAnsweringInSeconds = operation.mathQuestion.timeForAnswering / 1000;
-        let creditsToChange = timeForAnsweringInSeconds * operation.creditsMultiplier;
         if(parseInt(message.content) == operation.getResult()) {
-            message.channel.send(Localizer.translate("math.correctAnswer", {amount: creditsToChange}));
-            CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), creditsToChange);
+            message.channel.send(Localizer.translate("math.correctAnswer"));
         }
         else {
-            message.channel.send(Localizer.translate("math.wrongAnswer", {result: operation.getResult(), amount: creditsToChange}));
-            CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), creditsToChange * -1);
+            message.channel.send(Localizer.translate("math.wrongAnswer", {result: operation.getResult()}));
         }
     }
 
     replyIfNoMessagesWereSent(message: Message, operation: MathOperation, collectedMessages: any): void {
-        let timeForAnsweringInSeconds = operation.mathQuestion.timeForAnswering / 1000;
-        let creditsToChange = timeForAnsweringInSeconds * operation.creditsMultiplier;
         if(collectedMessages.size == 0) {
-            message.channel.send(Localizer.translate("math.noAnswer", {result: operation.getResult(), amount: creditsToChange * 2}));
-            CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), creditsToChange * -2);
+            message.channel.send(Localizer.translate("math.noAnswer", {result: operation.getResult()}));
         }
     }
 }
