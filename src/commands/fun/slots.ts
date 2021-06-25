@@ -1,5 +1,4 @@
 import {Message} from "discord.js";
-import * as CreditsHandler from "../../scripts/creditshandler";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 import * as Localizer from "../../scripts/localizer";
 
@@ -40,7 +39,7 @@ export class SlotsCommand implements CreativeCommand {
     async createAndEditMessageOverTime(message: Message, bet: number): Promise<void> {
         var slotMessage = await message.channel.send(Localizer.translate("slots.rolling"));
         this.animateRollingMessage(slotMessage);
-        await this.finishAnimationAndAwardCoins(slotMessage, message, bet);
+        await this.finishAnimationAndAwardCoins(slotMessage, bet);
     }
 
     async animateRollingMessage(slotMessage: Message): Promise<void> {
@@ -60,7 +59,7 @@ export class SlotsCommand implements CreativeCommand {
         return new Promise((resolve) => setTimeout(resolve, delay));
     }
 
-    async finishAnimationAndAwardCoins(slotMessage: Message, message: Message, bet: number): Promise<void> {
+    async finishAnimationAndAwardCoins(slotMessage: Message, bet: number): Promise<void> {
         setTimeout(() => {
             var randomSymbols = this.selectSeeminglyRandomSymbols();
             var horizontalLines = this.getHorizontalLineCount(randomSymbols);
@@ -68,7 +67,6 @@ export class SlotsCommand implements CreativeCommand {
             var verticalLines = this.getVerticalLineCount(randomSymbols);
             var creditsWon = this.determineCreditsWon(horizontalLines, diagonalLines, verticalLines, bet);
             this.finishEditingMessage(slotMessage, randomSymbols, creditsWon);
-            this.withdrawOrAwardCredits(message, creditsWon, bet);
         }, this.rollCycles * 6000 + 1000);
     }
 
@@ -134,14 +132,6 @@ export class SlotsCommand implements CreativeCommand {
         }
         finishedSlotMessage += slotMachineBorder;
         slotMessage.edit(finishedSlotMessage);
-    }
-
-    async withdrawOrAwardCredits(message: Message, creditsWon: number, bet: number): Promise<void> {
-        if(creditsWon === 0) {
-            await CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), -bet);
-            return;
-        }
-        await CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), creditsWon - bet);
     }
 
 }
