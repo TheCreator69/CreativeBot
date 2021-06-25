@@ -21,6 +21,7 @@ export function createCommand(file: string, commandModule: any): CreativeCommand
         case "changetokens": return new commandModule.ChangeTokensCommand(getUserFromMention);
         case "leaderboard": return new commandModule.LeaderboardCommand();
         case "tokens": return new commandModule.TokensCommand();
+        case "tokensystem": return new commandModule.TokenSystemCommand();
         default: return undefined;
     }
 }
