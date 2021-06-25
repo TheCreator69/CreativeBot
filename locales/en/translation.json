@@ -1,26 +1,26 @@
 {
-    "changecredits": {
-        "name": "changecredits",
-        "description": "Changes or sets Creative Credits for a specific user",
-        "syntax": "changecredits <add/remove/set> <amount> <user mention>",
-        "invalidArg0": "Please use either \"add\", \"remove\" or \"set\" to change a user's Creative Credits!",
-        "arg1NaN": "Please enter a valid amount of Creative Credits!",
-        "arg1TooLarge": "Can't set Creative Credits to more than 2147483647!",
+    "changetokens": {
+        "name": "changetokens",
+        "description": "Changes or sets Creative Tokens for a specific user",
+        "syntax": "changetokens <add/remove/set> <amount> <user mention>",
+        "invalidArg0": "Please use either \"add\", \"remove\" or \"set\" to change a user's Creative Tokens!",
+        "arg1NaN": "Please enter a valid amount of Creative Tokens!",
+        "arg1TooLarge": "Can't set Creative Tokens to more than 2147483647!",
         "invalidArg2": "Please mention a valid user!",
-        "setNegative": "You can't set someone's Creative Credits to be negative! They'll be in debt and that's just cruel :pleading_face:",
-        "addedCredits": "Added {{amount}} Creative Credits to {{username}}!",
-        "removedCredits": "Removed {{amount}} Creative Credits from {{username}}!",
-        "setCredits": "Set Creative Credits to {{amount}} for {{username}}!"
+        "setNegative": "You can't set someone's Creative Tokens to be negative! They'll have negative popularity and that's just cruel :pleading_face:",
+        "addedTokens": "Added {{amount}} Creative Tokens to {{username}}!",
+        "removedTokens": "Removed {{amount}} Creative Tokens from {{username}}!",
+        "setTokens": "Set Creative Tokens to {{amount}} for {{username}}!"
     },
-    "credits": {
-        "name": "credits",
-        "description": "Checks your own Creative Credits balance or those of other users",
-        "syntax": "credits [user mention]",
+    "tokens": {
+        "name": "tokens",
+        "description": "Checks your own Creative Tokens balance or those of other users",
+        "syntax": "tokens [user mention]",
         "invalidUser": "Couldn't find the user you were looking for!"
     },
     "leaderboard": {
         "name": "leaderboard",
-        "description": "Displays a leaderboard of the top 10 users with the most credits",
+        "description": "Displays a leaderboard of the top 10 users with the most tokens",
         "syntax": "leaderboard"
     },
     "setevent": {
@@ -67,9 +67,9 @@
         "syntax": "math",
         "questionMessage": "**Question:** {{equation}} = ?\nQuick, you only have __{{timeForAnswering}} seconds__ to answer!",
         "questionMessageModulo": ":warning: This question might be tricky! :warning:\n\n**Question:** {{equation}} = ?\nQuick, you only have __{{timeForAnswering}} seconds__ to answer!",
-        "correctAnswer": "Correct answer! :smile:\nYou have been granted {{amount}} Creative Credits for answering correctly!",
-        "wrongAnswer": "Wrong answer! The result was {{result}}! :frowning:\nYou have lost {{amount}} Creative Credits as a result!",
-        "noAnswer": "You didn't answer in time! The correct answer would have been {{result}}! :sweat:\nYou have lost {{amount}} Creative Credits as a result!"
+        "correctAnswer": "Correct answer! :smile:",
+        "wrongAnswer": "Wrong answer! The result was {{result}}! :frowning:",
+        "noAnswer": "You didn't answer in time! The correct answer would have been {{result}}! :sweat:"
     },
     "obama": {
         "name": "obama",
@@ -83,10 +83,10 @@
         "syntax": "slots <bet>",
         "arg0NaN": "Please enter a number as a bet!",
         "negativeBet": "Nice try, but I thought of that. Please enter a bet above 0.",
-        "tooLargeBet": "Your bet exceeds the amount of Creative Credits you have!",
+        "tooLargeBet": "Your bet exceeds the amount of Creative Tokens you have!",
         "rolling": "Rolling",
         "lostBet": "Unfortunately, you lost your bet :frowning:\nBetter luck next time!\n",
-        "wonBet": "You've won {{amount}} Creative Credits! Hooray!\n"
+        "wonBet": "You've won {{amount}} Creative Tokens! Hooray!\n"
     },
     "thumbsup": {
         "name": "thumbsup",
@@ -102,13 +102,14 @@
         "embedTitle": ":bell: New in Version 1.1!",
         "embedFooter": "Last updated on: 10th July 2021",
         "changelog": [
-            "**Added** this very command!",
-            "**Replaced** old credits banner with new sleek one.\nThis also fixes the issue with names not fitting inside of it.",
-            "**Added** the ability to check other people's Creative Credits balance.",
+            "**Rebranded** Creative Credits as Creative Tokens",
+            "**Replaced** old token banner with new sleek one.\nThis also fixes the issue with names not fitting inside of it.",
+            "**Added** the ability to check other people's Creative Tokens balance.",
             "**Fixed** slot machine \"stuttering\".",
             "**Improved** answer times for Math command, making it fairer.",
             "**Added** new math operations: multiplication, division and modulo!",
-            "**Added** leaderboard command to check the top earners!"
+            "**Added** leaderboard command to check the top earners!",
+            "**Added** this very command!"
         ]
     },
     "help": {

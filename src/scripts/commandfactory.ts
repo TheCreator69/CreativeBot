@@ -5,9 +5,6 @@ import {getUserFromMention} from "./discordutil";
 export function createCommand(file: string, commandModule: any): CreativeCommand | undefined {
     file = file.substr(0, file.length - 3);
     switch(file) {
-        case "changecredits": return new commandModule.ChangeCreditsCommand(getUserFromMention);
-        case "credits": return new commandModule.CreditsCommand();
-        case "leaderboard": return new commandModule.LeaderboardCommand();
         case "setevent": return new commandModule.SetEventCommand();
         case "submit": return new commandModule.SubmitCommand();
         case "toggleevent": return new commandModule.ToggleEventCommand();
@@ -21,6 +18,9 @@ export function createCommand(file: string, commandModule: any): CreativeCommand
         case "ping": return new commandModule.PingCommand();
         case "socials": return new commandModule.SocialsCommand();
         case "testcmd": return new commandModule.TestCommand();
+        case "changetokens": return new commandModule.ChangeTokensCommand(getUserFromMention);
+        case "leaderboard": return new commandModule.LeaderboardCommand();
+        case "tokens": return new commandModule.TokensCommand();
         default: return undefined;
     }
 }
