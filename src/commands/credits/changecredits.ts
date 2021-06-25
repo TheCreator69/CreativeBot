@@ -25,12 +25,15 @@ export class ChangeCreditsCommand implements CreativeCommand {
         if(isNaN(amount)) {
             return {valid: false, replyMessage: Localizer.translate("changecredits.arg1NaN")};
         }
-        if(amount > 2147483647) {
-            return {valid: false, replyMessage: Localizer.translate("changecredits.arg1TooLarge")};
-        }
         const mentionedUser = this.userFromMentionCallback(args[2]);
         if(mentionedUser === undefined) {
             return {valid: false, replyMessage: Localizer.translate("changecredits.invalidArg2")};
+        }
+        if(amount > 2147483647 && args[0] === "set") {
+            return {valid: false, replyMessage: Localizer.translate("changecredits.arg1TooLarge")};
+        }
+        if(await CreditsHandler.getCreditsForUser(BigInt(mentionedUser.id)) + amount > 2147483647 && args[0] !== "set") {
+            return {valid: false, replyMessage: Localizer.translate("changecredits.arg1TooLarge")};
         }
         if(args[0] === "set" && amount < 0) {
             return {valid: false, replyMessage: Localizer.translate("changecredits.setNegative")};
