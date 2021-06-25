@@ -1,6 +1,5 @@
 import * as config from "../config.json";
 import * as AdminCheck from "../scripts/admincheck";
-import * as CreditsHandler from "../scripts/creditshandler";
 import {commands, client} from "../index";
 import {Message, Client} from "discord.js";
 import {EventAttributes} from "../scripts/eventdef";
@@ -30,9 +29,6 @@ async function handleMessageInProduction(message: Message): Promise<void> {
     if(message.content.startsWith(config.prefix) && !message.author.bot) {
         await executeCommandIfPossible(message);
     }
-    else if(!message.author.bot) {
-        await handleCreativeCredits(message);
-    }
 }
 
 async function handleMessageInDevAndBuild(message: Message): Promise<void> {
@@ -55,12 +51,6 @@ async function handleMessageInMaintenance(message: Message): Promise<void> {
         if(await canCommandBeExecuted(message, commandInfo)) {
             message.channel.send(Localizer.translate("messageEvent.maintenanceReply"));
         }
-    }
-}
-
-async function handleCreativeCredits(message: Message): Promise<void> {
-    if(message.type === "DEFAULT") {
-        await CreditsHandler.incrementCreditsForUser(BigInt(message.author.id), message.content.length);
     }
 }
 
