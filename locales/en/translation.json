@@ -1,28 +1,4 @@
 {
-    "changetokens": {
-        "name": "changetokens",
-        "description": "Changes or sets Creative Tokens for a specific user",
-        "syntax": "changetokens <add/remove/set> <amount> <user mention>",
-        "invalidArg0": "Please use either \"add\", \"remove\" or \"set\" to change a user's Creative Tokens!",
-        "arg1NaN": "Please enter a valid amount of Creative Tokens!",
-        "arg1TooLarge": "Can't set Creative Tokens to more than 2147483647!",
-        "invalidArg2": "Please mention a valid user!",
-        "setNegative": "You can't set someone's Creative Tokens to be negative! They'll have negative popularity and that's just cruel :pleading_face:",
-        "addedTokens": "Added {{amount}} Creative Tokens to {{username}}!",
-        "removedTokens": "Removed {{amount}} Creative Tokens from {{username}}!",
-        "setTokens": "Set Creative Tokens to {{amount}} for {{username}}!"
-    },
-    "tokens": {
-        "name": "tokens",
-        "description": "Checks your own Creative Tokens balance or those of other users",
-        "syntax": "tokens [user mention]",
-        "invalidUser": "Couldn't find the user you were looking for!"
-    },
-    "leaderboard": {
-        "name": "leaderboard",
-        "description": "Displays a leaderboard of the top 10 users with the most tokens",
-        "syntax": "leaderboard"
-    },
     "setevent": {
         "name": "setevent",
         "description": "Sets a server's event channel or deletes the event association of the current event channel",
@@ -105,7 +81,7 @@
             "**Rebranded** Creative Credits as Creative Tokens",
             "**Replaced** old credits banner with new sleek token banner.\nThis also fixes the issue with names not fitting inside of it.",
             "**Added** the ability to check other people's Creative Tokens balance.",
-            "**Removed** the ability to gain creative credits by chatting, reacting or using the math or slots commands",
+            "**Removed** the ability to gain Creative Credits in any way",
             "**Added** a leaderboard command to check the top \"earners\"!",
             "**Fixed** slot machine \"stuttering\".",
             "**Improved** answer times for Math command, making it fairer.",
@@ -143,6 +119,37 @@
         "name": "test",
         "description": "Tests functionality in a clean .ts file",
         "syntax": "test"
+    },
+    "changetokens": {
+        "name": "changetokens",
+        "description": "Changes or sets Creative Tokens for a specific user",
+        "syntax": "changetokens <add/remove/set> <amount> <user mention>",
+        "invalidArg0": "Please use either \"add\", \"remove\" or \"set\" to change a user's Creative Tokens!",
+        "arg1NaN": "Please enter a valid amount of Creative Tokens!",
+        "arg1TooLarge": "Can't set Creative Tokens to more than 2147483647!",
+        "invalidArg2": "Please mention a valid user!",
+        "setNegative": "You can't set someone's Creative Tokens to be negative! They'll have negative popularity and that's just cruel :pleading_face:",
+        "addedTokens": "Added {{amount}} Creative Tokens to {{username}}!",
+        "removedTokens": "Removed {{amount}} Creative Tokens from {{username}}!",
+        "setTokens": "Set Creative Tokens to {{amount}} for {{username}}!"
+    },
+    "leaderboard": {
+        "name": "leaderboard",
+        "description": "Displays a leaderboard of the top 10 users with the most tokens",
+        "syntax": "leaderboard"
+    },
+    "tokens": {
+        "name": "tokens",
+        "description": "Checks your own Creative Tokens balance or those of other users",
+        "syntax": "tokens [user mention]",
+        "invalidUser": "Couldn't find the user you were looking for!"
+    },
+    "tokensystem": {
+        "name": "tokensystem",
+        "description": "Offers a quick explanation of how Creative Tokens work",
+        "syntax": "tokensystem",
+        "embedTitle": "How Creative Tokens work",
+        "embedDescription": "Creative Tokens are a **way to measure activity and popularity** and are __exclusive to this Discord__!\n\nEvery day, **all members get 10 tokens**. They aren't meant for them however and can be **granted to other server members by vouching** for them with the `%vouch` command.\nYou can award them to whoever you like. TheCreator awards Tokens to users based on __three key points__:\n**Consistency:** the user is an __active and recurring__ member\n**Quality:** the user posts __meaningful messages__ which add something to the conversation\n**Kindness:** the user is __nice__ :innocent:\n\nThe top \"earners\" will be displayed on a leaderboard (accessible with the `%leaderboard` command). If they manage to hold a spot on there for at least three days, they will get access to exclusive content, like sneak peaks of TheCreator's upcoming work and other behind the scenes footage.\n\nAt the end of each month, the Creative Token balance is reset for everyone and the fun begins anew."
     },
     "messageEvent": {
         "maintenanceReply": "Bot is currently under maintenance, you can't use any commands right now! Sorry! :frowning:",
