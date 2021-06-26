@@ -50,22 +50,26 @@ export class LeaderboardCommand implements CreativeCommand {
         context.font = "80px Arial";
         context.fillStyle = this.getFillStyleForRank(i);
         let correctRankNumber = i + 1;
-        context.fillText(correctRankNumber.toString(), 40, 100 + i * 150);
+        context.fillText(correctRankNumber.toString(), 65, 100 + i * 150);
 
         const avatar = await Canvas.loadImage(user.displayAvatarURL({format: "png"}));
         context.drawImage(avatar, 125, 25 + i * 150, 100, 100);
 
         context.font = "50px Bahnschrift";
-        context.fillText(user.username, 250, 70 + i * 150);
+        context.fillText(user.username, 250, 65 + i * 150);
+
         context.font = "50px Arial";
         context.fillStyle = "#ffff00";
-        context.fillText(userEntry.tokens.toString(), 310, 120 + i * 150);
+        context.fillText(userEntry.tokens.toString(), 300, 125 + i * 150);
+
+        context.fillStyle = "#ff0000";
+        context.fillText(userEntry.vouchTokens.toString(), 500, 125 + i * 150);
     }
 
     getFillStyleForRank(rank: number): string {
-        if(rank === 0) return "#ffd700";
-        else if(rank === 1) return "#c0c0c0";
-        else if(rank === 2) return "#cd7f32";
+        if(rank === 0) return "#ffa500";
+        else if(rank === 1) return "#f0f0f0";
+        else if(rank === 2) return "#dd8f42";
         else return "#ffffff";
     }
 }
