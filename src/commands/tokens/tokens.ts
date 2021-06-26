@@ -18,33 +18,30 @@ export class TokensCommand implements CreativeCommand {
     }
 
     async displayInfoOfCorrectUser(message: Message, args: string[]): Promise<void> {
-        if(!args.length) await this.displayUserInfoOnTokensBanner(message.channel, message.author);
+        if(!args.length) await this.displayUserInfoOnTokenBanner(message.channel, message.author);
         else {
             var mentionedUser = DiscordUtil.getUserFromMention(args[0]);
             if(mentionedUser === undefined) {
                 message.channel.send(Localizer.translate("tokens.invalidUser"));
                 return;
             }
-            await this.displayUserInfoOnTokensBanner(message.channel, mentionedUser);
+            await this.displayUserInfoOnTokenBanner(message.channel, mentionedUser);
         }
     }
 
-    async displayUserInfoOnTokensBanner(channel: TextChannel | DMChannel | NewsChannel, user: User): Promise<void> {
-        var userTokens = await TokenTableAccessor.getTokensOfUser(BigInt(user.id));
-        var tokenRank = await TokenTableAccessor.getTokenRankOfUser(BigInt(user.id));
-        var tokensBadge = await this.drawTokensBadge(user, userTokens, tokenRank);
-
+    async displayUserInfoOnTokenBanner(channel: TextChannel | DMChannel | NewsChannel, user: User): Promise<void> {
+        var tokensBadge = await this.drawTokenBanner(user);
         const attachment = new MessageAttachment(tokensBadge, user.username + "_tokens.png");
         channel.send(attachment);
     }
 
-    async drawTokensBadge(user: User, tokens: number, tokenRank: TokenTableAccessor.TokenRanking): Promise<Buffer> {
+    async drawTokenBanner(user: User): Promise<Buffer> {
         const canvas = Canvas.createCanvas(1000, 250);
         const context = canvas.getContext("2d");
 
         await this.drawBackground(canvas, context);
         await this.drawAuthorAvatar(context, user);
-        this.drawUserInfo(context, user, tokens, tokenRank);
+        await this.drawUserInfo(context, user);
 
         return canvas.toBuffer();
     }
@@ -59,15 +56,23 @@ export class TokensCommand implements CreativeCommand {
         context.drawImage(avatar, 85, 50, 150, 150);
     }
 
-    drawUserInfo(context: Canvas.CanvasRenderingContext2D, user: User, tokens: number, tokenRank: TokenTableAccessor.TokenRanking): void {
+    async drawUserInfo(context: Canvas.CanvasRenderingContext2D, user: User): Promise<void> {
+        var userTokens = await TokenTableAccessor.getTokensOfUser(BigInt(user.id));
+        var userVouchTokens = await TokenTableAccessor.getVouchTokensOfUser(BigInt(user.id));
+        var tokenRank = await TokenTableAccessor.getTokenRankOfUser(BigInt(user.id));
+
         context.font = "45px Bahnschrift";
         context.fillStyle = "#ffffff";
         context.fillText(user.username, 280, 100);
+
         context.font = "40px Arial"
         context.fillStyle = "#ffff00";
-        context.fillText(tokens.toString(), 340, 180);
-        context.font = "40px Arial"
+        context.fillText(userTokens.toString(), 330, 180);
+
         context.fillStyle = "#ff0000";
-        context.fillText(tokenRank.position + " of " + tokenRank.max, 640, 180);
+        context.fillText(userVouchTokens.toString(), 510, 180);
+
+        context.fillStyle = "#0000ff";
+        context.fillText(tokenRank.position + " of " + tokenRank.max, 685, 180);
     }
 }
