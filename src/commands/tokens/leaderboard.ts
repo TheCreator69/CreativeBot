@@ -67,7 +67,7 @@ export class LeaderboardCommand implements CreativeCommand {
     }
 
     getFillStyleForRank(rank: number): string {
-        if(rank === 0) return "#ffa500";
+        if(rank === 0) return "#dd8000";
         else if(rank === 1) return "#f0f0f0";
         else if(rank === 2) return "#dd8f42";
         else return "#ffffff";
