@@ -22,6 +22,7 @@ export function createCommand(file: string, commandModule: any): CreativeCommand
         case "leaderboard": return new commandModule.LeaderboardCommand();
         case "tokens": return new commandModule.TokensCommand();
         case "tokensystem": return new commandModule.TokenSystemCommand();
+        case "vouch": return new commandModule.VouchCommand();
         default: return undefined;
     }
 }
