@@ -2,6 +2,7 @@ import {Client} from "discord.js";
 const config = require("../config.json");
 import * as LogChamp from "../scripts/logchamp";
 import {EventAttributes} from "../scripts/eventdef";
+import * as TimedJobScheduler from "../scripts/timedjobs";
 
 export var info: EventAttributes = {
     name: "ready",
@@ -27,6 +28,7 @@ function startNormally(client: Client): void {
             status: "online",
             activity: {name: "Use '" + config.prefix + "help' to learn what I can do!"}
         });
+        TimedJobScheduler.scheduleTimedJobs();
     }
 }
 
