@@ -62,7 +62,14 @@ export async function setTokensOfUser(userID: bigint, amount: number): Promise<v
 export async function resetVouchTokens(): Promise<void> {
     const sequelize = establishDatabaseConnection();
     const Tokens = await defineAndSyncTokensTableModel(sequelize);
-    await updateAllUserVouchTokens(Tokens);
+    await resetAllUserVouchTokens(Tokens);
+    sequelize.close();
+}
+
+export async function resetTokens(): Promise<void> {
+    const sequelize = establishDatabaseConnection();
+    const Tokens = await defineAndSyncTokensTableModel(sequelize);
+    await resetAllUserTokens(Tokens);
     sequelize.close();
 }
 
@@ -144,13 +151,25 @@ async function updateUserVouchTokens(userID: bigint, newVouchTokens: number, Tok
     });
 }
 
-async function updateAllUserVouchTokens(Tokens: any): Promise<void> {
+async function resetAllUserVouchTokens(Tokens: any): Promise<void> {
     await Tokens.update({
         vouchTokens: 10
     }, {
         where: {
             vouchTokens: {
                 [Sequelize.Op.lt]: 10
+            }
+        }
+    });
+}
+
+async function resetAllUserTokens(Tokens: any): Promise<void> {
+    await Tokens.update({
+        tokens: 0
+    }, {
+        where: {
+            tokens: {
+                [Sequelize.Op.gt]: 0
             }
         }
     });
