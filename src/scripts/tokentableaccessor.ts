@@ -59,6 +59,13 @@ export async function setTokensOfUser(userID: bigint, amount: number): Promise<v
     sequelize.close();
 }
 
+export async function resetVouchTokens(): Promise<void> {
+    const sequelize = establishDatabaseConnection();
+    const Tokens = await defineAndSyncTokensTableModel(sequelize);
+    await updateAllUserVouchTokens(Tokens);
+    sequelize.close();
+}
+
 export async function getTokenRankOfUser(userID: bigint): Promise<TokenRanking> {
     const sequelize = establishDatabaseConnection();
     const Tokens = await defineAndSyncTokensTableModel(sequelize);
@@ -134,6 +141,18 @@ async function updateUserVouchTokens(userID: bigint, newVouchTokens: number, Tok
         vouchTokens: newVouchTokensConverted
     }, {
         where: {userID: userID}
+    });
+}
+
+async function updateAllUserVouchTokens(Tokens: any): Promise<void> {
+    await Tokens.update({
+        vouchTokens: 10
+    }, {
+        where: {
+            vouchTokens: {
+                [Sequelize.Op.lt]: 10
+            }
+        }
     });
 }
 
