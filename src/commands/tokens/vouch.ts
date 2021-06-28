@@ -10,7 +10,7 @@ export class VouchCommand implements CreativeCommand {
     syntax = Localizer.translate("vouch.syntax");
     min_args = 2;
     admin_only = false;
-    guild_only = false;
+    guild_only = true;
 
     async checkRequiredArgs(args: string[], message?: Message): Promise<ArgsCheckResult> {
         const mentionedUser = DiscordUtil.getUserFromMention(args[0]);
