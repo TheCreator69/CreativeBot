@@ -59,10 +59,10 @@
         "syntax": "slots <bet>",
         "arg0NaN": "Please enter a number as a bet!",
         "negativeBet": "Nice try, but I thought of that. Please enter a bet above 0.",
-        "tooLargeBet": "Your bet exceeds the amount of Creative Tokens you have!",
+        "tooLargeBet": "Let's not get too crazy with the numbers, ok? The maximum is 2147483647.",
         "rolling": "Rolling",
-        "lostBet": "Unfortunately, you lost your bet :frowning:\nBetter luck next time!\n",
-        "wonBet": "You've won {{amount}} Creative Tokens! Hooray!\n"
+        "lostBet": "You lost! Better luck next time :frowning:\n*(Actually, this is just a simulation and you didn't lose anything)*\n",
+        "wonBet": "You won! :partying_face:\nThe payout would be **{{amount}}** if this wasn't just a simulation!\n"
     },
     "thumbsup": {
         "name": "thumbsup",
@@ -76,7 +76,7 @@
         "description": "Lists everything that's new in the latest version of the Creative Bot",
         "syntax": "changelog",
         "embedTitle": ":bell: New in Version 1.1!",
-        "embedFooter": "Last updated on: 27th June 2021",
+        "embedFooter": "Last updated on: 28th June 2021",
         "changelog": [
             "**Rebranded** Creative Credits as Creative Tokens!",
             "**Replaced** old credits banner with new sleek token banner.\nThis also fixes the issue with names not fitting inside of it.",
@@ -85,7 +85,7 @@
             "**Added** an overview command for the new token system.",
             "**Added** a leaderboard command to check the top \"earners\"!",
             "**Removed** the ability to gain Creative Credits in any way.",
-            "**Removed** the slots command as a result.",
+            "**Fixed** slot machine message \"stuttering\"",
             "**Improved** answer times for Math command, making it fairer.",
             "**Added** new math operations: multiplication, division and modulo!",
             "**Added** this very command!"
