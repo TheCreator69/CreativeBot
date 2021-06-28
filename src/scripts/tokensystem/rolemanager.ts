@@ -6,6 +6,9 @@ var distinguishedMemberRoleID = "767423198957928448";
 var creativeGuild = client.guilds.cache.get(creativeGuildID);
 
 export async function addRoleToTopEarner(userID: bigint): Promise<void> {
+    var currentDateGMT = new Date();
+    if(currentDateGMT.getDate() < 7) return;
+
     var topEarner = creativeGuild?.members.cache.get(userID.toString());
     if(topEarner === undefined) return;
     topEarner.roles.add(distinguishedMemberRoleID);
