@@ -37,7 +37,7 @@ async function handleMessageInDevAndBuild(message: Message): Promise<void> {
             if(message.channel.type == "dm") {
                 await executeCommandIfPossible(message);
             }
-            else if(message.guild && message.guild.available && message.guild.id == "822898508495323196") {
+            else if(message.guild && message.guild.available && message.guild.id == config.testServerID) {
                 await executeCommandIfPossible(message);
             }
         }
