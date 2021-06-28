@@ -15,7 +15,7 @@ export class SlotsCommand implements CreativeCommand {
     slotColumns = 3;
     slotRows = 3;
 
-    async checkRequiredArgs(args: string[], message: Message | undefined): Promise<ArgsCheckResult> {
+    async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {
         var bet = parseInt(args[0]);
         if(isNaN(bet)) {
             return {valid: false, replyMessage: Localizer.translate("slots.arg0NaN")};
@@ -23,9 +23,7 @@ export class SlotsCommand implements CreativeCommand {
         if(bet <= 0) {
             return {valid: false, replyMessage: Localizer.translate("slots.negativeBet")};
         }
-        //@ts-ignore
-        var creditsOfAuthor = await CreditsHandler.getCreditsForUser(message.author.id);
-        if(bet > creditsOfAuthor) {
+        if(bet > 2147483647) {
             return {valid: false, replyMessage: Localizer.translate("slots.tooLargeBet")};
         }
         return {valid: true};
