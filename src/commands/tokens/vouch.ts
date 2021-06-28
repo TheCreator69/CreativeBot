@@ -3,6 +3,7 @@ import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import * as DiscordUtil from "../../scripts/discordutil";
 import * as TokenTableAccessor from "../../scripts/tokentableaccessor";
+import * as RoleManager from "../../scripts/tokensystem/rolemanager";
 
 export class VouchCommand implements CreativeCommand {
     name = Localizer.translate("vouch.name");
@@ -23,6 +24,7 @@ export class VouchCommand implements CreativeCommand {
         if(mentionedUser.bot) {
             return {valid: false, replyMessage: Localizer.translate("vouch.vouchingForBot")};
         }
+
         var amountToGrant = parseInt(args[1]);
         if(isNaN(amountToGrant)) {
             return {valid: false, replyMessage: Localizer.translate("vouch.arg1NaN")};
@@ -30,6 +32,7 @@ export class VouchCommand implements CreativeCommand {
         if(amountToGrant <= 0) {
             return {valid: false, replyMessage: Localizer.translate("vouch.amountZeroOrLess")};
         }
+
         var authorVouchTokens = await TokenTableAccessor.getVouchTokensOfUser(BigInt(message?.author.id));
         if(authorVouchTokens === 0) {
             return {valid: false, replyMessage: Localizer.translate("vouch.noMoreTokens")};
@@ -37,15 +40,21 @@ export class VouchCommand implements CreativeCommand {
         if(amountToGrant > authorVouchTokens) {
             return {valid: false, replyMessage: Localizer.translate("vouch.notEnoughTokens")};
         }
+        
         return {valid: true};
     }
 
-    execute(message: Message, args: string[]): void {
+    async execute(message: Message, args: string[]): Promise<void> {
         const mentionedUser = DiscordUtil.getUserFromMention(args[0]);
         const vouchAmount = parseInt(args[1]);
 
-        TokenTableAccessor.incrementTokensOfUser(BigInt(mentionedUser?.id), vouchAmount);
-        TokenTableAccessor.incrementVouchTokensOfUser(BigInt(message.author.id), -vouchAmount);
+        await TokenTableAccessor.incrementTokensOfUser(BigInt(mentionedUser?.id), vouchAmount);
+        await TokenTableAccessor.incrementVouchTokensOfUser(BigInt(message.author.id), -vouchAmount);
+
+        var mentionedUserRank = await TokenTableAccessor.getTokenRankOfUser(BigInt(mentionedUser?.id));
+        if(mentionedUserRank.position <= 10) {
+            RoleManager.addRoleToTopEarner(BigInt(mentionedUser?.id));
+        }
 
         if(vouchAmount > 1) {
             message.channel.send(Localizer.translate("vouch.vouchAnnouncement", {voucher: message.author.username, target: mentionedUser?.username, amount: vouchAmount}));
