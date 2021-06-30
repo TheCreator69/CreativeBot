@@ -250,7 +250,11 @@ export class MathCommand implements CreativeCommand {
     }
 
     collectAndResolveAnswer(message: Message, operation: MathOperation): void {
-        const filter = (filteredMessage: Message) => filteredMessage.author.id === message.author.id;
+        const filter = (filteredMessage: Message) => {
+            var messageAsNumber = parseInt(filteredMessage.content);
+            if(filteredMessage.author.id === message.author.id && !isNaN(messageAsNumber)) return true;
+            else return false;
+        }
         const collector = message.channel.createMessageCollector(filter, {max: 1, time: operation.mathQuestion.timeForAnswering});
 
         collector.on("collect", (collectedMessage: any) => {
