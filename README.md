@@ -5,8 +5,8 @@ This discord bot is being created by TheCreator with [TypeScript](https://www.ty
 I have still added support for multiple servers, just in case, even though I just have one at the moment. Sharding is not supported, however.
 
 ## What it can do
-- [x] Fun Commands: generate a random game idea, simulate a slot machine and create an inspiring Obama message
-- [x] Creative Credits System: every time you're active on the Creative Discord, the bot will award you a few credits
+- [x] Fun Commands: generate a random game idea, simulate a slot machine and create an inspiring Obama image
+- [x] Creative Tokens System: all members get 10 tokens each day that they can use to vouch for active members
 - [x] Event System: I'd like to host regular events on my Discord and my bot will help me with this :smile:
 
 ### Node Modules used
@@ -17,6 +17,7 @@ I have still added support for multiple servers, just in case, even though I jus
 - [winston](https://github.com/winstonjs/winston) (more sophisticated logging)
 - [sequelize](https://sequelize.org/master/) (accessing databases in an easier to read way)
 - [jest](https://jestjs.io/) with [ts-jest](https://www.npmjs.com/package/ts-jest) (automated code testing)
+- [node-schedule](https://www.npmjs.com/package/node-schedule) (timed events like granting vouch tokens every day)
 - and more...
 
 ### Other Credits
