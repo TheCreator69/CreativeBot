@@ -94,6 +94,7 @@
         "field1_1_1Title": ":robot: Patch 1.1.1 (Release Date: TBD)",
         "changelog1_1_1": [
             "**Added** the ability to vouch using user IDs.",
+            "**Added** the ability to check someone's tokens balance using their ID.",
             "**Updated** the changelog command to show changelogs for older versions."
         ]
     },
@@ -149,7 +150,7 @@
     "tokens": {
         "name": "tokens",
         "description": "Checks your own Creative Tokens balance or those of other users",
-        "syntax": "tokens [user mention]",
+        "syntax": "tokens [user mention/user id]",
         "invalidUser": "Couldn't find the user you were looking for!"
     },
     "tokensystem": {
@@ -161,7 +162,7 @@
     },
     "vouch": {
         "name": "vouch",
-        "description": "Vouches for the mentioned user by granting them the specified amount of tokens",
+        "description": "Vouches for the specified user by granting them tokens",
         "syntax": "vouch <user mention/user id> <amount>",
         "invalidUser": "Couldn't find the user you were looking for!",
         "selfVouching": "You can't vouch for yourself, you greedy goblin!",
