@@ -75,20 +75,26 @@
         "name": "changelog",
         "description": "Lists everything that's new in the latest version of the Creative Bot",
         "syntax": "changelog",
-        "embedTitle": ":bell: New in Version 1.1!",
-        "embedFooter": "Last updated on: 28th June 2021",
-        "changelog": [
+        "embedTitle": ":notepad_spiral: Creative Bot Changelog",
+        "embedDescription": "The changelog for the last versions of the Creative Bot, along with the release date and version number.",
+        "field1_1Title": ":bell: Version 1.1 (Release Date: 1.7.2021)",
+        "changelog1_1": [
             "**Rebranded** Creative Credits as Creative Tokens!",
             "**Replaced** old credits banner with new sleek token banner.\nThis also fixes the issue with names not fitting inside of it.",
             "**Added** the ability to check other people's Creative Tokens balance.",
-            "**Added** vouching of tokens.",
+            "**Added** vouching with tokens.",
             "**Added** an overview command for the new token system.",
             "**Added** a leaderboard command to check the top \"earners\"!",
             "**Removed** the ability to gain Creative Credits in any way.",
-            "**Fixed** slot machine message \"stuttering\"",
+            "**Fixed** slot machine message \"stuttering\".",
             "**Improved** answer times for Math command, making it fairer.",
             "**Added** new math operations: multiplication, division and modulo!",
             "**Added** this very command!"
+        ],
+        "field1_1_1Title": ":robot: Patch 1.1.1 (Release Date: TBD)",
+        "changelog1_1_1": [
+            "**Added** the ability to vouch using user IDs.",
+            "**Updated** the changelog command to show changelogs for older versions."
         ]
     },
     "help": {
@@ -156,7 +162,7 @@
     "vouch": {
         "name": "vouch",
         "description": "Vouches for the mentioned user by granting them the specified amount of tokens",
-        "syntax": "vouch <user mention> <amount>",
+        "syntax": "vouch <user mention/user id> <amount>",
         "invalidUser": "Couldn't find the user you were looking for!",
         "selfVouching": "You can't vouch for yourself, you greedy goblin!",
         "vouchingForBot": "Bots don't need validation in the form of tokens!",
