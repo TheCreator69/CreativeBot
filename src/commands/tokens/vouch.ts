@@ -4,6 +4,7 @@ import * as Localizer from "../../scripts/localizer";
 import * as DiscordUtil from "../../scripts/discordutil";
 import * as TokenTableAccessor from "../../scripts/tokentableaccessor";
 import * as RoleManager from "../../scripts/tokensystem/rolemanager";
+import {client} from "../../index";
 
 export class VouchCommand implements CreativeCommand {
     name = Localizer.translate("vouch.name");
@@ -14,7 +15,15 @@ export class VouchCommand implements CreativeCommand {
     guild_only = true;
 
     async checkRequiredArgs(args: string[], message?: Message): Promise<ArgsCheckResult> {
-        const mentionedUser = DiscordUtil.getUserFromMention(args[0]);
+        var mentionedUser = undefined;
+
+        if(message?.mentions.users.size !== 0) {
+            mentionedUser = DiscordUtil.getUserFromMention(args[0]);
+        }
+        else {
+            mentionedUser = await client.users.fetch(args[0]);
+        }
+        console.log(mentionedUser);
         if(mentionedUser === undefined) {
             return {valid: false, replyMessage: Localizer.translate("vouch.invalidUser")};
         }
@@ -40,12 +49,19 @@ export class VouchCommand implements CreativeCommand {
         if(amountToGrant > authorVouchTokens) {
             return {valid: false, replyMessage: Localizer.translate("vouch.notEnoughTokens")};
         }
-        
+
         return {valid: true};
     }
 
     async execute(message: Message, args: string[]): Promise<void> {
-        const mentionedUser = DiscordUtil.getUserFromMention(args[0]);
+        var mentionedUser = undefined;
+        if(message?.mentions.users.size !== 0) {
+            mentionedUser = DiscordUtil.getUserFromMention(args[0]);
+        }
+        else {
+            mentionedUser = await client.users.fetch(args[0]);
+        }
+
         const vouchAmount = parseInt(args[1]);
 
         await TokenTableAccessor.incrementTokensOfUser(BigInt(mentionedUser?.id), vouchAmount);

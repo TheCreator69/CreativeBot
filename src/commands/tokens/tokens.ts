@@ -4,6 +4,7 @@ import * as TokenTableAccessor from "../../scripts/tokentableaccessor";
 import {CreativeCommand} from "../../scripts/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import * as DiscordUtil from "../../scripts/discordutil";
+import {client} from "../../index";
 
 export class TokensCommand implements CreativeCommand {
     name = Localizer.translate("tokens.name");
@@ -20,7 +21,13 @@ export class TokensCommand implements CreativeCommand {
     async displayInfoOfCorrectUser(message: Message, args: string[]): Promise<void> {
         if(!args.length) await this.displayUserInfoOnTokenBanner(message.channel, message.author);
         else {
-            var mentionedUser = DiscordUtil.getUserFromMention(args[0]);
+            var mentionedUser = undefined;
+            if(message?.mentions.users.size !== 0) {
+                mentionedUser = DiscordUtil.getUserFromMention(args[0]);
+            }
+            else {
+                mentionedUser = await client.users.fetch(args[0]);
+            }
             if(mentionedUser === undefined) {
                 message.channel.send(Localizer.translate("tokens.invalidUser"));
                 return;
