@@ -18,14 +18,15 @@ export class ChangelogCommand implements CreativeCommand {
         const changelogEmbed = new MessageEmbed();
         changelogEmbed.setColor("#ffff00");
         changelogEmbed.setTitle(Localizer.translate("changelog.embedTitle"));
-        changelogEmbed.setDescription(this.constructListOfChanges());
-        changelogEmbed.setFooter(Localizer.translate("changelog.embedFooter"));
+        changelogEmbed.setDescription(Localizer.translate("changelog.embedDescription"));
+        changelogEmbed.addField(Localizer.translate("changelog.field1_1_1Title"), this.constructListOfChangesFromArray(Localizer.translateArray("changelog.changelog1_1_1")));
+        changelogEmbed.addField(Localizer.translate("changelog.field1_1Title"), this.constructListOfChangesFromArray(Localizer.translateArray("changelog.changelog1_1")));
         return changelogEmbed;
     }
 
-    constructListOfChanges(): string {
+    constructListOfChangesFromArray(array: {}): string {
         var listOfChanges = "";
-        var changeArray: string[] = Object.values(Localizer.translateArray("changelog.changelog"));
+        var changeArray: string[] = Object.values(array);
         for(let changeEntry of changeArray) {
             listOfChanges += changeEntry + "\n";
         }
