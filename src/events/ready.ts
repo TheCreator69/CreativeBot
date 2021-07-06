@@ -1,5 +1,5 @@
 import {Client} from "discord.js";
-const config = require("../config.json");
+import * as config from "../config.json";
 import * as LogChamp from "../scripts/logchamp";
 import {EventAttributes} from "../scripts/eventdef";
 import * as TokenResetter from "../scripts/tokensystem/resetscheduler";
@@ -10,33 +10,12 @@ export var info: EventAttributes = {
 }
 
 export function execute(client: Client) {
-    LogChamp.info("Creative Bot has been started! Using environment: " + process.env.NODE_ENV);
-    if(process.env.NODE_ENV !== "maintenance") {
-        startNormally(client);
-    }
-    else {
-        startInMaintenanceMode(client);
-    }
-    if(process.env.NODE_ENV == "development" || process.env.NODE_ENV == "build") {
-        config.prefix = "dev ";
-    }
-}
-
-function startNormally(client: Client): void {
+    LogChamp.info("Creative Bot has been started! Client user is called: " + client.user?.username);
     if(client.user !== null) {
         client.user.setPresence({
             status: "online",
             activity: {name: "Use '" + config.prefix + "help' to learn what I can do!"}
         });
         TokenResetter.scheduleTimedJobs();
-    }
-}
-
-function startInMaintenanceMode(client: Client): void {
-    if(client.user !== null) {
-        client.user.setPresence({
-            status: "dnd",
-            activity: {name: "Bot is currently undergoing maintenance!"}
-        });
     }
 }
