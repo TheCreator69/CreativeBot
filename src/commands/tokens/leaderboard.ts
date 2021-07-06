@@ -1,7 +1,7 @@
 import {Message, MessageAttachment, User} from "discord.js";
 import * as Canvas from "canvas";
-import * as TokenTableAccessor from "../../scripts/tokentableaccessor";
-import {CreativeCommand} from "../../scripts/commanddef";
+import * as TokenTableAccessor from "../../scripts/database/tokentableaccessor";
+import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import {client} from "../../index";
 

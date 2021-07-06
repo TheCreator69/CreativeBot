@@ -1,5 +1,5 @@
-import * as TokenTableAccessor from "../../scripts/tokentableaccessor";
-import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import * as TokenTableAccessor from "../../scripts/database/tokentableaccessor";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import {Message, User} from "discord.js";
 import * as Localizer from "../../scripts/localizer";
 

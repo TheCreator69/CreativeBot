@@ -1,8 +1,8 @@
 import {Message} from "discord.js";
-import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import * as DiscordUtil from "../../scripts/discordutil";
-import * as TokenTableAccessor from "../../scripts/tokentableaccessor";
+import * as TokenTableAccessor from "../../scripts/database/tokentableaccessor";
 import * as RoleManager from "../../scripts/tokensystem/rolemanager";
 import {client} from "../../index";
 

@@ -1,7 +1,7 @@
 import {Client} from "discord.js";
 import * as config from "../config.json";
 import * as LogChamp from "../scripts/logchamp";
-import {EventAttributes} from "../scripts/eventdef";
+import {EventAttributes} from "../scripts/def/eventdef";
 import * as TokenResetter from "../scripts/tokensystem/resetscheduler";
 
 export var info: EventAttributes = {

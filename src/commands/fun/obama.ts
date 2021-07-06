@@ -2,7 +2,7 @@ import {MessageAttachment, Message} from "discord.js";
 import * as Canvas from "canvas";
 import * as UIFunctions from "../../scripts/uifunctions";
 import * as fs from "fs";
-import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 
 export class ObamaCommand implements CreativeCommand {

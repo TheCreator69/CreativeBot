@@ -1,5 +1,5 @@
 import * as Help from "./help";
-import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import {Message, Collection} from "discord.js";
 
 const mockCollection = new Collection<string, CreativeCommand>();

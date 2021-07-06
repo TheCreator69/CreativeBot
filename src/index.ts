@@ -2,8 +2,8 @@ import * as Discord from "discord.js";
 import * as fs from "fs";
 import path from "path";
 import * as credentials from "./credentials.json";
-import {CreativeCommand} from "./scripts/commanddef";
-import {CreativeEvent} from "./scripts/eventdef";
+import {CreativeCommand} from "./scripts/def/commanddef";
+import {CreativeEvent} from "./scripts/def/eventdef";
 import * as CommandFactory from "./scripts/commandfactory";
 import * as Localizer from "./scripts/localizer";
 

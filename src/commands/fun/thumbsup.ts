@@ -1,5 +1,5 @@
 import {Message, User} from "discord.js";
-import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import {getUserFromMention} from "../../scripts/discordutil";
 import * as Localizer from "../../scripts/localizer";
 

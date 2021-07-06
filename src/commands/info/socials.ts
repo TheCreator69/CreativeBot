@@ -1,5 +1,5 @@
 import {MessageEmbed, Message} from "discord.js";
-import {CreativeCommand} from "../../scripts/commanddef";
+import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 
 export class SocialsCommand implements CreativeCommand {

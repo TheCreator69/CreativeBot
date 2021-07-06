@@ -1,6 +1,6 @@
 //import * as LogChamp from "../../scripts/logchamp";
 import {Message} from "discord.js";
-import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 
 export class TestCommand implements CreativeCommand {

@@ -1,4 +1,4 @@
-import {CreativeCommand} from "../../scripts/commanddef";
+import {CreativeCommand} from "../../scripts/def/commanddef";
 import {Message} from "discord.js";
 import * as Localizer from "../../scripts/localizer";
 

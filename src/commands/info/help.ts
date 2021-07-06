@@ -1,7 +1,7 @@
 import {MessageEmbed, Message, Collection} from "discord.js";
 import * as config from "../../config.json";
-import * as AdminCheck from "../../scripts/admincheck";
-import {CreativeCommand} from "../../scripts/commanddef";
+import * as AdminCheck from "../../scripts/database/admincheck";
+import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 
 export class HelpCommand implements CreativeCommand {

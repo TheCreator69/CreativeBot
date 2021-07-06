@@ -1,5 +1,5 @@
-import * as EventHandler from "../../scripts/eventhandler";
-import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import * as EventHandler from "../../scripts/database/eventhandler";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import {Message} from "discord.js";
 import * as Localizer from "../../scripts/localizer";
 

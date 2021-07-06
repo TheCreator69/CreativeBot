@@ -1,8 +1,8 @@
 import * as Index from "../../index";
 import {MessageEmbed, TextChannel, Message, User} from "discord.js";
-import * as EventHandler from "../../scripts/eventhandler";
+import * as EventHandler from "../../scripts/database/eventhandler";
 import * as UIFunctions from "../../scripts/uifunctions";
-import {CreativeCommand, ArgsCheckResult} from "../../scripts/commanddef";
+import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 
 export class SubmitCommand implements CreativeCommand {

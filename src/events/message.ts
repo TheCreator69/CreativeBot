@@ -1,8 +1,8 @@
 import * as config from "../config.json";
-import * as AdminCheck from "../scripts/admincheck";
+import * as AdminCheck from "../scripts/database/admincheck";
 import {commands} from "../index";
 import {Message, Client} from "discord.js";
-import {EventAttributes} from "../scripts/eventdef";
+import {EventAttributes} from "../scripts/def/eventdef";
 import * as Localizer from "../scripts/localizer";
 
 export var info: EventAttributes = {

@@ -1,6 +1,6 @@
 import {Message} from "discord.js";
 import * as Index from "../../index";
-import {CreativeCommand} from "../../scripts/commanddef";
+import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 
 export class PingCommand implements CreativeCommand {
