@@ -1,9 +1,9 @@
 import * as Discord from "discord.js";
-import * as credentials from "./credentials.json";
 import * as fs from "fs";
+import path from "path";
+import * as credentials from "./credentials.json";
 import {CreativeCommand} from "./scripts/commanddef";
 import {CreativeEvent} from "./scripts/eventdef";
-import path from "path";
 import * as CommandFactory from "./scripts/commandfactory";
 import * as Localizer from "./scripts/localizer";
 
@@ -14,9 +14,11 @@ startBot();
 
 async function startBot() {
     await Localizer.initializeLocalizer();
+
     var srcDirPath = getAbsoluteSourceDirPathForEnv();
     readCommandFilesAndRegisterCommands(srcDirPath);
     readEventFilesAndListenToEvents(srcDirPath);
+
     client.login(credentials.token);
 }
 
@@ -31,11 +33,14 @@ function getAbsoluteSourceDirPathForEnv(): any {
 
 function readCommandFilesAndRegisterCommands(srcDirPath: string): void {
     const commandFolders = fs.readdirSync(`${srcDirPath}/commands`);
+
     for(const folder of commandFolders) {
         const commandFiles = fs.readdirSync(`${srcDirPath}/commands/${folder}`).filter(filterDirectoryForTSAndJSFilesWithoutTests);
+
         for(const file of commandFiles) {
             const commandModule = require(`./commands/${folder}/${file}`);
             var commandInstance = CommandFactory.createCommand(file, commandModule);
+
             if(commandInstance === undefined) return;
             commandInstance.category = folder;
             commands.set(commandInstance.name, commandInstance);
@@ -45,8 +50,10 @@ function readCommandFilesAndRegisterCommands(srcDirPath: string): void {
 
 function readEventFilesAndListenToEvents(srcDirPath: string): void {
     const eventFiles = fs.readdirSync(`${srcDirPath}/events`).filter(filterDirectoryForTSAndJSFilesWithoutTests);
+
     for(const file of eventFiles) {
         const eventInstance: CreativeEvent = require(`./events/${file}`);
+
         if(eventInstance.info.once) {
             client.once(eventInstance.info.name, (...args) => eventInstance.execute(client, ...args));
         }
