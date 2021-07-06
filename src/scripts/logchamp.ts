@@ -26,10 +26,8 @@ export function error(message: string) {
 }
 
 function log(level: string, message: string) {
-    if(process.env.NODE_ENV !== "production") {
-        logger.log({
-            level: level,
-            message: message
-        });
-    }
+    logger.log({
+        level: level,
+        message: message
+    });
 }
