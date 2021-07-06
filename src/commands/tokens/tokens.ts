@@ -10,9 +10,9 @@ export class TokensCommand implements CreativeCommand {
     name = Localizer.translate("tokens.name");
     description = Localizer.translate("tokens.description");
     syntax = Localizer.translate("tokens.syntax");
-    min_args = 0;
-    admin_only = false;
-    guild_only = false;
+    minArgs = 0;
+    adminOnly = false;
+    guildOnly = false;
 
     async execute(message: Message, args: string[]): Promise<void> {
         this.displayInfoOfCorrectUser(message, args);

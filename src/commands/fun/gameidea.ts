@@ -63,9 +63,9 @@ export class GameIdeaCommand implements CreativeCommand {
     name = Localizer.translate("gameidea.name");
     description = Localizer.translate("gameidea.description");
     syntax = Localizer.translate("gameidea.syntax");
-    min_args = 0;
-    admin_only = false;
-    guild_only = false;
+    minArgs = 0;
+    adminOnly = false;
+    guildOnly = false;
 
     execute(message: Message, args: string[]): void {
         var gameIdea = this.generateGameIdea();

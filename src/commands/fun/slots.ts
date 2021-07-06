@@ -6,9 +6,9 @@ export class SlotsCommand implements CreativeCommand {
     name = Localizer.translate("slots.name");
     description = Localizer.translate("slots.description");
     syntax = Localizer.translate("slots.syntax");
-    min_args = 1;
-    admin_only = false;
-    guild_only = false;
+    minArgs = 1;
+    adminOnly = false;
+    guildOnly = false;
 
     rollCycles = 2;
     symbols = [":grapes:", ":cherries:", ":lemon:", ":green_apple:", ":kiwi:", ":peach:"];

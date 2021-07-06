@@ -6,9 +6,9 @@ export class SocialsCommand implements CreativeCommand {
     name = Localizer.translate("socials.name");
     description = Localizer.translate("socials.description");
     syntax = Localizer.translate("socials.syntax");
-    min_args = 0;
-    admin_only = false;
-    guild_only = false;
+    minArgs = 0;
+    adminOnly = false;
+    guildOnly = false;
 
     execute(message: Message, args: string[]): void {
         message.channel.send(this.constructEmbed());

@@ -7,9 +7,9 @@ export class SetEventCommand implements CreativeCommand {
     name = Localizer.translate("setevent.name");
     description = Localizer.translate("setevent.description");
     syntax = Localizer.translate("setevent.syntax");
-    min_args = 1;
-    admin_only = true;
-    guild_only = true;
+    minArgs = 1;
+    adminOnly = true;
+    guildOnly = true;
 
     async checkRequiredArgs(args: string[], message: Message | undefined): Promise<ArgsCheckResult> {
         if(args[0] === "delete") {

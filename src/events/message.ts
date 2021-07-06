@@ -27,14 +27,14 @@ async function executeCommandIfPossible(message: Message): Promise<void> {
         var command = commands.get(commandInfo.name);
         if(command === undefined) return;
 
-        if(command.guild_only) {
+        if(command.guildOnly) {
             if(!message.guild || !message.guild.available) {
                 message.channel.send(Localizer.translate("messageEvent.guildOnlyCommand"));
                 return;
             }
         }
 
-        if(command.min_args) {
+        if(command.minArgs) {
             if(!command.checkRequiredArgs) return;
             var argsCheckResult = await command.checkRequiredArgs(commandInfo.args, message);
             if(argsCheckResult.valid) {
@@ -66,10 +66,10 @@ async function canCommandBeExecuted(message: Message, commandInfo: CommandInfoFr
     var command = commands.get(commandInfo.name);
     if(command === undefined) return false;
 
-    if(command.admin_only && !await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
+    if(command.adminOnly && !await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
         return false;
     }
-    if(commandInfo.args.length < command.min_args) {
+    if(commandInfo.args.length < command.minArgs) {
         message.channel.send(Localizer.translate("messageEvent.missingArgs", {prefix: config.prefix, commandName: command.name}));
         return false;
     }

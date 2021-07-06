@@ -7,9 +7,9 @@ export class ThumbsupCommand implements CreativeCommand {
     name = Localizer.translate("thumbsup.name");
     description = Localizer.translate("thumbsup.description");
     syntax = Localizer.translate("thumbsup.syntax");
-    min_args = 1;
-    admin_only = false;
-    guild_only = false;
+    minArgs = 1;
+    adminOnly = false;
+    guildOnly = false;
 
     async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {
         var mentionedUser = getUserFromMention(args[0]);

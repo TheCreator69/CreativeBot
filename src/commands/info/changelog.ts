@@ -6,9 +6,9 @@ export class ChangelogCommand implements CreativeCommand {
     name = Localizer.translate("changelog.name");
     description = Localizer.translate("changelog.description");
     syntax = Localizer.translate("changelog.syntax");
-    min_args = 0;
-    admin_only = false;
-    guild_only = false;
+    minArgs = 0;
+    adminOnly = false;
+    guildOnly = false;
 
     execute(message: Message, args: string[]): void {
         message.channel.send(this.constructChangelogEmbed());

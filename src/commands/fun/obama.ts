@@ -9,9 +9,9 @@ export class ObamaCommand implements CreativeCommand {
     name = Localizer.translate("obama.name");
     description = Localizer.translate("obama.description");
     syntax = Localizer.translate("obama.syntax");
-    min_args = 1;
-    admin_only = false;
-    guild_only = false;
+    minArgs = 1;
+    adminOnly = false;
+    guildOnly = false;
 
     async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {
         return {valid: true};

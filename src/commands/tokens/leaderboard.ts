@@ -9,9 +9,9 @@ export class LeaderboardCommand implements CreativeCommand {
     name = Localizer.translate("leaderboard.name");
     description = Localizer.translate("leaderboard.description");
     syntax = Localizer.translate("leaderboard.syntax");
-    min_args = 0;
-    admin_only = false;
-    guild_only = false;
+    minArgs = 0;
+    adminOnly = false;
+    guildOnly = false;
 
     async execute(message: Message, args: string[]) {
         let topUserEntries = await this.getTopTenUsers();

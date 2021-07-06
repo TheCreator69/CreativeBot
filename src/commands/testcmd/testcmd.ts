@@ -7,9 +7,9 @@ export class TestCommand implements CreativeCommand {
     name = Localizer.translate("test.name");
     description = Localizer.translate("test.description");
     syntax = Localizer.translate("test.syntax");
-    min_args = 0;
-    admin_only = true;
-    guild_only = false;
+    minArgs = 0;
+    adminOnly = true;
+    guildOnly = false;
 
     async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {
         return {valid: true};

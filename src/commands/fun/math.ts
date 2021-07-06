@@ -216,9 +216,9 @@ export class MathCommand implements CreativeCommand {
     name = Localizer.translate("math.name");
     description = Localizer.translate("math.description");
     syntax = Localizer.translate("math.syntax");
-    min_args = 0;
-    admin_only = false;
-    guild_only = false;
+    minArgs = 0;
+    adminOnly = false;
+    guildOnly = false;
 
     operations: MathOperation[] = [
         new Addition(),

@@ -11,9 +11,9 @@ export class ChangeTokensCommand implements CreativeCommand {
     name = Localizer.translate("changetokens.name");
     description = Localizer.translate("changetokens.description");
     syntax = Localizer.translate("changetokens.syntax");
-    min_args = 3;
-    admin_only = true;
-    guild_only = false;
+    minArgs = 3;
+    adminOnly = true;
+    guildOnly = false;
 
     userFromMentionCallback: (argument: string) => User | undefined;
 

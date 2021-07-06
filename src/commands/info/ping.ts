@@ -7,9 +7,9 @@ export class PingCommand implements CreativeCommand {
     name = Localizer.translate("ping.name");
     description = Localizer.translate("ping.description");
     syntax = Localizer.translate("ping.syntax");
-    min_args = 0;
-    admin_only = false;
-    guild_only = false;
+    minArgs = 0;
+    adminOnly = false;
+    guildOnly = false;
 
     execute(message: Message, args: string[]): void {
         message.channel.send(Localizer.translate("ping.pingMessage", {ping: Index.client.ws.ping}));

@@ -10,9 +10,9 @@ export class VouchCommand implements CreativeCommand {
     name = Localizer.translate("vouch.name");
     description = Localizer.translate("vouch.description");
     syntax = Localizer.translate("vouch.syntax");
-    min_args = 2;
-    admin_only = false;
-    guild_only = true;
+    minArgs = 2;
+    adminOnly = false;
+    guildOnly = true;
 
     async checkRequiredArgs(args: string[], message?: Message): Promise<ArgsCheckResult> {
         var mentionedUser = undefined;

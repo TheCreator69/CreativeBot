@@ -7,17 +7,17 @@ var helpCommand = new Help.HelpCommand(mockCollection);
 
 beforeAll(() => {
     mockCollection.set("Banana", {
-        name: "Banana", description: "", syntax: "", min_args: 0, admin_only: false, guild_only: false,
+        name: "Banana", description: "", syntax: "", minArgs: 0, adminOnly: false, guildOnly: false,
         async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {return {valid: true};},
         execute(message: Message, args: string[]): void {}
     });
     mockCollection.set("Cherry", {
-        name: "Cherry", description: "", syntax: "", min_args: 0, admin_only: true, guild_only: false,
+        name: "Cherry", description: "", syntax: "", minArgs: 0, adminOnly: true, guildOnly: false,
         async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {return {valid: true};},
         execute(message: Message, args: string[]): void {}
     });
     mockCollection.set("Apple", {
-        name: "Apple", description: "", syntax: "", min_args: 0, admin_only: false, guild_only: false,
+        name: "Apple", description: "", syntax: "", minArgs: 0, adminOnly: false, guildOnly: false,
         async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {return {valid: true};},
         execute(message: Message, args: string[]): void {}
     });
@@ -44,22 +44,22 @@ test("Checks if the 'Null' command exists. Expects result to be false", () => {
 });
 
 test("Checks if the Apple command exists when the player isn't an admin and the command isn't admin-only. Expects result to be true", () => {
-    expect(helpCommand.doesCommandExistForAuthor(["Apple"])).toBeTruthy(); //admin_only = false
+    expect(helpCommand.doesCommandExistForAuthor(["Apple"])).toBeTruthy(); //adminOnly = false
 });
 
 test("Checks if the Cherry command exists when the player isn't an admin and the command is admin-only. Expects result to be false", () => {
-    expect(helpCommand.doesCommandExistForAuthor(["Cherry"])).toBeFalsy(); //admin_only = true
+    expect(helpCommand.doesCommandExistForAuthor(["Cherry"])).toBeFalsy(); //adminOnly = true
 });
 
 test("Checks if the Apple command exists when the player is an admin and the command isn't admin-only. Expects result to be true", () => {
     helpCommand.isCommandSenderAdmin = true;
-    expect(helpCommand.doesCommandExistForAuthor(["Apple"])).toBeTruthy(); //admin_only = false
+    expect(helpCommand.doesCommandExistForAuthor(["Apple"])).toBeTruthy(); //adminOnly = false
     helpCommand.isCommandSenderAdmin = false;
 });
 
 test("Checks if the Cherry command exists when the player is an admin and the command is admin-only. Expects result to be true", () => {
     helpCommand.isCommandSenderAdmin = true;
-    expect(helpCommand.doesCommandExistForAuthor(["Cherry"])).toBeTruthy(); //admin_only = true
+    expect(helpCommand.doesCommandExistForAuthor(["Cherry"])).toBeTruthy(); //adminOnly = true
     helpCommand.isCommandSenderAdmin = false;
 });
 

@@ -7,9 +7,9 @@ export class ToggleEventCommand implements CreativeCommand {
     name = Localizer.translate("toggleevent.name");
     description = Localizer.translate("toggleevent.description");
     syntax = Localizer.translate("toggleevent.syntax");
-    min_args = 1;
-    admin_only = true;
-    guild_only = true;
+    minArgs = 1;
+    adminOnly = true;
+    guildOnly = true;
 
     async checkRequiredArgs(args: string[], message: Message | undefined): Promise<ArgsCheckResult> {
         if(args[0] !== "on" && args[0] !== "off") {

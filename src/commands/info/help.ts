@@ -12,9 +12,9 @@ export class HelpCommand implements CreativeCommand {
     name = Localizer.translate("help.name");
     description = Localizer.translate("help.description");
     syntax = Localizer.translate("help.syntax");
-    min_args = 0;
-    admin_only = false;
-    guild_only = false;
+    minArgs = 0;
+    adminOnly = false;
+    guildOnly = false;
 
     isCommandSenderAdmin = false;
     commandCollection: Collection<string, CreativeCommand>;
@@ -68,7 +68,7 @@ export class HelpCommand implements CreativeCommand {
         var commands = this.sortCommandsAlphabetically(this.commandCollection.array());
         var commandList = "";
         for(const commandObject of commands) {
-            if(commandObject.admin_only) {
+            if(commandObject.adminOnly) {
                 commandList += this.listAdminCommandForAdminsOnlyInDM(message, commandObject);
             }
             else {
@@ -103,7 +103,7 @@ export class HelpCommand implements CreativeCommand {
         if(commandObject === undefined) {
             return false;
         }
-        if(commandObject.admin_only && !this.isCommandSenderAdmin) {
+        if(commandObject.adminOnly && !this.isCommandSenderAdmin) {
             return false;
         }
         else {

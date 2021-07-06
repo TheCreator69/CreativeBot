@@ -6,9 +6,9 @@ export class TokenSystemCommand implements CreativeCommand {
     name = Localizer.translate("tokensystem.name");
     description = Localizer.translate("tokensystem.description");
     syntax = Localizer.translate("tokensystem.syntax");
-    min_args = 0;
-    admin_only = false;
-    guild_only = false;
+    minArgs = 0;
+    adminOnly = false;
+    guildOnly = false;
 
     execute(message: Message, args: string[]): void {
         message.channel.send(this.constructEmbed());

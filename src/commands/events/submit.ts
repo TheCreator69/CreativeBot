@@ -9,9 +9,9 @@ export class SubmitCommand implements CreativeCommand {
     name = Localizer.translate("submit.name");
     description = Localizer.translate("submit.description");
     syntax = Localizer.translate("submit.syntax");
-    min_args = 2;
-    admin_only = false;
-    guild_only = true;
+    minArgs = 2;
+    adminOnly = false;
+    guildOnly = true;
 
     async checkRequiredArgs(args: string[], message: Message | undefined): Promise<ArgsCheckResult> {
         //@ts-ignore
