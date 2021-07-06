@@ -1,6 +1,6 @@
 import * as Sequelize from "sequelize";
 import {Sequelize as SequelizeConstructor} from "sequelize";
-import * as credentials from "../credentials.json";
+import * as credentials from "../../credentials.json";
 
 export async function checkIfUserIsAdmin(userID: bigint) {
     const sequelize = establishDatabaseConnection();

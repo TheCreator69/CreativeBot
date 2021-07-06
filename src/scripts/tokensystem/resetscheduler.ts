@@ -1,5 +1,5 @@
 import * as Scheduler from "node-schedule";
-import * as TTA from "../tokentableaccessor";
+import * as TTA from "../database/tokentableaccessor";
 import * as RoleManager from "./rolemanager";
 
 export function scheduleTimedJobs() {
