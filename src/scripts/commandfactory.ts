@@ -1,5 +1,5 @@
 import {commands} from "../index";
-import {CreativeCommand} from "./commanddef";
+import {CreativeCommand} from "./def/commanddef";
 import {getUserFromMention} from "./discordutil";
 
 export function createCommand(file: string, commandModule: any): CreativeCommand | undefined {
