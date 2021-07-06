@@ -23,7 +23,6 @@ export class VouchCommand implements CreativeCommand {
         else {
             mentionedUser = await client.users.fetch(args[0]);
         }
-        console.log(mentionedUser);
         if(mentionedUser === undefined) {
             return {valid: false, replyMessage: Localizer.translate("vouch.invalidUser")};
         }
