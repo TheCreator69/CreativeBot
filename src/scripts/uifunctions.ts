@@ -15,3 +15,12 @@ export function createStringFromArray(args: string[], startingIndex: number): st
     }
     return text;
 }
+
+export function createStringFromArrayWithSeparator(args: string[], startingIndex: number, argSeparator: string): string {
+    var text = "";
+    for(var i = startingIndex; i < args.length; i++) {
+        if(i === args.length - 1) text += args[i];
+        else text += args[i] + argSeparator;
+    }
+    return text;
+}
