@@ -3,6 +3,7 @@ import * as config from "../../config.json";
 import * as AdminCheck from "../../scripts/database/admincheck";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
+import {createStringFromArrayWithSeparator} from "../../scripts/uifunctions";
 
 export class HelpCommand implements CreativeCommand {
     constructor(_commandCollection: Collection<string, CreativeCommand>) {
@@ -115,11 +116,15 @@ export class HelpCommand implements CreativeCommand {
         var commandObject = this.getCommandInstance(args);
         //@ts-ignore
         var category = commandObject.category.replace(/^\w/, (c: any) => c.toUpperCase());
+        var aliases;
+        if(commandObject?.aliases === undefined) aliases = "None.";
+        else aliases = createStringFromArrayWithSeparator(commandObject?.aliases, 0, ", ");
         //@ts-ignore
-        return Localizer.translate("help.commandInfoString", {description: commandObject.description, prefix: config.prefix, syntax: commandObject.syntax, category: category});
+        return Localizer.translate("help.commandInfoString", {aliases: aliases, description: commandObject.description, prefix: config.prefix, syntax: commandObject.syntax, category: category});
     }
 
     getCommandInstance(args: string[]): CreativeCommand | undefined {
-        return this.commandCollection.get(args[0]);
+        //@ts-ignore
+        return this.commandCollection.get(args[0]) || this.commandCollection.find(cmd => cmd.aliases && cmd.aliases.includes(args[0]));
     }
 }
