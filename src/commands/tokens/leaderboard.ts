@@ -7,6 +7,7 @@ import {client} from "../../index";
 
 export class LeaderboardCommand implements CreativeCommand {
     name = Localizer.translate("leaderboard.name");
+    aliases = ["leaderboards"];
     description = Localizer.translate("leaderboard.description");
     syntax = Localizer.translate("leaderboard.syntax");
     minArgs = 0;
