@@ -95,7 +95,8 @@
         "changelog1_1_1": [
             "**Added** the ability to vouch using user IDs.",
             "**Added** the ability to check someone's tokens balance using their ID.",
-            "**Updated** the changelog command to show changelogs for older versions."
+            "**Updated** the changelog command to show changelogs for older versions.",
+            "**Added** support for command aliases: `%leaderboards` and `%leaderboard` both display the leaderboard now!"
         ]
     },
     "help": {
@@ -108,7 +109,7 @@
         "commandDetailsFooter": "Arguments wrapped with \"<>\" are required, others wrapped with \"[]\" are optional.",
         "invalidCommandTitle": ":interrobang: Invalid command!",
         "invalidCommandDescription": "Sorry, but this command doesn't exist :frowning:",
-        "commandInfoString": "**Description:** {{description}}\n**Syntax:** *{{prefix}}{{syntax}}*\n**Category:** {{category}}"
+        "commandInfoString": "**Aliases:** {{aliases}}\n**Description:** {{description}}\n**Syntax:** *{{prefix}}{{syntax}}*\n**Category:** {{category}}"
     },
     "ping": {
         "name": "ping",
@@ -144,6 +145,7 @@
     },
     "leaderboard": {
         "name": "leaderboard",
+        "aliases": ["leaderboards"],
         "description": "Displays a leaderboard of the top 10 users with the most tokens",
         "syntax": "leaderboard"
     },
