@@ -27,6 +27,6 @@ export function translate(key: string | string[], options?: object): string {
     return i18next.t(key, options);
 }
 
-export function translateArray(key: string | string[], options?: object): object {
+export function translateArray(key: string | string[], options?: object): string[] {
     return i18next.t(key, options);
 }
