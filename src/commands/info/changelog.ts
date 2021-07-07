@@ -24,7 +24,7 @@ export class ChangelogCommand implements CreativeCommand {
         return changelogEmbed;
     }
 
-    constructListOfChangesFromArray(array: {}): string {
+    constructListOfChangesFromArray(array: string[]): string {
         var listOfChanges = "";
         var changeArray: string[] = Object.values(array);
         for(let changeEntry of changeArray) {
