@@ -3,6 +3,7 @@ import * as AdminCheck from "../scripts/database/admincheck";
 import {commands} from "../index";
 import {Message, Client} from "discord.js";
 import {EventAttributes} from "../scripts/def/eventdef";
+import {CreativeCommand} from "../scripts/def/commanddef";
 import * as Localizer from "../scripts/localizer";
 
 export var info: EventAttributes = {
@@ -24,7 +25,8 @@ async function executeCommandIfPossible(message: Message): Promise<void> {
     var commandInfo = getCommandInfoFromMessage(message);
 
     if(await canCommandBeExecuted(message, commandInfo)) {
-        var command = commands.get(commandInfo.name);
+        //@ts-ignore
+        var command = getCommandFromNameOrAlias(commandInfo.name);
         if(command === undefined) return;
 
         if(command.guildOnly) {
@@ -63,7 +65,8 @@ function getCommandInfoFromMessage(message: Message): CommandInfoFromMessage {
 }
 
 async function canCommandBeExecuted(message: Message, commandInfo: CommandInfoFromMessage): Promise<boolean> {
-    var command = commands.get(commandInfo.name);
+    //@ts-ignore
+    var command = getCommandFromNameOrAlias(commandInfo.name);
     if(command === undefined) return false;
 
     if(command.adminOnly && !await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
@@ -74,4 +77,9 @@ async function canCommandBeExecuted(message: Message, commandInfo: CommandInfoFr
         return false;
     }
     return true;
+}
+
+function getCommandFromNameOrAlias(name: string): CreativeCommand | undefined {
+    //@ts-ignore
+    return commands.get(name) || commands.find(cmd => cmd.aliases && cmd.aliases.includes(name));
 }
