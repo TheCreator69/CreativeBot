@@ -2,6 +2,7 @@ import {Message} from "discord.js";
 
 export interface CreativeCommand {
     name: string,
+    aliases?: string[],
     description: string,
     syntax: string,
     minArgs: number,
