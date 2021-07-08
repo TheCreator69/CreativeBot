@@ -11,6 +11,7 @@ export class HelpCommand implements CreativeCommand {
     }
 
     name = Localizer.translate("help.name");
+    aliases = Localizer.translateArray("help.aliases");
     description = Localizer.translate("help.description");
     syntax = Localizer.translate("help.syntax");
     minArgs = 0;

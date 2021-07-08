@@ -4,6 +4,7 @@ import * as Localizer from "../../scripts/localizer";
 
 export class ChangelogCommand implements CreativeCommand {
     name = Localizer.translate("changelog.name");
+    aliases = Localizer.translateArray("changelog.aliases");
     description = Localizer.translate("changelog.description");
     syntax = Localizer.translate("changelog.syntax");
     minArgs = 0;

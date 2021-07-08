@@ -5,6 +5,7 @@ import * as Localizer from "../../scripts/localizer";
 
 export class TestCommand implements CreativeCommand {
     name = Localizer.translate("test.name");
+    aliases = Localizer.translateArray("test.aliases");
     description = Localizer.translate("test.description");
     syntax = Localizer.translate("test.syntax");
     minArgs = 0;

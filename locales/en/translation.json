@@ -73,6 +73,7 @@
     },
     "changelog": {
         "name": "changelog",
+        "aliases": ["changes"],
         "description": "Lists everything that's new in the latest version of the Creative Bot",
         "syntax": "changelog",
         "embedTitle": ":notepad_spiral: Creative Bot Changelog",
@@ -101,6 +102,7 @@
     },
     "help": {
         "name": "help",
+        "aliases": ["h"],
         "description": "Lists all possible commands or info about a specific command if one is specified",
         "syntax": "help [command]",
         "commandListTitle": ":page_facing_up: List of possible commands:",
@@ -127,6 +129,7 @@
     },
     "test": {
         "name": "test",
+        "aliases": ["t"],
         "description": "Tests functionality in a clean .ts file",
         "syntax": "test"
     },
