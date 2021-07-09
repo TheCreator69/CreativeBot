@@ -1,6 +1,6 @@
-import* as Canvas from "canvas";
+import {Canvas, CanvasRenderingContext2D} from "canvas";
 
-export function getFittingFontSize(canvas: Canvas.Canvas, context: Canvas.CanvasRenderingContext2D, text: string, fontStartingSize: number): string {
+export function getFittingFontSize(canvas: Canvas, context: CanvasRenderingContext2D, text: string, fontStartingSize: number): string {
     do {
         context.font = `${fontStartingSize -= 5}px Arial`;
     } while(context.measureText(text).width > canvas.width - 100);
