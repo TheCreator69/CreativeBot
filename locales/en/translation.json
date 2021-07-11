@@ -94,8 +94,7 @@
         ],
         "field1_1_1Title": ":robot: Patch 1.1.1 (Release Date: TBD)",
         "changelog1_1_1": [
-            "**Added** the ability to vouch using user IDs.",
-            "**Added** the ability to check someone's tokens balance using their ID.",
+            "**Added** the ability to vouch using user IDs and the combo \"username + discriminator\"",
             "**Updated** the changelog command to show changelogs for older versions.",
             "**Added** support for command aliases: `%leaderboards` and `%leaderboard` both display the leaderboard now!"
         ]
@@ -155,7 +154,7 @@
     "tokens": {
         "name": "tokens",
         "description": "Checks your own Creative Tokens balance or those of other users",
-        "syntax": "tokens [user mention/user id]",
+        "syntax": "tokens [user mention]",
         "invalidUser": "Couldn't find the user you were looking for!"
     },
     "tokensystem": {
@@ -167,8 +166,8 @@
     },
     "vouch": {
         "name": "vouch",
-        "description": "Vouches for the specified user by granting them tokens",
-        "syntax": "vouch <user mention/user id> <amount>",
+        "description": "Vouches for the specified user by granting them tokens.\nYou can vouch for someone by mentioning them or using their ID.\nTo **vouch** for someone with their **username**, copy the name and the discriminator (#XXXX) behind it (e.g: __TheCreator#1337__)",
+        "syntax": "vouch <user mention/username/user ID> <amount>",
         "invalidUser": "Couldn't find the user you were looking for!",
         "selfVouching": "You can't vouch for yourself, you greedy goblin!",
         "vouchingForBot": "Bots don't need validation in the form of tokens!",
