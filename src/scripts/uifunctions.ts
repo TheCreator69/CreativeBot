@@ -24,3 +24,12 @@ export function createStringFromArrayWithSeparator(args: string[], startingIndex
     }
     return text;
 }
+
+export function createStringFromArrayWithSeparatorAndEndOffset(args: string[], startIndex: number, endIndexOffset: number, argSeparator: string): string {
+    var text = "";
+    for(var i = startIndex; i < args.length - endIndexOffset; i++) {
+        if(i === args.length - (endIndexOffset + 1)) text += args[i];
+        else text += args[i] + argSeparator;
+    }
+    return text;
+}
