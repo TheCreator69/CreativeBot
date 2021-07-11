@@ -2,7 +2,7 @@ import {Client} from "discord.js";
 import * as config from "../config.json";
 import * as LogChamp from "../scripts/logchamp";
 import {EventAttributes} from "../scripts/def/eventdef";
-import * as TokenResetter from "../scripts/tokensystem/resetscheduler";
+import * as TimedEventScheduler from "../scripts/tokensystem/timedeventscheduler";
 
 export var info: EventAttributes = {
     name: "ready",
@@ -16,6 +16,6 @@ export function execute(client: Client) {
             status: "online",
             activity: {name: "Use '" + config.prefix + "help' to learn what I can do!"}
         });
-        TokenResetter.scheduleTimedJobs();
+        TimedEventScheduler.scheduleTimedJobs();
     }
 }
