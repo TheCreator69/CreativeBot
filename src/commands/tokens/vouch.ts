@@ -1,10 +1,11 @@
-import {Message} from "discord.js";
+import {Message, User} from "discord.js";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import * as DiscordUtil from "../../scripts/discordutil";
 import * as TokenTableAccessor from "../../scripts/database/tokentableaccessor";
 import * as RoleManager from "../../scripts/tokensystem/rolemanager";
 import {client} from "../../index";
+import * as UIFunctions from "../../scripts/uifunctions";
 
 export class VouchCommand implements CreativeCommand {
     name = Localizer.translate("vouch.name");
@@ -15,25 +16,20 @@ export class VouchCommand implements CreativeCommand {
     guildOnly = true;
 
     async checkRequiredArgs(args: string[], message?: Message): Promise<ArgsCheckResult> {
-        var mentionedUser = undefined;
+        //@ts-ignore
+        var specifiedUser = await this.getUserFromVaryingInput(message, args);
 
-        if(message?.mentions.users.size !== 0) {
-            mentionedUser = DiscordUtil.getUserFromMention(args[0]);
-        }
-        else {
-            mentionedUser = await client.users.fetch(args[0]);
-        }
-        if(mentionedUser === undefined) {
+        if(specifiedUser === undefined) {
             return {valid: false, replyMessage: Localizer.translate("vouch.invalidUser")};
         }
-        if(mentionedUser.id === message?.author.id) {
+        if(specifiedUser.id === message?.author.id) {
             return {valid: false, replyMessage: Localizer.translate("vouch.selfVouching")};
         }
-        if(mentionedUser.bot) {
+        if(specifiedUser.bot) {
             return {valid: false, replyMessage: Localizer.translate("vouch.vouchingForBot")};
         }
 
-        var amountToGrant = parseInt(args[1]);
+        var amountToGrant = parseInt(args[args.length - 1]);
         if(isNaN(amountToGrant)) {
             return {valid: false, replyMessage: Localizer.translate("vouch.arg1NaN")};
         }
@@ -53,29 +49,49 @@ export class VouchCommand implements CreativeCommand {
     }
 
     async execute(message: Message, args: string[]): Promise<void> {
-        var mentionedUser = undefined;
-        if(message?.mentions.users.size !== 0) {
-            mentionedUser = DiscordUtil.getUserFromMention(args[0]);
-        }
-        else {
-            mentionedUser = await client.users.fetch(args[0]);
-        }
+        var specifiedUser = await this.getUserFromVaryingInput(message, args);
+        const vouchAmount = parseInt(args[args.length - 1]);
 
-        const vouchAmount = parseInt(args[1]);
-
-        await TokenTableAccessor.incrementTokensOfUser(BigInt(mentionedUser?.id), vouchAmount);
+        await TokenTableAccessor.incrementTokensOfUser(BigInt(specifiedUser?.id), vouchAmount);
         await TokenTableAccessor.incrementVouchTokensOfUser(BigInt(message.author.id), -vouchAmount);
 
-        var mentionedUserRank = await TokenTableAccessor.getTokenRankOfUser(BigInt(mentionedUser?.id));
-        if(mentionedUserRank.position <= 10) {
-            RoleManager.addRoleToTopEarner(BigInt(mentionedUser?.id));
+        var specifiedUserRank = await TokenTableAccessor.getTokenRankOfUser(BigInt(specifiedUser?.id));
+        if(specifiedUserRank.position <= 10) {
+            RoleManager.addRoleToTopEarner(BigInt(specifiedUser?.id));
         }
 
         if(vouchAmount > 1) {
-            message.channel.send(Localizer.translate("vouch.vouchAnnouncement", {voucher: message.author.username, target: mentionedUser?.username, amount: vouchAmount}));
+            message.channel.send(Localizer.translate("vouch.vouchAnnouncement", {voucher: message.author.username, target: specifiedUser?.username, amount: vouchAmount}));
         }
         else {
-            message.channel.send(Localizer.translate("vouch.vouchAnnouncementSingular", {voucher: message.author.username, target: mentionedUser?.username}));
+            message.channel.send(Localizer.translate("vouch.vouchAnnouncementSingular", {voucher: message.author.username, target: specifiedUser?.username}));
         }
+    }
+
+    async getUserFromVaryingInput(message: Message, args: string[]): Promise<User | undefined> {
+        if(message?.mentions.users.size !== 0) {
+            return DiscordUtil.getUserFromMention(args[0]);
+        }
+        else if(!isNaN(Number.parseInt(args[0]))) {
+            return await client.users.fetch(args[0]);
+        }
+        else {
+            return await this.getUserFromNameAndDiscriminator(message, args);
+        }
+    }
+
+    async getUserFromNameAndDiscriminator(message: Message, args: string[]): Promise<User | undefined> {
+        var searchString = UIFunctions.createStringFromArrayWithSeparatorAndEndOffset(args, 0, 1, " ");
+        const userIdentifiers = searchString.split("#");
+
+        //@ts-ignore
+        const guildOfMessage = await client.guilds.fetch(message.guild?.id);
+        const foundMembers = guildOfMessage.members.cache.filter( (member): boolean => {
+            if(member.user.username.toLowerCase() === userIdentifiers[0].toLowerCase() && member.user.discriminator === userIdentifiers[1]) return true;
+            else return false;
+        });
+
+        const member = foundMembers.first();
+        return member?.user;
     }
 }
