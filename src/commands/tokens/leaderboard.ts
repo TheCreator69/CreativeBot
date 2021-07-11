@@ -1,6 +1,6 @@
 import {Message, MessageAttachment, User} from "discord.js";
 import * as Canvas from "canvas";
-import * as TokenTableAccessor from "../../scripts/database/tokentableaccessor";
+import * as TTA from "../../scripts/database/tokentableaccessor";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import {client} from "../../index";
@@ -15,24 +15,13 @@ export class LeaderboardCommand implements CreativeCommand {
     guildOnly = false;
 
     async execute(message: Message, args: string[]) {
-        let topUserEntries = await this.getTopTenUsers();
+        let topUserEntries = await TTA.getTopTenUsers();
         let leaderboardImageBuffer = await this.drawLeaderboard(topUserEntries);
         let leaderboardAttachment = new MessageAttachment(leaderboardImageBuffer, "leaderboard.png");
         message.channel.send(leaderboardAttachment);
     }
 
-    async getTopTenUsers(): Promise<TokenTableAccessor.UserEntry[]> {
-        let topUserEntries: TokenTableAccessor.UserEntry[] = [];
-        for(let i = 1; i <= 9; i++) {
-            var userEntryAtRank = await TokenTableAccessor.getUserEntryAtRank(i);
-            if(userEntryAtRank !== undefined) {
-                topUserEntries.push(userEntryAtRank);
-            }
-        }
-        return topUserEntries;
-    }
-
-    async drawLeaderboard(topUserEntries: TokenTableAccessor.UserEntry[]): Promise<Buffer> {
+    async drawLeaderboard(topUserEntries: TTA.UserEntry[]): Promise<Buffer> {
         const canvas = Canvas.createCanvas(1000, topUserEntries.length * 150);
         const context = canvas.getContext("2d");
         const leaderboardImage = await Canvas.loadImage("./media/TokensLeaderboard.png");
@@ -47,7 +36,7 @@ export class LeaderboardCommand implements CreativeCommand {
         return canvas.toBuffer();
     }
 
-    async drawUserInfo(context: Canvas.CanvasRenderingContext2D, i: number, user: User, userEntry: TokenTableAccessor.UserEntry): Promise<void> {
+    async drawUserInfo(context: Canvas.CanvasRenderingContext2D, i: number, user: User, userEntry: TTA.UserEntry): Promise<void> {
         context.font = "80px Arial";
         context.fillStyle = this.getFillStyleForRank(i);
         let correctRankNumber = i + 1;

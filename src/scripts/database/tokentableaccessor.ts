@@ -89,6 +89,17 @@ export async function getUserEntryAtRank(rank: number): Promise<UserEntry | unde
     return userEntry;
 }
 
+export async function getTopTenUsers(): Promise<UserEntry[]> {
+    let topUserEntries: UserEntry[] = [];
+    for(let i = 1; i <= 9; i++) {
+        var userEntryAtRank = await getUserEntryAtRank(i);
+        if(userEntryAtRank !== undefined) {
+            topUserEntries.push(userEntryAtRank);
+        }
+    }
+    return topUserEntries;
+}
+
 function establishDatabaseConnection(): SequelizeConstructor {
     return new SequelizeConstructor(credentials.db_name, credentials.db_username, credentials.db_password, {
         host: "localhost",
