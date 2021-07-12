@@ -37,7 +37,8 @@ export class VouchCommand implements CreativeCommand {
             return {valid: false, replyMessage: Localizer.translate("vouch.amountZeroOrLess")};
         }
 
-        var authorVouchTokens = await TokenTableAccessor.getVouchTokensOfUser(BigInt(message?.author.id));
+        if(message === undefined) return {valid: false, replyMessage: ""};
+        var authorVouchTokens = await TokenTableAccessor.getVouchTokensOfUser(BigInt(message.author.id));
         if(authorVouchTokens === 0) {
             return {valid: false, replyMessage: Localizer.translate("vouch.noMoreTokens")};
         }
@@ -52,12 +53,13 @@ export class VouchCommand implements CreativeCommand {
         var specifiedUser = await this.getUserFromVaryingInput(message, args);
         const vouchAmount = parseInt(args[args.length - 1]);
 
-        await TokenTableAccessor.incrementTokensOfUser(BigInt(specifiedUser?.id), vouchAmount);
+        if(specifiedUser === undefined) return;
+        await TokenTableAccessor.incrementTokensOfUser(BigInt(specifiedUser.id), vouchAmount);
         await TokenTableAccessor.incrementVouchTokensOfUser(BigInt(message.author.id), -vouchAmount);
 
-        var specifiedUserRank = await TokenTableAccessor.getTokenRankOfUser(BigInt(specifiedUser?.id));
+        var specifiedUserRank = await TokenTableAccessor.getTokenRankOfUser(BigInt(specifiedUser.id));
         if(specifiedUserRank.position <= 10) {
-            RoleManager.addRoleToTopEarner(BigInt(specifiedUser?.id));
+            RoleManager.addRoleToTopEarner(BigInt(specifiedUser.id));
         }
 
         if(vouchAmount > 1) {
