@@ -37,9 +37,9 @@ export class ObamaCommand implements CreativeCommand {
 
     async loadRandomObamaImageFromFolder(): Promise<Canvas.Image> {
         const obamaImages = fs.readdirSync("./media").filter(function(file) {
-            return file.endsWith(".png");
+            return file.endsWith(".png") && file.startsWith("obama_");
         });
-        const randomObamaIndex = Math.floor(Math.random() * (obamaImages.length - 1));
+        const randomObamaIndex = Math.floor(Math.random() * obamaImages.length);
         let obamaImage = await Canvas.loadImage("./media/obama_" + randomObamaIndex + ".png");
         return obamaImage;
     }
