@@ -91,7 +91,7 @@ export async function getUserEntryAtRank(rank: number): Promise<UserEntry | unde
 
 export async function getTopTenUsers(): Promise<UserEntry[]> {
     let topUserEntries: UserEntry[] = [];
-    for(let i = 1; i <= 9; i++) {
+    for(let i = 1; i <= 10; i++) {
         var userEntryAtRank = await getUserEntryAtRank(i);
         if(userEntryAtRank !== undefined) {
             topUserEntries.push(userEntryAtRank);
