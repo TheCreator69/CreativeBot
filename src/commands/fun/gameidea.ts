@@ -163,7 +163,10 @@ export const themes = [ //Come after "about" and at the start of a sentence
     "slicing objects",
     "possesed puppets",
     "mind control",
-    "an eating contest"
+    "an eating contest",
+    "aliens",
+    "magic and spells",
+    "Microwaveable Cat"
 ];
 export const modifiers = [ //Come after "where" and "but"
     "gravity is inverted",
@@ -183,6 +186,8 @@ export const modifiers = [ //Come after "where" and "but"
     "blinking is the main mechanic",
     "you use the second player to guide you",
     "someone is always watching",
+    "The controls are numbers",
+    "the screen moves opposite to your movement"
 ];
 export const locations = [ //Come after "set"
     "in a haunted house",
