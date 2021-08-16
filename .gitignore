@@ -1,3 +1,9 @@
+# Big folder ignores
 node_modules/
-credentials.json
 build/
+
+# Ignore all logs
+*.log
+
+# Secret password file
+credentials.json
