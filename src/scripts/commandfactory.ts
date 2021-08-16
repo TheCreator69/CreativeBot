@@ -1,28 +1,32 @@
 import {commands} from "../index";
 import {CreativeCommand} from "./def/commanddef";
 import {getUserFromMention} from "./discordutil";
+import * as LogChamp from "./logchamp";
 
 export function createCommand(file: string, commandModule: any): CreativeCommand | undefined {
     file = file.substr(0, file.length - 3);
+    var createdCommand: CreativeCommand | undefined;
     switch(file) {
-        case "setevent": return new commandModule.SetEventCommand();
-        case "submit": return new commandModule.SubmitCommand();
-        case "toggleevent": return new commandModule.ToggleEventCommand();
-        case "gameidea": return new commandModule.GameIdeaCommand();
-        case "math": return new commandModule.MathCommand();
-        case "obama": return new commandModule.ObamaCommand();
-        case "slots": return new commandModule.SlotsCommand();
-        case "thumbsup": return new commandModule.ThumbsupCommand();
-        case "changelog": return new commandModule.ChangelogCommand();
-        case "help": return new commandModule.HelpCommand(commands);
-        case "ping": return new commandModule.PingCommand();
-        case "socials": return new commandModule.SocialsCommand();
-        case "testcmd": return new commandModule.TestCommand();
-        case "changetokens": return new commandModule.ChangeTokensCommand(getUserFromMention);
-        case "leaderboard": return new commandModule.LeaderboardCommand();
-        case "tokens": return new commandModule.TokensCommand();
-        case "tokensystem": return new commandModule.TokenSystemCommand();
-        case "vouch": return new commandModule.VouchCommand();
-        default: return undefined;
+        case "setevent": createdCommand = new commandModule.SetEventCommand(); break;
+        case "submit": createdCommand = new commandModule.SubmitCommand(); break;
+        case "toggleevent": createdCommand = new commandModule.ToggleEventCommand(); break;
+        case "gameidea": createdCommand = new commandModule.GameIdeaCommand(); break;
+        case "math": createdCommand = new commandModule.MathCommand(); break;
+        case "obama": createdCommand = new commandModule.ObamaCommand(); break;
+        case "slots": createdCommand = new commandModule.SlotsCommand(); break;
+        case "thumbsup": createdCommand = new commandModule.ThumbsupCommand(); break;
+        case "changelog": createdCommand = new commandModule.ChangelogCommand(); break;
+        case "help": createdCommand = new commandModule.HelpCommand(commands); break;
+        case "ping": createdCommand = new commandModule.PingCommand(); break;
+        case "socials": createdCommand = new commandModule.SocialsCommand(); break;
+        case "testcmd": createdCommand = new commandModule.TestCommand(); break;
+        case "changetokens": createdCommand = new commandModule.ChangeTokensCommand(getUserFromMention); break;
+        case "leaderboard": createdCommand = new commandModule.LeaderboardCommand(); break;
+        case "tokens": createdCommand = new commandModule.TokensCommand(); break;
+        case "tokensystem": createdCommand = new commandModule.TokenSystemCommand(); break;
+        case "vouch": createdCommand = new commandModule.VouchCommand(); break;
+        default: createdCommand = undefined;
     }
+    LogChamp.info("Command object requested", {fileName: file, commandName: createdCommand?.name});
+    return createdCommand;
 }

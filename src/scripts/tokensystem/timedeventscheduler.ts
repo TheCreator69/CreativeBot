@@ -2,6 +2,7 @@ import * as Scheduler from "node-schedule";
 import * as TTA from "../database/tokentableaccessor";
 import * as RoleManager from "./rolemanager";
 import {client} from "../../index";
+import * as LogChamp from "../logchamp";
 
 export function scheduleTimedJobs() {
     const vouchTokenResetRule = new Scheduler.RecurrenceRule();
@@ -9,6 +10,8 @@ export function scheduleTimedJobs() {
     vouchTokenResetRule.hour = 0;
     const vouchTokenResetJob = Scheduler.scheduleJob(vouchTokenResetRule, async function() {
         await TTA.resetVouchTokens();
+
+        LogChamp.info("Vouch tokens have been reset for everyone!");
     });
 
     const tokenAndRoleResetRule = new Scheduler.RecurrenceRule();
@@ -17,6 +20,8 @@ export function scheduleTimedJobs() {
     const tokenAndRoleResetJob = Scheduler.scheduleJob(tokenAndRoleResetRule, async function() {
         await TTA.resetTokens();
         await RoleManager.removeTopEarnerRoles();
+
+        LogChamp.info("Tokens and top earner roles have been reset!");
     });
 
     const distinguishedRoleAwardRule = new Scheduler.RecurrenceRule();
@@ -28,7 +33,10 @@ export function scheduleTimedJobs() {
             let userEntry = topUserEntries[i];
             let user = await client.users.fetch(userEntry.userID.toString());
             if(user === undefined) break;
+            
             await RoleManager.addRoleToTopEarner(BigInt(user.id));
+
+            LogChamp.info("Top earner role has been awarded!", {user: user.username});
         }
     });
 }
