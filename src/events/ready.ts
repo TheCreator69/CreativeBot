@@ -10,12 +10,12 @@ export var info: EventAttributes = {
 }
 
 export function execute(client: Client) {
-    LogChamp.info("Creative Bot has been started! Client user is called: " + client.user?.username);
     if(client.user !== null) {
         client.user.setPresence({
             status: "online",
             activity: {name: "Use '" + config.prefix + "help' to learn what I can do!"}
         });
         TimedEventScheduler.scheduleTimedJobs();
+        LogChamp.info("Creative Bot has been started!", {username: client.user?.username});
     }
 }

@@ -17,7 +17,7 @@ export async function initializeLocalizer(): Promise<void> {
         }
     }, (err, t) => {
         if(err) {
-            LogChamp.error(err);
+            LogChamp.error("Error when initializing localizer!", err);
             return;
         }
     });
