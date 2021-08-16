@@ -3,7 +3,8 @@ import Backend from "i18next-fs-backend";
 import * as LogChamp from "./logchamp";
 
 export async function initializeLocalizer(): Promise<void> {
-    await i18next.use(Backend).init({
+    const i18nInst = i18next.use(Backend)
+    await i18nInst.init({
         lng: "en",
         fallbackLng: "en",
         preload: ["en"],
@@ -21,12 +22,15 @@ export async function initializeLocalizer(): Promise<void> {
             return;
         }
     });
+    LogChamp.info("Localizer set up successfully", {init: i18nInst.isInitialized, lngs: i18nInst.languages});
 }
 
 export function translate(key: string | string[], options?: object): string {
+    LogChamp.info("Translation requested", {key: key});
     return i18next.t(key, options);
 }
 
 export function translateArray(key: string | string[], options?: object): string[] {
+    LogChamp.info("Array translation requested", {key: key});
     return i18next.t(key, options);
 }
