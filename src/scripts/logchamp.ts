@@ -1,33 +1,33 @@
 import * as Winston from "winston";
 
-const logFormat = Winston.format.printf(({level, message, timestamp}) => {
-    return `${timestamp} - ${level}: ${message}`;
-});
-
 const logger = Winston.createLogger({
-    transports: [new Winston.transports.Console()],
     format: Winston.format.combine(
         Winston.format.timestamp({format: "DD.MM.YYYY, HH:mm:ss"}),
-        Winston.format.colorize({all: true, colors: {"info": "white", "warn": "yellow", "error": "red"}}),
-        logFormat),
-    exitOnError: false
+        Winston.format.prettyPrint()
+    ),
+    exitOnError: false,
+    transports: [
+        new Winston.transports.File({filename: "error.log", level: "error"}),
+        new Winston.transports.File({filename: "output.log"})
+    ],
 });
 
-export function info(message: string) {
-    log("info", message);
+if(process.env.NODE_ENV !== "production") {
+    logger.add(new Winston.transports.Console());
 }
 
-export function warn(message: string) {
-    log("warn", message);
+export function info(message: string, ...args: any[]) {
+    log("info", message, args);
 }
 
-export function error(message: string) {
-    log("error", message);
+export function warn(message: string, ...args: any[]) {
+    log("warn", message, args);
 }
 
-function log(level: string, message: string) {
-    logger.log({
-        level: level,
-        message: message
-    });
+export function error(message: string, ...args: any[]) {
+    log("error", message, args);
+}
+
+function log(level: string, message: string, ...args: any[]) {
+    logger.log(level, message, args);
 }
