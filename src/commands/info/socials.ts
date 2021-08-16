@@ -1,6 +1,7 @@
 import {MessageEmbed, Message} from "discord.js";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
+import * as LogChamp from "../../scripts/logchamp";
 
 export class SocialsCommand implements CreativeCommand {
     name = Localizer.translate("socials.name");
@@ -12,6 +13,7 @@ export class SocialsCommand implements CreativeCommand {
 
     execute(message: Message, args: string[]): void {
         message.channel.send(this.constructEmbed());
+        LogChamp.info("Socials embed sent");
     }
 
     constructEmbed(): MessageEmbed {

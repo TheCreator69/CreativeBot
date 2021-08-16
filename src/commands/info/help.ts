@@ -4,6 +4,7 @@ import * as AdminCheck from "../../scripts/database/admincheck";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import {createStringFromArrayWithSeparator} from "../../scripts/uifunctions";
+import * as LogChamp from "../../scripts/logchamp";
 
 export class HelpCommand implements CreativeCommand {
     constructor(_commandCollection: Collection<string, CreativeCommand>) {
@@ -25,10 +26,12 @@ export class HelpCommand implements CreativeCommand {
         this.isCommandSenderAdmin = await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id));
         var helpEmbed = this.createCorrectHelpEmbed(message, args);
         message.channel.send(helpEmbed);
+        LogChamp.info("Help embed sent");
     }
 
     createCorrectHelpEmbed(message: Message, args: string[]): MessageEmbed {
         if(!args.length) {
+            LogChamp.info("Constructed help embed with command list");
             return this.createHelpEmbed(
                 "#52ce7b",
                 Localizer.translate("help.commandListTitle"),
@@ -38,6 +41,7 @@ export class HelpCommand implements CreativeCommand {
         }
         else {
             if(this.doesCommandExistForAuthor(args)) {
+                LogChamp.info("Constructed help embed for specific command");
                 return this.createHelpEmbed(
                     "#499fff",
                     // @ts-ignore
@@ -47,6 +51,7 @@ export class HelpCommand implements CreativeCommand {
                 );
             }
             else {
+                LogChamp.info("Constructed help embed for unknown command");
                 return this.createHelpEmbed(
                     "#ff0000",
                     Localizer.translate("help.invalidCommandTitle"),
@@ -74,10 +79,13 @@ export class HelpCommand implements CreativeCommand {
                 commandList += this.listAdminCommandForAdminsOnlyInDM(message, commandObject);
             }
             else {
+                LogChamp.info("Command added to list");
                 commandList += "`" + commandObject.name + "`, ";
             }
         }
         commandList = commandList.substr(0, commandList.length -2);
+
+        LogChamp.info("Command list string constructed", {commandList: commandList});
         return commandList;
     }
 
@@ -95,20 +103,25 @@ export class HelpCommand implements CreativeCommand {
 
     listAdminCommandForAdminsOnlyInDM(message: Message, commandObject: CreativeCommand): string {
         if(this.isCommandSenderAdmin && message.channel.type == "dm") {
+            LogChamp.info("Admin-only command added to list for admin in DM");
             return "`" + commandObject.name + "`, ";
         }
+        LogChamp.info("Admin-only command not added to list", {isAdmin: this.isCommandSenderAdmin, channelType: message.channel.type});
         return "";
     }
 
     doesCommandExistForAuthor(args: string[]): boolean {
         var commandObject = this.getCommandInstance(args);
         if(commandObject === undefined) {
+            LogChamp.info("Command does not exist");
             return false;
         }
         if(commandObject.adminOnly && !this.isCommandSenderAdmin) {
+            LogChamp.info("Non-admin tried to access admin-only command");
             return false;
         }
         else {
+            LogChamp.info("Command visible for author");
             return true;
         }
     }
@@ -117,9 +130,12 @@ export class HelpCommand implements CreativeCommand {
         var commandObject = this.getCommandInstance(args);
         //@ts-ignore
         var category = commandObject.category.replace(/^\w/, (c: any) => c.toUpperCase());
+
         var aliases;
         if(commandObject?.aliases === undefined) aliases = "None.";
         else aliases = createStringFromArrayWithSeparator(commandObject?.aliases, 0, ", ");
+
+        LogChamp.info("Command info string created");
         //@ts-ignore
         return Localizer.translate("help.commandInfoString", {aliases: aliases, description: commandObject.description, prefix: config.prefix, syntax: commandObject.syntax, category: category});
     }

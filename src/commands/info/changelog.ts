@@ -1,6 +1,7 @@
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import {Message, MessageEmbed} from "discord.js";
 import * as Localizer from "../../scripts/localizer";
+import * as LogChamp from "../../scripts/logchamp";
 
 export class ChangelogCommand implements CreativeCommand {
     name = Localizer.translate("changelog.name");
@@ -13,6 +14,7 @@ export class ChangelogCommand implements CreativeCommand {
 
     execute(message: Message, args: string[]): void {
         message.channel.send(this.constructChangelogEmbed());
+        LogChamp.info("Changelog embed sent!");
     }
 
     constructChangelogEmbed(): MessageEmbed {
@@ -22,6 +24,8 @@ export class ChangelogCommand implements CreativeCommand {
         changelogEmbed.setDescription(Localizer.translate("changelog.embedDescription"));
         changelogEmbed.addField(Localizer.translate("changelog.field1_1_1Title"), this.constructListOfChangesFromArray(Localizer.translateArray("changelog.changelog1_1_1")));
         changelogEmbed.addField(Localizer.translate("changelog.field1_1Title"), this.constructListOfChangesFromArray(Localizer.translateArray("changelog.changelog1_1")));
+
+        LogChamp.info("Changelog embed constructed!");
         return changelogEmbed;
     }
 
@@ -31,6 +35,8 @@ export class ChangelogCommand implements CreativeCommand {
         for(let changeEntry of changeArray) {
             listOfChanges += changeEntry + "\n";
         }
+
+        LogChamp.info("Changelog list constructed", {list: listOfChanges});
         return listOfChanges;
     }
 }
