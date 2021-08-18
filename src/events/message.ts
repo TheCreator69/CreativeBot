@@ -5,7 +5,11 @@ import {Message, Client} from "discord.js";
 import {EventAttributes} from "../scripts/def/eventdef";
 import {CreativeCommand} from "../scripts/def/commanddef";
 import * as Localizer from "../scripts/localizer";
-import * as LogChamp from "../scripts/logchamp";
+import {LogChamp, Category} from "../scripts/logchamp";
+
+var logChampInst = new LogChamp(Category.UserInput);
+var logChampProcInst = new LogChamp(Category.TextProcessing);
+var logChampCmdInst = new LogChamp(Category.BotMessage);
 
 export var info: EventAttributes = {
     name: "message",
@@ -23,7 +27,7 @@ interface CommandInfoFromMessage {
 }
 
 async function executeCommandIfPossible(message: Message): Promise<void> {
-    LogChamp.info("Command input detected!", {user: message.author.username});
+    logChampInst.debug("Command input detected!", {user: message.author.username});
     var commandInfo = getCommandInfoFromMessage(message);
 
     if(await canCommandBeExecuted(message, commandInfo)) {
@@ -34,7 +38,7 @@ async function executeCommandIfPossible(message: Message): Promise<void> {
         if(command.guildOnly) {
             if(!message.guild || !message.guild.available) {
                 message.channel.send(Localizer.translate("messageEvent.guildOnlyCommand"));
-                LogChamp.info("Guild-only command not sent in available guild!");
+                logChampProcInst.debug("Guild-only command not sent in available guild!");
                 return;
             }
         }
@@ -44,16 +48,16 @@ async function executeCommandIfPossible(message: Message): Promise<void> {
             var argsCheckResult = await command.checkRequiredArgs(commandInfo.args, message);
             if(argsCheckResult.valid) {
                 command.execute(message, commandInfo.args);
-                LogChamp.info("Command executed with args!", {args: commandInfo.args});
+                logChampCmdInst.info("Command executed with args!", {args: commandInfo.args});
             }
             else {  //@ts-ignore
                 message.channel.send(argsCheckResult.replyMessage);
-                LogChamp.info("Invalid command arguments sent!", {replyMessage: argsCheckResult.replyMessage});
+                logChampCmdInst.info("Invalid command arguments sent!", {replyMessage: argsCheckResult.replyMessage});
             }
         }
         else {
             command.execute(message, commandInfo.args);
-            LogChamp.info("Command executed without args!", {args: commandInfo.args});
+            logChampCmdInst.info("Command executed without args!", {args: commandInfo.args});
         }
     }
 }
@@ -67,7 +71,7 @@ function getCommandInfoFromMessage(message: Message): CommandInfoFromMessage {
     }
     commandName = commandName.toLowerCase();
 
-    LogChamp.info("Command info extracted from message", {name: commandName, args: args});
+    logChampProcInst.debug("Command info extracted from message", {name: commandName, args: args});
     return {name: commandName, args: args};
 }
 
@@ -77,12 +81,12 @@ async function canCommandBeExecuted(message: Message, commandInfo: CommandInfoFr
     if(command === undefined) return false;
 
     if(command.adminOnly && !await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id))) {
-        LogChamp.info("Non-admin tried to execute admin-only command");
+        logChampInst.debug("Non-admin tried to execute admin-only command");
         return false;
     }
     if(commandInfo.args.length < command.minArgs) {
         message.channel.send(Localizer.translate("messageEvent.missingArgs", {prefix: config.prefix, commandName: command.name}));
-        LogChamp.info("Too few command arguments sent");
+        logChampInst.debug("Too few command arguments sent");
         return false;
     }
     return true;

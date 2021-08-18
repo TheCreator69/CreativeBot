@@ -6,6 +6,9 @@ import {CreativeCommand} from "./scripts/def/commanddef";
 import {CreativeEvent} from "./scripts/def/eventdef";
 import * as CommandFactory from "./scripts/commandfactory";
 import * as Localizer from "./scripts/localizer";
+import {LogChamp, Category} from "./scripts/logchamp";
+
+var logChampInst = new LogChamp(Category.Startup);
 
 export const client = new Discord.Client();
 export var commands: Discord.Collection<string, CreativeCommand> = new Discord.Collection();
@@ -24,9 +27,11 @@ async function startBot() {
 
 function getAbsoluteSourceDirPathForEnv(): any {
     if(process.env.NODE_ENV === "development" || process.env.NODE_ENV === "test") {
+        logChampInst.info("Running bot from src folder");
         return path.resolve(process.cwd(), "./src");
     }
     else {
+        logChampInst.info("Running bot from build folder");
         return path.resolve(process.cwd(), "./build");
     }
 }
@@ -44,6 +49,7 @@ function readCommandFilesAndRegisterCommands(srcDirPath: string): void {
             if(commandInstance === undefined) return;
             commandInstance.category = folder;
             commands.set(commandInstance.name, commandInstance);
+            logChampInst.info("Added command to commandList", {name: commandInstance.name, fileName: file, folder: folder});
         }
     }
 }
@@ -56,9 +62,11 @@ function readEventFilesAndListenToEvents(srcDirPath: string): void {
 
         if(eventInstance.info.once) {
             client.once(eventInstance.info.name, (...args) => eventInstance.execute(client, ...args));
+            logChampInst.info("Event fired once", {name: eventInstance.info.name});
         }
         else {
             client.on(eventInstance.info.name, (...args) => eventInstance.execute(client, ...args));
+            logChampInst.info("Event fired", {name: eventInstance.info.name});
         }
     }
 }

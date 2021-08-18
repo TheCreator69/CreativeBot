@@ -1,11 +1,13 @@
 import {Message, Client} from "discord.js";
-import * as LogChamp from "../scripts/logchamp";
+import {LogChamp, Category} from "../scripts/logchamp";
 import {EventAttributes} from "../scripts/def/eventdef";
+
+var logChampInst = new LogChamp(Category.DiscordJSEvent);
 
 export var info: EventAttributes = {
     name: "warn"
 }
 
 export function execute(client: Client, message: Message): void {
-    LogChamp.warn(message.content);
+    logChampInst.warn(message.content);
 }

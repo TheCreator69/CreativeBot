@@ -4,6 +4,9 @@ import * as TokenTableAccessor from "../../scripts/database/tokentableaccessor";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import * as DiscordUtil from "../../scripts/discordutil";
+import {LogChamp, Category} from "../../scripts/logchamp";
+
+var logChampInst = new LogChamp(Category.TextProcessing);
 
 export class TokensCommand implements CreativeCommand {
     name = Localizer.translate("tokens.name");
@@ -60,6 +63,7 @@ export class TokensCommand implements CreativeCommand {
         var userTokens = await TokenTableAccessor.getTokensOfUser(BigInt(user.id));
         var userVouchTokens = await TokenTableAccessor.getVouchTokensOfUser(BigInt(user.id));
         var tokenRank = await TokenTableAccessor.getTokenRankOfUser(BigInt(user.id));
+        logChampInst.debug("User info retrived, ready to be drawn", {tokens: userTokens, vouchTokens: userVouchTokens, rank: tokenRank});
 
         context.font = "45px Bahnschrift";
         context.fillStyle = "#ffffff";

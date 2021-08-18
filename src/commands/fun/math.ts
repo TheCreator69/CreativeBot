@@ -1,6 +1,9 @@
 import {Message} from "discord.js";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
+import {LogChamp, Category} from "../../scripts/logchamp";
+
+var logChampInst = new LogChamp(Category.BotMessage);
 
 export interface MathOperation {
     mathQuestion: MathQuestion
@@ -239,6 +242,7 @@ export class MathCommand implements CreativeCommand {
         mathOperation.generateMathQuestion();
         var equation = mathOperation.getEquation();
         let timeForAnsweringInSeconds = mathOperation.mathQuestion.timeForAnswering / 1000;
+        logChampInst.debug("Generated math exercise", {equation: equation, answerTime: timeForAnsweringInSeconds});
 
         if(mathOperation instanceof Modulo) {
             message.channel.send(Localizer.translate("math.questionMessageModulo", {equation: equation, timeForAnswering: timeForAnsweringInSeconds}));
@@ -257,11 +261,13 @@ export class MathCommand implements CreativeCommand {
         }
         const collector = message.channel.createMessageCollector(filter, {max: 1, time: operation.mathQuestion.timeForAnswering});
 
-        collector.on("collect", (collectedMessage: any) => {
+        collector.on("collect", (collectedMessage: Message) => {
             this.replyBasedOnValidityOfAnswer(collectedMessage, operation);
+            logChampInst.debug("Collected answer from user", {message: collectedMessage.content});
         });
         collector.on("end", (collectedMessages: any) => {
             this.replyIfNoMessagesWereSent(message, operation, collectedMessages);
+            logChampInst.debug("No answer from user was collected");
         });
     }
 

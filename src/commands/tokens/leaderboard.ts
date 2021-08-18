@@ -4,6 +4,9 @@ import * as TTA from "../../scripts/database/tokentableaccessor";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import {client} from "../../index";
+import {LogChamp, Category} from "../../scripts/logchamp";
+
+var logChampInst = new LogChamp(Category.ImageProcessing);
 
 export class LeaderboardCommand implements CreativeCommand {
     name = Localizer.translate("leaderboard.name");
@@ -26,6 +29,7 @@ export class LeaderboardCommand implements CreativeCommand {
         const context = canvas.getContext("2d");
         const leaderboardImage = await Canvas.loadImage("./media/TokensLeaderboard.png");
         context.drawImage(leaderboardImage, 0, 0, canvas.width, 1500);
+        logChampInst.debug("Leaderboard image drawn", {canvasWidth: canvas.width, imageWidth: leaderboardImage.width, canvasHeight: canvas.height, imageHeight: leaderboardImage.height});
 
         for(let i = 0; i < topUserEntries.length; i++) {
             let userEntry = topUserEntries[i];
@@ -39,6 +43,8 @@ export class LeaderboardCommand implements CreativeCommand {
     async drawUserInfo(context: Canvas.CanvasRenderingContext2D, i: number, user: User, userEntry: TTA.UserEntry): Promise<void> {
         context.font = "80px Arial";
         context.fillStyle = this.getFillStyleForRank(i);
+        logChampInst.debug("Color for user name chosen", {i: i, color: context.fillStyle});
+
         let correctRankNumber = i + 1;
         context.fillText(correctRankNumber.toString(), 65, 100 + i * 150);
 
@@ -54,6 +60,8 @@ export class LeaderboardCommand implements CreativeCommand {
 
         context.fillStyle = "#ff0000";
         context.fillText(userEntry.vouchTokens.toString(), 550, 125 + i * 150);
+
+        logChampInst.debug("User info drawn", {name: user.username, tokens: userEntry.tokens.toString(), vouchTokens: userEntry.vouchTokens.toString()});
     }
 
     getFillStyleForRank(rank: number): string {

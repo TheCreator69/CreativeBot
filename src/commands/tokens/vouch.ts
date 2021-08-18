@@ -6,6 +6,9 @@ import * as TokenTableAccessor from "../../scripts/database/tokentableaccessor";
 import * as RoleManager from "../../scripts/tokensystem/rolemanager";
 import {client} from "../../index";
 import * as UIFunctions from "../../scripts/uifunctions";
+import {LogChamp, Category} from "../../scripts/logchamp";
+
+var logChampInst = new LogChamp(Category.TextProcessing);
 
 export class VouchCommand implements CreativeCommand {
     name = Localizer.translate("vouch.name");
@@ -52,14 +55,19 @@ export class VouchCommand implements CreativeCommand {
     async execute(message: Message, args: string[]): Promise<void> {
         var specifiedUser = await this.getUserFromVaryingInput(message, args);
         const vouchAmount = parseInt(args[args.length - 1]);
+        logChampInst.debug("Got user and vouching amount", {user: specifiedUser?.username, amount: vouchAmount});
 
-        if(specifiedUser === undefined) return;
+        if(specifiedUser === undefined) {
+            logChampInst.error("Command got executed despite user being undefined!");
+            return;
+        }
         await TokenTableAccessor.incrementTokensOfUser(BigInt(specifiedUser.id), vouchAmount);
         await TokenTableAccessor.incrementVouchTokensOfUser(BigInt(message.author.id), -vouchAmount);
 
         var specifiedUserRank = await TokenTableAccessor.getTokenRankOfUser(BigInt(specifiedUser.id));
         if(specifiedUserRank.position <= 10) {
             RoleManager.addRoleToTopEarner(BigInt(specifiedUser.id));
+            logChampInst.info("Top earner role added to user after vouching was complete");
         }
 
         if(vouchAmount > 1) {
@@ -72,12 +80,15 @@ export class VouchCommand implements CreativeCommand {
 
     async getUserFromVaryingInput(message: Message, args: string[]): Promise<User | undefined> {
         if(message?.mentions.users.size !== 0) {
+            logChampInst.debug("Got user object from mention string", {mention: args[0]});
             return DiscordUtil.getUserFromMention(args[0]);
         }
         else if(!isNaN(Number.parseInt(args[0]))) {
+            logChampInst.debug("Got user object from ID", {id: args[0]});
             return await client.users.fetch(args[0]);
         }
         else {
+            logChampInst.debug("Got user object from name and discriminator", {args: args});
             return await this.getUserFromNameAndDiscriminator(message, args);
         }
     }
@@ -94,6 +105,7 @@ export class VouchCommand implements CreativeCommand {
         });
 
         const member = foundMembers.first();
+        logChampInst.debug("Member found with matching name and discriminator", {member: member?.user.username, name: userIdentifiers[0], discriminator: userIdentifiers[1]});
         return member?.user;
     }
 }

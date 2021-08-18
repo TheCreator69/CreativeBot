@@ -1,6 +1,10 @@
 import {Message} from "discord.js";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
+import {LogChamp, Category} from "../../scripts/logchamp";
+
+var logChampInst = new LogChamp(Category.TextProcessing);
+var logChampMessageInst = new LogChamp(Category.BotMessage);
 
 export class SlotsCommand implements CreativeCommand {
     name = Localizer.translate("slots.name");
@@ -36,6 +40,7 @@ export class SlotsCommand implements CreativeCommand {
 
     async createAndEditMessageOverTime(message: Message, bet: number): Promise<void> {
         var slotMessage = await message.channel.send(Localizer.translate("slots.rolling"));
+        logChampMessageInst.debug("Sent slots message...");
         this.animateRollingMessage(slotMessage);
         await this.finishAnimationAndAwardCoins(slotMessage, bet);
     }
@@ -84,6 +89,7 @@ export class SlotsCommand implements CreativeCommand {
                 }
             }
         }
+        logChampInst.debug("Generated array of random symbols", {symbolArray: randomSymbols});
         return randomSymbols;
     }
 
@@ -92,6 +98,7 @@ export class SlotsCommand implements CreativeCommand {
         for(let i = 0; i < this.slotRows * this.slotColumns; i += 3) {
             if(symbols[i] === symbols[i + 1] && symbols[i] === symbols[i + 2]) numberOfHorizontalLines++;
         }
+        logChampInst.debug("Detected horizontal symbol lines", {amount: numberOfHorizontalLines});
         return numberOfHorizontalLines;
     }
 
@@ -99,6 +106,7 @@ export class SlotsCommand implements CreativeCommand {
         var numberOfDiagonalLines = 0;
         if(symbols[0] === symbols[4] && symbols[0] === symbols[8]) numberOfDiagonalLines++;
         if(symbols[2] === symbols[4] && symbols[2] === symbols[6]) numberOfDiagonalLines++;
+        logChampInst.debug("Detected diagonal symbol lines", {amount: numberOfDiagonalLines});
         return numberOfDiagonalLines;
     }
 
@@ -107,11 +115,13 @@ export class SlotsCommand implements CreativeCommand {
         for(let i = 0; i < this.slotColumns; i++) {
             if(symbols[i] === symbols[i + 3] && symbols[i] === symbols[i + 6]) numberOfVerticalLines++;
         }
+        logChampInst.debug("Detected vertical symbol lines", {amount: numberOfVerticalLines});
         return numberOfVerticalLines;
     }
 
     determineCreditsWon(horizontalLines: number, diagonalLines: number, verticalLines: number, bet: number): number {
         var betMultiplier = horizontalLines * 2 + diagonalLines * 4 + verticalLines * 2;
+        logChampInst.debug("'Awarded' credits", {amount: bet * betMultiplier});
         return bet * betMultiplier;
     }
 
@@ -130,6 +140,7 @@ export class SlotsCommand implements CreativeCommand {
         }
         finishedSlotMessage += slotMachineBorder;
         slotMessage.edit(finishedSlotMessage);
+        logChampMessageInst.debug("Finished editing slots message");
     }
 
 }

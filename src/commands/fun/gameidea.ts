@@ -1,6 +1,9 @@
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import {Message} from "discord.js";
 import * as Localizer from "../../scripts/localizer";
+import {LogChamp, Category} from "../../scripts/logchamp";
+
+var logChampInst = new LogChamp(Category.BotMessage);
 
 export interface GameIdeaFormatter {
     format: () => string
@@ -84,6 +87,8 @@ export class GameIdeaCommand implements CreativeCommand {
         var randomformatIndex = Math.floor(Math.random() * this.formatters.length);
         var ideaString = Localizer.translate("gameidea.gameIdeaHeader");
         ideaString += this.formatters[randomformatIndex].format();
+
+        logChampInst.debug("Generated random game idea", {formatIndex: randomformatIndex, idea: ideaString});
         return ideaString;
     }
 }

@@ -1,7 +1,9 @@
 import {commands} from "../index";
 import {CreativeCommand} from "./def/commanddef";
 import {getUserFromMention} from "./discordutil";
-import * as LogChamp from "./logchamp";
+import {LogChamp, Category} from "./logchamp";
+
+var logChampInst = new LogChamp(Category.Startup);
 
 export function createCommand(file: string, commandModule: any): CreativeCommand | undefined {
     file = file.substr(0, file.length - 3);
@@ -27,6 +29,6 @@ export function createCommand(file: string, commandModule: any): CreativeCommand
         case "vouch": createdCommand = new commandModule.VouchCommand(); break;
         default: createdCommand = undefined;
     }
-    LogChamp.info("Command object requested", {fileName: file, commandName: createdCommand?.name});
+    logChampInst.debug("Command object requested", {fileName: file, commandName: createdCommand?.name});
     return createdCommand;
 }

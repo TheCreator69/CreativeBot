@@ -4,6 +4,9 @@ import * as EventHandler from "../../scripts/database/eventhandler";
 import * as UIFunctions from "../../scripts/uifunctions";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
+import {LogChamp, Category} from "../../scripts/logchamp";
+
+var logChampInst = new LogChamp(Category.BotMessage);
 
 export class SubmitCommand implements CreativeCommand {
     name = Localizer.translate("submit.name");
@@ -16,7 +19,7 @@ export class SubmitCommand implements CreativeCommand {
     async checkRequiredArgs(args: string[], message: Message | undefined): Promise<ArgsCheckResult> {
         //@ts-ignore
         const channelEntry = await EventHandler.getEventChannel(message.guild.id);
-        if(channelEntry === null) {
+        if(channelEntry === undefined) {
             return {valid: false, replyMessage: Localizer.translate("submit.noEventChannel")};
         }
         if(!EventHandler.checkIfEventChannelIsActive(channelEntry)) {
@@ -37,11 +40,15 @@ export class SubmitCommand implements CreativeCommand {
         const submissionTitle = "__**Submission by " + message.author.username + ":**__";
         const submissionDescription = "*Link to Content:* " + args[0] + "\n*Description:* " + description;
         const submissionEmbed = this.constructSubmissionEmbed(submissionTitle, submissionDescription, message.author);
+        logChampInst.debug("Constructed submission embed", {title: submissionTitle, desc: submissionDescription});
+
         var channelIDKey = channelID.toString();
         const eventChannel = Index.client.channels.cache.get(channelIDKey) as TextChannel;
         if(eventChannel !== undefined) {
             eventChannel.send(submissionEmbed);
+            return;
         }
+        logChampInst.error("Command was executed despite event channel being undefined");
     }
 
     constructSubmissionEmbed(title: string, description: string, author: User): MessageEmbed {

@@ -1,7 +1,9 @@
 import {MessageEmbed, Message} from "discord.js";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
-import * as LogChamp from "../../scripts/logchamp";
+import {LogChamp, Category} from "../../scripts/logchamp";
+
+var logChampInst = new LogChamp(Category.BotMessage);
 
 export class SocialsCommand implements CreativeCommand {
     name = Localizer.translate("socials.name");
@@ -13,7 +15,6 @@ export class SocialsCommand implements CreativeCommand {
 
     execute(message: Message, args: string[]): void {
         message.channel.send(this.constructEmbed());
-        LogChamp.info("Socials embed sent");
     }
 
     constructEmbed(): MessageEmbed {
@@ -28,6 +29,8 @@ export class SocialsCommand implements CreativeCommand {
         socialEmbed.addField("Twitch", "https://www.twitch.tv/thecreator133769", true);
         socialEmbed.addField("Reddit", "https://www.reddit.com/user/TheCreator_1337", true);
         socialEmbed.setFooter(Localizer.translate("socials.embedFooter"));
+
+        logChampInst.debug("Socials embed constructed");
         return socialEmbed;
     }
 }

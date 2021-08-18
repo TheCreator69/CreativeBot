@@ -1,6 +1,8 @@
 import i18next from "i18next";
 import Backend from "i18next-fs-backend";
-import * as LogChamp from "./logchamp";
+import {LogChamp, Category} from "./logchamp";
+
+var logChampInst = new LogChamp(Category.Localization);
 
 export async function initializeLocalizer(): Promise<void> {
     const i18nInst = i18next.use(Backend)
@@ -18,19 +20,19 @@ export async function initializeLocalizer(): Promise<void> {
         }
     }, (err, t) => {
         if(err) {
-            LogChamp.error("Error when initializing localizer!", err);
+            logChampInst.error("Error when initializing localizer!", err);
             return;
         }
     });
-    LogChamp.info("Localizer set up successfully", {init: i18nInst.isInitialized, lngs: i18nInst.languages});
+    logChampInst.info("Localizer set up successfully", {init: i18nInst.isInitialized, lngs: i18nInst.languages});
 }
 
 export function translate(key: string | string[], options?: object): string {
-    LogChamp.info("Translation requested", {key: key});
+    logChampInst.debug("Translation requested", {key: key});
     return i18next.t(key, options);
 }
 
 export function translateArray(key: string | string[], options?: object): string[] {
-    LogChamp.info("Array translation requested", {key: key});
+    logChampInst.debug("Array translation requested", {key: key});
     return i18next.t(key, options);
 }

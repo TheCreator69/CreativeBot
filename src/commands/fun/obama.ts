@@ -4,6 +4,9 @@ import * as UIFunctions from "../../scripts/uifunctions";
 import * as fs from "fs";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
+import {LogChamp, Category} from "../../scripts/logchamp";
+
+var logChampInst = new LogChamp(Category.ImageProcessing);
 
 export class ObamaCommand implements CreativeCommand {
     name = Localizer.translate("obama.name");
@@ -32,6 +35,7 @@ export class ObamaCommand implements CreativeCommand {
         context.drawImage(obamaImage, 0, 0, canvas.width, canvas.height);
         this.drawText(canvas, context, args);
 
+        logChampInst.debug("Drew obama image with text", {canvasWidth: canvas.width, imageWidth: obamaImage.width, canvasHeight: canvas.height, imageHeight: obamaImage.height});
         return canvas.toBuffer();
     }
 
@@ -40,7 +44,10 @@ export class ObamaCommand implements CreativeCommand {
             return file.endsWith(".png") && file.startsWith("obama_");
         });
         const randomObamaIndex = Math.floor(Math.random() * obamaImages.length);
-        let obamaImage = await Canvas.loadImage("./media/obama_" + randomObamaIndex + ".png");
+        const obamaImagePath = "./media/obama_" + randomObamaIndex + ".png";
+
+        let obamaImage = await Canvas.loadImage(obamaImagePath);
+        logChampInst.debug("Loaded obama image", {filePath: obamaImagePath});
         return obamaImage;
     }
 

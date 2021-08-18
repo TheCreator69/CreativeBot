@@ -1,8 +1,10 @@
 import {Client} from "discord.js";
 import * as config from "../config.json";
-import * as LogChamp from "../scripts/logchamp";
+import {LogChamp, Category} from "../scripts/logchamp";
 import {EventAttributes} from "../scripts/def/eventdef";
 import * as TimedEventScheduler from "../scripts/tokensystem/timedeventscheduler";
+
+var logChampInst = new LogChamp(Category.Startup);
 
 export var info: EventAttributes = {
     name: "ready",
@@ -16,6 +18,6 @@ export function execute(client: Client) {
             activity: {name: "Use '" + config.prefix + "help' to learn what I can do!"}
         });
         TimedEventScheduler.scheduleTimedJobs();
-        LogChamp.info("Creative Bot has been started!", {username: client.user?.username});
+        logChampInst.info("Creative Bot has been started!", {botname: client.user?.username, env: process.env.NODE_ENV});
     }
 }

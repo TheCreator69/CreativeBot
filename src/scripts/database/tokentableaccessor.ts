@@ -1,7 +1,9 @@
 import * as Sequelize from "sequelize";
 import {Sequelize as SequelizeConstructor} from "sequelize";
 import * as credentials from "../../credentials.json";
-import * as LogChamp from "../logchamp";
+import {LogChamp, Category} from "../logchamp";
+
+var logChampInst = new LogChamp(Category.DatabaseQuery);
 
 export interface TokenRanking {
     position: number,
@@ -20,7 +22,7 @@ export async function getTokensOfUser(userID: bigint): Promise<number> {
     const userEntry = await returnExistingEntryOrCreateNewOne(userID, Tokens);
     sequelize.close();
 
-    LogChamp.info("FETCH: User tokens", {userID: userID, tokens: userEntry.tokens});
+    logChampInst.info("FETCH: User tokens", {userID: userID, tokens: userEntry.tokens});
     return userEntry.tokens;
 }
 
@@ -30,7 +32,7 @@ export async function getVouchTokensOfUser(userID: bigint): Promise<number> {
     const userEntry = await returnExistingEntryOrCreateNewOne(userID, Tokens);
     sequelize.close();
 
-    LogChamp.info("FETCH: User vouch tokens", {userID: userID, tokens: userEntry.vouchTokens});
+    logChampInst.info("FETCH: User vouch tokens", {userID: userID, tokens: userEntry.vouchTokens});
     return userEntry.vouchTokens;
 }
 
@@ -40,7 +42,7 @@ export async function incrementTokensOfUser(userID: bigint, incrementAmount: num
     const userEntry = await returnExistingEntryOrCreateNewOne(userID, Tokens);
     await updateUserTokens(userID, userEntry.tokens + incrementAmount, Tokens);
 
-    LogChamp.info("UPDATE: User tokens", {userID: userID, newTokens: userEntry.tokens});
+    logChampInst.info("UPDATE: User tokens", {userID: userID, newTokens: userEntry.tokens});
     sequelize.close();
 }
 
@@ -49,7 +51,7 @@ export async function setVouchTokensOfUser(userID: bigint, amount: number): Prom
     const Tokens = await defineAndSyncTokensTableModel(sequelize);
     await updateUserVouchTokens(userID, amount, Tokens);
 
-    LogChamp.info("UPDATE: User vouch tokens", {userID: userID, amount: amount});
+    logChampInst.info("UPDATE: User vouch tokens", {userID: userID, amount: amount});
     sequelize.close();
 }
 
@@ -59,7 +61,7 @@ export async function incrementVouchTokensOfUser(userID: bigint, incrementAmount
     const userEntry = await returnExistingEntryOrCreateNewOne(userID, Tokens);
     await updateUserVouchTokens(userID, userEntry.vouchTokens + incrementAmount, Tokens);
 
-    LogChamp.info("UPDATE: User vouch tokens", {userID: userID, amount: incrementAmount, vouchTokens: userEntry.vouchTokens});
+    logChampInst.info("UPDATE: User vouch tokens", {userID: userID, amount: incrementAmount, vouchTokens: userEntry.vouchTokens});
     sequelize.close();
 }
 
@@ -68,7 +70,7 @@ export async function setTokensOfUser(userID: bigint, amount: number): Promise<v
     const Tokens = await defineAndSyncTokensTableModel(sequelize);
     await updateUserTokens(userID, amount, Tokens);
 
-    LogChamp.info("UPDATE: User tokens", {userID: userID});
+    logChampInst.info("UPDATE: User tokens", {userID: userID});
     sequelize.close();
 }
 
@@ -77,7 +79,7 @@ export async function resetVouchTokens(): Promise<void> {
     const Tokens = await defineAndSyncTokensTableModel(sequelize);
     await resetAllUserVouchTokens(Tokens);
 
-    LogChamp.info("UPDATE: User vouch tokens");
+    logChampInst.info("UPDATE: User vouch tokens");
     sequelize.close();
 }
 
@@ -86,7 +88,7 @@ export async function resetTokens(): Promise<void> {
     const Tokens = await defineAndSyncTokensTableModel(sequelize);
     await resetAllUserTokens(Tokens);
 
-    LogChamp.info("UPDATE: User tokens");
+    logChampInst.info("UPDATE: User tokens");
     sequelize.close();
 }
 
@@ -96,7 +98,7 @@ export async function getTokenRankOfUser(userID: bigint): Promise<TokenRanking> 
     const tokenRank = await sortTableEntriesAndReturnRank(Tokens, userID);
     sequelize.close();
 
-    LogChamp.info("FETCH: User token rank", {userID: userID, tokenRank: tokenRank});
+    logChampInst.info("FETCH: User token rank", {userID: userID, tokenRank: tokenRank});
     return tokenRank;
 }
 
@@ -106,7 +108,7 @@ export async function getUserEntryAtRank(rank: number): Promise<UserEntry | unde
     const userEntry = await sortTableEntriesAndReturnEntryAtRank(Tokens, rank);
     sequelize.close();
 
-    LogChamp.info("FETCH: User object at token rank", {rank: rank, userEntry: userEntry});
+    logChampInst.info("FETCH: User object at token rank", {rank: rank, userEntry: userEntry});
     return userEntry;
 }
 
@@ -119,12 +121,12 @@ export async function getTopTenUsers(): Promise<UserEntry[]> {
         }
     }
 
-    LogChamp.info("FETCH: Top ten users", {userEntryLength: topUserEntries.length});
+    logChampInst.info("FETCH: Top ten users", {userEntryLength: topUserEntries.length});
     return topUserEntries;
 }
 
 function establishDatabaseConnection(): SequelizeConstructor {
-    LogChamp.info("Tokens: database connection established");
+    logChampInst.debug("Tokens: database connection established");
     return new SequelizeConstructor(credentials.db_name, credentials.db_username, credentials.db_password, {
         host: "localhost",
         dialect: "mysql",
@@ -149,18 +151,18 @@ async function defineAndSyncTokensTableModel(sequelize: SequelizeConstructor): P
         timestamps: false
     });
     await Tokens.sync();
-    LogChamp.info("Tokens: Synced table");
+    logChampInst.debug("Tokens: Synced table");
     return Tokens;
 }
 
 async function returnExistingEntryOrCreateNewOne(userID: bigint, Tokens: any) {
     const userEntry = await Tokens.findOne({where: {userID: userID}});
     if(userEntry === null) {
-        LogChamp.info("CREATE: user entry", {userID: userID});
+        logChampInst.debug("CREATE: user entry", {userID: userID});
         return await Tokens.create({userID: userID, tokens: 0, vouchTokens: 10});
     }
     else {
-        LogChamp.info("FETCH: user entry", {userID: userID});
+        logChampInst.debug("FETCH: user entry", {userID: userID});
         return userEntry;
     }
 }
@@ -175,7 +177,7 @@ async function updateUserTokens(userID: bigint, newTokens: number, Tokens: any):
     }, {
         where: {userID: userID}
     });
-    LogChamp.info("UPDATE: user tokens", {userID: userID, tokens: newTokens});
+    logChampInst.debug("UPDATE: user tokens", {userID: userID, tokens: newTokens});
 }
 
 async function updateUserVouchTokens(userID: bigint, newVouchTokens: number, Tokens: any): Promise<void> {
@@ -188,7 +190,7 @@ async function updateUserVouchTokens(userID: bigint, newVouchTokens: number, Tok
     }, {
         where: {userID: userID}
     });
-    LogChamp.info("UPDATE: user vouch tokens", {userID: userID, vouchTokens: newVouchTokens});
+    logChampInst.debug("UPDATE: user vouch tokens", {userID: userID, vouchTokens: newVouchTokens});
 }
 
 async function resetAllUserVouchTokens(Tokens: any): Promise<void> {
@@ -228,7 +230,7 @@ async function sortTableEntriesAndReturnRank(Tokens: any, userID: bigint): Promi
         position: position,
         max: sortedEntries.length
     };
-    LogChamp.info("FETCH: user token rank", {userID: userID, rankPosition: position});
+    logChampInst.debug("FETCH: user token rank", {userID: userID, rankPosition: position});
     return rankObject;
 }
 
@@ -241,7 +243,7 @@ async function sortTableEntriesAndReturnEntryAtRank(Tokens: any, rank: number): 
         tokens: entry.tokens,
         vouchTokens: entry.vouchTokens
     };
-    LogChamp.info("FETCH: user entry at token rank", {userEntry: userEntry});
+    logChampInst.debug("FETCH: user entry at token rank", {userEntry: userEntry});
     return userEntry;
 }
 
