@@ -1,6 +1,7 @@
 # Big folder ignores
 node_modules/
 build/
+coverage/
 
 # Ignore all logs
 *.log
