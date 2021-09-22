@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rimraf ./build && tsc",
     "dev": "cross-env NODE_ENV=development nodemon",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
