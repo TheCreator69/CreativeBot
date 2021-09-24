@@ -1,4 +1,4 @@
-import {MessageEmbed, Message, Collection} from "discord.js";
+import {MessageEmbed, Message, Collection, ColorResolvable} from "discord.js";
 import * as config from "../../config.json";
 import * as AdminCheck from "../../scripts/database/admincheck";
 import {CreativeCommand} from "../../scripts/def/commanddef";
@@ -27,7 +27,8 @@ export class HelpCommand implements CreativeCommand {
     async execute(message: Message, args: string[]): Promise<void> {
         this.isCommandSenderAdmin = await AdminCheck.checkIfUserIsAdmin(BigInt(message.author.id));
         var helpEmbed = this.createCorrectHelpEmbed(message, args);
-        message.channel.send(helpEmbed);
+        //@ts-ignore
+        message.channel.send({embeds: [helpEmbed]});
     }
 
     createCorrectHelpEmbed(message: Message, args: string[]): MessageEmbed {
@@ -63,7 +64,7 @@ export class HelpCommand implements CreativeCommand {
         }
     }
 
-    createHelpEmbed(colorInHex: string, title: string, description: string, footer: string): MessageEmbed {
+    createHelpEmbed(colorInHex: ColorResolvable, title: string, description: string, footer: string): MessageEmbed {
         var helpEmbed = new MessageEmbed();
         helpEmbed.setColor(colorInHex);
         helpEmbed.setTitle(title);
@@ -73,7 +74,7 @@ export class HelpCommand implements CreativeCommand {
     }
 
     listAllCommandsAlphabetically(message: Message): string {
-        var commands = this.sortCommandsAlphabetically(this.commandCollection.array());
+        var commands = this.sortCommandsAlphabetically(Array.from(this.commandCollection.values()));
         var commandList = "";
         for(const commandObject of commands) {
             if(commandObject.adminOnly) {
@@ -103,7 +104,8 @@ export class HelpCommand implements CreativeCommand {
     }
 
     listAdminCommandForAdminsOnlyInDM(message: Message, commandObject: CreativeCommand): string {
-        if(this.isCommandSenderAdmin && message.channel.type == "dm") {
+        //@ts-ignore
+        if(this.isCommandSenderAdmin && message.channel.type == "DM") {
             logChampInst.debug("Admin-only command added to list for admin in DM");
             return "`" + commandObject.name + "`, ";
         }

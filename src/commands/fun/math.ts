@@ -259,7 +259,8 @@ export class MathCommand implements CreativeCommand {
             if(filteredMessage.author.id === message.author.id && !isNaN(messageAsNumber)) return true;
             else return false;
         }
-        const collector = message.channel.createMessageCollector(filter, {max: 1, time: operation.mathQuestion.timeForAnswering});
+        //@ts-ignore
+        const collector = message.channel.createMessageCollector({filter, max: 1, time: operation.mathQuestion.timeForAnswering});
 
         collector.on("collect", (collectedMessage: Message) => {
             this.replyBasedOnValidityOfAnswer(collectedMessage, operation);

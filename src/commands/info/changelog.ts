@@ -15,7 +15,8 @@ export class ChangelogCommand implements CreativeCommand {
     guildOnly = false;
 
     execute(message: Message, args: string[]): void {
-        message.channel.send(this.constructChangelogEmbed());
+        //@ts-ignore
+        message.channel.send({embeds: [this.constructChangelogEmbed()]});
     }
 
     constructChangelogEmbed(): MessageEmbed {

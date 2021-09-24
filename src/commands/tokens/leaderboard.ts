@@ -21,7 +21,8 @@ export class LeaderboardCommand implements CreativeCommand {
         let topUserEntries = await TTA.getTopTenUsers();
         let leaderboardImageBuffer = await this.drawLeaderboard(topUserEntries);
         let leaderboardAttachment = new MessageAttachment(leaderboardImageBuffer, "leaderboard.png");
-        message.channel.send(leaderboardAttachment);
+        //@ts-ignore
+        message.channel.send({embeds: [leaderboardAttachment]});
     }
 
     async drawLeaderboard(topUserEntries: TTA.UserEntry[]): Promise<Buffer> {

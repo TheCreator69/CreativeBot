@@ -1,4 +1,4 @@
-import * as Discord from "discord.js";
+import {Client, Collection, Intents} from "discord.js";
 import * as fs from "fs";
 import path from "path";
 import * as credentials from "./credentials.json";
@@ -10,8 +10,16 @@ import {LogChamp, Category} from "./scripts/logchamp";
 
 var logChampInst = new LogChamp(Category.Startup);
 
-export const client = new Discord.Client();
-export var commands: Discord.Collection<string, CreativeCommand> = new Discord.Collection();
+const myIntents = new Intents();
+myIntents.add(
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_MESSAGES,
+    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+    Intents.FLAGS.DIRECT_MESSAGES,
+);
+//@ts-ignore
+export const client = new Client({intents: myIntents});
+export var commands: Collection<string, CreativeCommand> = new Collection();
 
 startBot();
 

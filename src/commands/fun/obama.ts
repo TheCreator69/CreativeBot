@@ -23,7 +23,8 @@ export class ObamaCommand implements CreativeCommand {
     async execute(message: Message, args: string[]): Promise<void> {
         var obamaImageBuffer = await this.createObamaImageBuffer(args);
         var attachment = new MessageAttachment(obamaImageBuffer, Localizer.translate("obama.imageName") + ".png");
-        message.channel.send(attachment);
+        //@ts-ignore
+        message.channel.send({embeds: [attachment]});
     }
 
     async createObamaImageBuffer(args: string[]): Promise<Buffer> {

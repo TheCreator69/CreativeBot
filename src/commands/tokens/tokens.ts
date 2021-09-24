@@ -1,4 +1,4 @@
-import {MessageAttachment, Message, User, TextChannel, DMChannel, NewsChannel} from "discord.js";
+import {MessageAttachment, Message, User, TextBasedChannel} from "discord.js";
 import * as Canvas from "canvas";
 import * as TokenTableAccessor from "../../scripts/database/tokentableaccessor";
 import {CreativeCommand} from "../../scripts/def/commanddef";
@@ -32,10 +32,12 @@ export class TokensCommand implements CreativeCommand {
         }
     }
 
-    async displayUserInfoOnTokenBanner(channel: TextChannel | DMChannel | NewsChannel, user: User): Promise<void> {
+    //@ts-ignore
+    async displayUserInfoOnTokenBanner(channel: TextBasedChannel, user: User): Promise<void> {
         var tokensBadge = await this.drawTokenBanner(user);
         const attachment = new MessageAttachment(tokensBadge, user.username + "_tokens.png");
-        channel.send(attachment);
+        //@ts-ignore
+        channel.send({embeds: [attachment]});
     }
 
     async drawTokenBanner(user: User): Promise<Buffer> {

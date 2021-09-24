@@ -15,7 +15,8 @@ export function execute(client: Client) {
     if(client.user !== null) {
         client.user.setPresence({
             status: "online",
-            activity: {name: "Use '" + config.prefix + "help' to learn what I can do!"}
+            //@ts-ignore
+            activities: [{name: "Use '" + config.prefix + "help' to learn what I can do!"}]
         });
         TimedEventScheduler.scheduleTimedJobs();
         logChampInst.info("Creative Bot has been started!", {botname: client.user?.username, env: process.env.NODE_ENV});

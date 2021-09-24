@@ -45,7 +45,8 @@ export class SubmitCommand implements CreativeCommand {
         var channelIDKey = channelID.toString();
         const eventChannel = Index.client.channels.cache.get(channelIDKey) as TextChannel;
         if(eventChannel !== undefined) {
-            eventChannel.send(submissionEmbed);
+            //@ts-ignore
+            eventChannel.send({embeds: [submissionEmbed]});
             return;
         }
         logChampInst.error("Command was executed despite event channel being undefined");

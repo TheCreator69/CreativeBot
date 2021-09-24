@@ -14,7 +14,8 @@ export class TokenSystemCommand implements CreativeCommand {
     guildOnly = false;
 
     execute(message: Message, args: string[]): void {
-        message.channel.send(this.constructEmbed());
+        //@ts-ignore
+        message.channel.send({embeds: [this.constructEmbed()]});
     }
 
     constructEmbed(): MessageEmbed {
