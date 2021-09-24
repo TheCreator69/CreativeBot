@@ -2,173 +2,181 @@ import * as Slots from "./slots";
 
 var slotsCommand = new Slots.SlotsCommand();
 
-test("Checks if a bet of 10 and no lines of symbols returns a win of 0", () => {
-    expect(slotsCommand.determineCreditsWon(0, 0, 0, 10)).toEqual(0);
+describe("Determine Credits Won", () => {
+    test("A bet of '10' with no lines of symbols should return a win of '0'", () => {
+        expect(slotsCommand.determineCreditsWon(0, 0, 0, 10)).toBe(0);
+    });
+
+    test("A bet of '10' with 1 horizontal line should return a win of '20'", () => {
+        expect(slotsCommand.determineCreditsWon(1, 0, 0, 10)).toBe(20);
+    });
+
+    test("A bet of '10' with 3 horizontal lines should return a win of '60'", () => {
+        expect(slotsCommand.determineCreditsWon(3, 0, 0, 10)).toBe(60);
+    });
+
+    test("A bet of '10' with 1 diagonal line should return a win of '40'", () => {
+        expect(slotsCommand.determineCreditsWon(0, 1, 0, 10)).toBe(40);
+    });
+
+    test("A bet of '10' with 2 diagonal lines should return a win of '80'", () => {
+        expect(slotsCommand.determineCreditsWon(0, 2, 0, 10)).toBe(80);
+    });
+
+    test("A bet of '10' with 1 horizontal & 1 diagonal line should return a win of '60'", () => {
+        expect(slotsCommand.determineCreditsWon(1, 1, 0, 10)).toBe(60);
+    });
+
+    test("A bet of '10' with 3 horizontal & 2 diagonal lines should return a win of '140'", () => {
+        expect(slotsCommand.determineCreditsWon(3, 2, 0, 10)).toBe(140);
+    });
+
+    test("A bet of '10' with 1 vertical line should return a win of '20'", () => {
+        expect(slotsCommand.determineCreditsWon(0, 0, 1, 10)).toBe(20);
+    });
+
+    test("A bet of '10' with 3 vertical lines should return a win of '60'", () => {
+        expect(slotsCommand.determineCreditsWon(0, 0, 3, 10)).toBe(60);
+    });
+
+    test("A bet of '10' with 1 horizontal & 1 vertical line should return a win of '40'", () => {
+        expect(slotsCommand.determineCreditsWon(1, 0, 1, 10)).toBe(40);
+    });
 });
 
-test("Checks if a bet of 10 and 1 horizontal line of symbols returns a win of 20", () => {
-    expect(slotsCommand.determineCreditsWon(1, 0, 0, 10)).toEqual(20);
+
+
+describe("Select Seemingly Random Symbols", () => {
+    test("The symbol array should have a length of 9", () => {
+        expect(slotsCommand.selectSeeminglyRandomSymbols()).toHaveLength(9);
+    });
 });
 
-test("Checks if a bet of 10 and 3 horizontal lines of symbols returns a win of 60", () => {
-    expect(slotsCommand.determineCreditsWon(3, 0, 0, 10)).toEqual(60);
+
+
+describe("Get Horizontal Line Count", () => {
+    test("'0' horizontal lines should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "same", "different", "same",
+            "3", "4", "5",
+            "6", "7", "8"
+        ];
+        expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toBe(0);
+    });
+
+    test("'1' horizontal line should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "same", "same", "same",
+            "3", "4", "5",
+            "6", "7", "8"
+        ];
+        expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toBe(1);
+    });
+
+    test("'1' horizontal line should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "0", "1", "2",
+            "same", "same", "same",
+            "6", "7", "8"
+        ];
+        expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toBe(1);
+    });
+
+    test("'2' horizontal lines should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "0", "1", "2",
+            "same", "same", "same",
+            "same", "same", "same"
+        ];
+        expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toBe(2);
+    });
+
+    test("'3' horizontal lines should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "same", "same", "same",
+            "same", "same", "same",
+            "same", "same", "same"
+        ];
+        expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toBe(3);
+    });
 });
 
-test("Checks if a bet of 10 and 1 diagonal line of symbols returns a win of 40", () => {
-    expect(slotsCommand.determineCreditsWon(0, 1, 0, 10)).toEqual(40);
+
+
+describe("Get Diagonal Line Count", () => {
+    test("'1' diagonal line should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "same", "1", "2",
+            "3", "same", "5",
+            "6", "7", "same"
+        ];
+        expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toBe(1);
+    });
+
+    test("'1' diagonal line should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "0", "1", "same",
+            "3", "same", "5",
+            "same", "7", "8"
+        ];
+        expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toBe(1);
+    });
+
+    test("'2' diagonal lines should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "same", "1", "same",
+            "3", "same", "5",
+            "same", "7", "same"
+        ];
+        expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toBe(2);
+    });
+
+    test("'2' diagonal lines should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "same", "same", "same",
+            "same", "same", "same",
+            "same", "same", "same"
+        ];
+        expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toBe(2);
+    });
 });
 
-test("Checks if a bet of 10 and 2 diagonal lines of symbols returns a win of 80", () => {
-    expect(slotsCommand.determineCreditsWon(0, 2, 0, 10)).toEqual(80);
-});
 
-test("Checks if a bet of 10, 1 horizontal, and 1 diagonal line of symbols returns a win of 60", () => {
-    expect(slotsCommand.determineCreditsWon(1, 1, 0, 10)).toEqual(60);
-});
 
-test("Checks if a bet of 10, 3 horizontal, and 2 diagonal lines of symbols returns a win of 140", () => {
-    expect(slotsCommand.determineCreditsWon(3, 2, 0, 10)).toEqual(140);
-});
+describe("Get Vertical Line Count", () => {
+    test("'1' vertical line should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "same", "1", "2",
+            "same", "4", "5",
+            "same", "7", "8"
+        ];
+        expect(slotsCommand.getVerticalLineCount(mockSymbols)).toBe(1);
+    });
 
-test("Checks if a bet of 10 and 1 vertical line of symbols returns a win of 20", () => {
-    expect(slotsCommand.determineCreditsWon(0, 0, 1, 10)).toEqual(20);
-});
+    test("'1' vertical lines should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "0", "1", "same",
+            "3", "4", "same",
+            "6", "7", "same"
+        ];
+        expect(slotsCommand.getVerticalLineCount(mockSymbols)).toBe(1);
+    });
 
-test("Checks if a bet of 10 and 3 vertical lines of symbols returns a win of 60", () => {
-    expect(slotsCommand.determineCreditsWon(0, 0, 3, 10)).toEqual(60);
-});
+    test("'2' vertical lines should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "same", "1", "same",
+            "same", "4", "same",
+            "same", "7", "same"
+        ];
+        expect(slotsCommand.getVerticalLineCount(mockSymbols)).toBe(2);
+    });
 
-test("Checks if a bet of 10, 1 horizontal, and 1 vertical line of symbols returns a win of 40", () => {
-    expect(slotsCommand.determineCreditsWon(1, 0, 1, 10)).toEqual(40);
-});
-
-test("Checks if array output by function is of expected length", () => {
-    expect(slotsCommand.selectSeeminglyRandomSymbols()).toHaveLength(9);
-});
-
-test("Checks if no horizontal line gets detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "same", "different", "same",
-        "1", "2", "3",
-        "4", "5", "6"
-    ];
-    expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toEqual(0);
-});
-
-test("Checks if first horizontal line gets detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "same", "same", "same",
-        "1", "2", "3",
-        "4", "5", "6"
-    ];
-    expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toEqual(1);
-});
-
-test("Checks if second horizontal line gets detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "0", "1", "2",
-        "same", "same", "same",
-        "6", "7", "8"
-    ];
-    expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toEqual(1);
-});
-
-test("Checks if 2 horizontal lines get detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "0", "1", "2",
-        "same", "same", "same",
-        "alsoSame", "alsoSame", "alsoSame"
-    ];
-    expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toEqual(2);
-});
-
-test("Checks if 3 horizontal lines get detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "same", "same", "same",
-        "alsoSame", "alsoSame", "alsoSame",
-        "stillSame", "stillSame", "stillSame"
-    ];
-    expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toEqual(3);
-});
-
-test("Checks if 1 diagonal line from the top left gets detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "same", "1", "2",
-        "3", "same", "5",
-        "6", "7", "same"
-    ];
-    expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toEqual(1);
-});
-
-test("Checks if 1 diagonal line from the top right gets detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "0", "1", "same",
-        "3", "same", "5",
-        "same", "7", "8"
-    ];
-    expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toEqual(1);
-});
-
-test("Checks if 2 diagonal lines get detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "same", "1", "same",
-        "3", "same", "5",
-        "same", "7", "same"
-    ];
-    expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toEqual(2);
-});
-
-test("Checks if 2 diagonal lines get detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "same", "1", "same",
-        "3", "same", "5",
-        "same", "7", "same"
-    ];
-    expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toEqual(2);
-});
-
-test("Checks if 2 diagonal lines and 3 horizontal lines get detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "same", "same", "same",
-        "same", "same", "same",
-        "same", "same", "same"
-    ];
-    expect(slotsCommand.getDiagonalLineCount(mockSymbols)).toEqual(2);
-    expect(slotsCommand.getHorizontalLineCount(mockSymbols)).toEqual(3);
-});
-
-test("Checks if 1 vertical line gets detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "same", "1", "2",
-        "same", "4", "5",
-        "same", "7", "8"
-    ];
-    expect(slotsCommand.getVerticalLineCount(mockSymbols)).toEqual(1);
-});
-
-test("Checks if 1 vertical line with offset gets detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "0", "1", "same",
-        "3", "4", "same",
-        "6", "7", "same"
-    ];
-    expect(slotsCommand.getVerticalLineCount(mockSymbols)).toEqual(1);
-});
-
-test("Checks if 2 vertical lines get detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "same", "1", "alsoSame",
-        "same", "4", "alsoSame",
-        "same", "7", "alsoSame"
-    ];
-    expect(slotsCommand.getVerticalLineCount(mockSymbols)).toEqual(2);
-});
-
-test("Checks if 3 vertical lines get detected in random symbol array", () => {
-    const mockSymbols: string[] = [
-        "same", "identical", "alsoSame",
-        "same", "identical", "alsoSame",
-        "same", "identical", "alsoSame"
-    ];
-    expect(slotsCommand.getVerticalLineCount(mockSymbols)).toEqual(3);
+    test("'3' vertical lines should be detected in symbol array", () => {
+        const mockSymbols: string[] = [
+            "same", "same", "same",
+            "same", "same", "same",
+            "same", "same", "same"
+        ];
+        expect(slotsCommand.getVerticalLineCount(mockSymbols)).toBe(3);
+    });
 });

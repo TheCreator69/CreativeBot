@@ -6,7 +6,9 @@ function getFakeUserFromMention(argument: string): User | undefined {
 }
 var changeTokensCommand = new ChangeCredits.ChangeTokensCommand(getFakeUserFromMention);
 
-test("Checks if entering an invalid operation returns false", async () => {
-    var areArgsValid = await changeTokensCommand.checkRequiredArgs(["notadd"]);
-    expect(areArgsValid.valid).toBeFalsy();
+describe("Check Required Arguments", () => {
+    test("Entering invalid token change operation 'notadd' should return 'false'", async () => {
+        var areArgsValid = await changeTokensCommand.checkRequiredArgs(["notadd"]);
+        expect(areArgsValid.valid).toBeFalsy();
+    });
 });
