@@ -29,17 +29,17 @@ beforeAll(() => {
 
 
 describe("Sort Command Array", () => {
-    test("Sorts an array with commands 'Apple', 'Banana' and 'Cherry'. Expects 'Apple' to be at index 0", () => {
+    test("Sorted array of commands 'Apple', 'Banana' and 'Cherry' should return 'Apple' at index '0'", () => {
         const sortedArray = helpCommand.sortCommandsAlphabetically(mockCollection.array());
         expect(sortedArray[0].name).toBe("Apple");
     });
 
-    test("Sorts an array with commands 'Apple', 'Banana' and 'Cherry'. Expects 'Banana' to be at index 1", () => {
+    test("Sorted array of commands 'Apple', 'Banana' and 'Cherry' should return 'Banana' at index '1'", () => {
         const sortedArray = helpCommand.sortCommandsAlphabetically(mockCollection.array());
         expect(sortedArray[1].name).toBe("Banana");
     });
 
-    test("Sorts an array with commands 'Apple', 'Banana' and 'Cherry'. Expects 'Cherry' to be at index 2", () => {
+    test("Sorted array of commands 'Apple', 'Banana' and 'Cherry' should return 'Cherry' at index '2'", () => {
         const sortedArray = helpCommand.sortCommandsAlphabetically(mockCollection.array());
         expect(sortedArray[2].name).toBe("Cherry");
     });
@@ -47,28 +47,36 @@ describe("Sort Command Array", () => {
 
 
 
-describe("Does Command Exist", () => {
-    test("Checks if the 'Null' command exists. Expects result to be false", () => {
+describe("Does Command Exist for non-admin", () => {
+    test("Command of name 'Null' should return false", () => {
         expect(helpCommand.doesCommandExistForAuthor(["Null"])).toBeFalsy();
     });
 
-    test("Checks if the Apple command exists when the player isn't an admin and the command isn't admin-only. Expects result to be true", () => {
-        expect(helpCommand.doesCommandExistForAuthor(["Apple"])).toBeTruthy(); //adminOnly = false
+    test("Non-admin-exclusive command of name 'Apple' should return 'true'", () => {
+        expect(helpCommand.doesCommandExistForAuthor(["Apple"])).toBeTruthy();
     });
 
-    test("Checks if the Cherry command exists when the player isn't an admin and the command is admin-only. Expects result to be false", () => {
-        expect(helpCommand.doesCommandExistForAuthor(["Cherry"])).toBeFalsy(); //adminOnly = true
+    test("Admin-exclusive command of name 'Cherry' should return 'false'", () => {
+        expect(helpCommand.doesCommandExistForAuthor(["Cherry"])).toBeFalsy();
     });
+});
 
-    test("Checks if the Apple command exists when the player is an admin and the command isn't admin-only. Expects result to be true", () => {
+
+
+describe("Does Command Exist for admin", () => {
+    beforeAll(() => {
         helpCommand.isCommandSenderAdmin = true;
-        expect(helpCommand.doesCommandExistForAuthor(["Apple"])).toBeTruthy(); //adminOnly = false
-        helpCommand.isCommandSenderAdmin = false;
     });
 
-    test("Checks if the Cherry command exists when the player is an admin and the command is admin-only. Expects result to be true", () => {
-        helpCommand.isCommandSenderAdmin = true;
-        expect(helpCommand.doesCommandExistForAuthor(["Cherry"])).toBeTruthy(); //adminOnly = true
+    test("Non-admin-exclusive command of name 'Apple' should return 'true'", () => {
+        expect(helpCommand.doesCommandExistForAuthor(["Apple"])).toBeTruthy();
+    });
+
+    test("Admin-exclusive command of name 'Cherry' should return 'true'", () => {
+        expect(helpCommand.doesCommandExistForAuthor(["Cherry"])).toBeTruthy();
+    });
+
+    afterAll(() => {
         helpCommand.isCommandSenderAdmin = false;
     });
 });
@@ -76,11 +84,11 @@ describe("Does Command Exist", () => {
 
 
 describe("Get Command Instance", () => {
-    test("Attempts to get the command 'Null' from the list of commands and expects the return value to be undefined", () => {
+    test("Command instance of command named 'Null' should be 'undefined'", () => {
         expect(helpCommand.getCommandInstance(["Null"])).toBeUndefined();
     });
 
-    test("Attempts to get the command 'Banana' from the list of commands and expects the return value not to be undefined - basically, to be defined", () => {
-        expect(helpCommand.getCommandInstance(["Banana"])).not.toBeUndefined();
+    test("Command instance of command named 'Banana' should be 'defined'", () => {
+        expect(helpCommand.getCommandInstance(["Banana"])).toBeDefined();
     });
 });
