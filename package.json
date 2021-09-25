@@ -5,9 +5,10 @@
   "main": "./build/index.js",
   "scripts": {
     "build": "rimraf ./build && tsc",
+    "coverage": "jest --coverage",
+    "deploy": "npx ts-node ./src/deploy-commands.ts",
     "dev": "cross-env NODE_ENV=development nodemon",
-    "test": "jest",
-    "coverage": "jest --coverage"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -30,8 +31,11 @@
   },
   "homepage": "https://github.com/TheCreator69/CreativeBot#readme",
   "dependencies": {
+    "@discordjs/builders": "^0.5.0",
+    "@discordjs/rest": "*",
     "@discordjs/voice": "^0.6.0",
     "canvas": "^2.8.0",
+    "discord-api-types": "^0.22.0",
     "discord.js": "^13.1.0",
     "i18next": "^20.3.1",
     "i18next-fs-backend": "^1.1.1",
