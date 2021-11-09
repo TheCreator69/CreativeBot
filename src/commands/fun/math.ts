@@ -1,7 +1,8 @@
-import {Message} from "discord.js";
+import {Message, CommandInteraction} from "discord.js";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import {LogChamp, Category} from "../../scripts/logchamp";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 var logChampInst = new LogChamp(Category.BotMessage);
 
@@ -216,6 +217,10 @@ export type MathQuestion = {
 }
 
 export class MathCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("math")
+    .setDescription("Generates a random math exercise");
+    data = this.commandBuilder;
     name = Localizer.translate("math.name");
     description = Localizer.translate("math.description");
     syntax = Localizer.translate("math.syntax");
@@ -232,10 +237,15 @@ export class MathCommand implements CreativeCommand {
     ];
 
     execute(message: Message, args: string[]): void {
-        this.askMathQuestionAndProcessAnswer(message);
+
     }
 
-    askMathQuestionAndProcessAnswer(message: Message): void {
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+        let mathQuestion = this.askMathQuestion();
+        this.processUserAnswer(mathQuestion, interaction);
+    }
+
+    askMathQuestion(): MathOperation {
         var randomOperationIndex = Math.floor(Math.random() * this.operations.length);
         var mathOperation = this.operations[randomOperationIndex];
 
@@ -244,13 +254,17 @@ export class MathCommand implements CreativeCommand {
         let timeForAnsweringInSeconds = mathOperation.mathQuestion.timeForAnswering / 1000;
         logChampInst.debug("Generated math exercise", {equation: equation, answerTime: timeForAnsweringInSeconds});
 
+        return mathOperation;
+    }
+
+    processUserAnswer(mathOperation: MathOperation, interaction: CommandInteraction) {
         if(mathOperation instanceof Modulo) {
-            message.channel.send(Localizer.translate("math.questionMessageModulo", {equation: equation, timeForAnswering: timeForAnsweringInSeconds}));
+            interaction.reply(Localizer.translate("math.questionMessageModulo", {equation: mathOperation.equation, timeForAnswering: mathOperation.timeForAnsweringInSeconds}));
         }
         else {
-            message.channel.send(Localizer.translate("math.questionMessage", {equation: equation, timeForAnswering: timeForAnsweringInSeconds}));
+            interaction.reply(Localizer.translate("math.questionMessage", {equation: mathOperation.equation, timeForAnswering: mathOperation.timeForAnsweringInSeconds}));
         }
-        this.collectAndResolveAnswer(message, mathOperation);
+        this.collectAndResolveAnswer(mathOperation, interaction);
     }
 
     collectAndResolveAnswer(message: Message, operation: MathOperation): void {

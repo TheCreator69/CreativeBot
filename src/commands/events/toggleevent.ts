@@ -1,9 +1,14 @@
 import * as EventHandler from "../../scripts/database/eventhandler";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
-import {Message} from "discord.js";
+import {Message, CommandInteraction} from "discord.js";
 import * as Localizer from "../../scripts/localizer";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 export class ToggleEventCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("toggleevent")
+    .setDescription("Toggles event submissions on and off");
+    data = this.commandBuilder;
     name = Localizer.translate("toggleevent.name");
     description = Localizer.translate("toggleevent.description");
     syntax = Localizer.translate("toggleevent.syntax");
@@ -37,5 +42,9 @@ export class ToggleEventCommand implements CreativeCommand {
             message.channel.send(Localizer.translate("toggleevent.disabledEventChannel"));
             return;
         }
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 }

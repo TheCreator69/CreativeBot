@@ -1,14 +1,19 @@
-import {MessageAttachment, Message, User, TextBasedChannel} from "discord.js";
+import {MessageAttachment, Message, User, TextBasedChannel, CommandInteraction} from "discord.js";
 import * as Canvas from "canvas";
 import * as TokenTableAccessor from "../../scripts/database/tokentableaccessor";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import * as DiscordUtil from "../../scripts/discordutil";
 import {LogChamp, Category} from "../../scripts/logchamp";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 var logChampInst = new LogChamp(Category.TextProcessing);
 
 export class TokensCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("tokens")
+    .setDescription("Shows a user's token balance");
+    data = this.commandBuilder;
     name = Localizer.translate("tokens.name");
     description = Localizer.translate("tokens.description");
     syntax = Localizer.translate("tokens.syntax");
@@ -18,6 +23,10 @@ export class TokensCommand implements CreativeCommand {
 
     async execute(message: Message, args: string[]): Promise<void> {
         this.displayInfoOfCorrectUser(message, args);
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 
     async displayInfoOfCorrectUser(message: Message, args: string[]): Promise<void> {

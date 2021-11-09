@@ -1,7 +1,8 @@
 import {CreativeCommand} from "../../scripts/def/commanddef";
-import {Message} from "discord.js";
+import {Message, CommandInteraction} from "discord.js";
 import * as Localizer from "../../scripts/localizer";
 import {LogChamp, Category} from "../../scripts/logchamp";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 var logChampInst = new LogChamp(Category.BotMessage);
 
@@ -63,6 +64,10 @@ export class GenreWithThemeFormatter implements GameIdeaFormatter {
 }
 
 export class GameIdeaCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("gameidea")
+    .setDescription("Generates a random game idea");
+    data = this.commandBuilder;
     name = Localizer.translate("gameidea.name");
     description = Localizer.translate("gameidea.description");
     syntax = Localizer.translate("gameidea.syntax");
@@ -73,6 +78,11 @@ export class GameIdeaCommand implements CreativeCommand {
     execute(message: Message, args: string[]): void {
         var gameIdea = this.generateGameIdea();
         message.channel.send(gameIdea);
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+        var gameIdea = this.generateGameIdea();
+        await interaction.reply(gameIdea);
     }
 
     formatters: GameIdeaFormatter[] = [

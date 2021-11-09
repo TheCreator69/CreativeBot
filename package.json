@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf ./build && tsc",
     "coverage": "jest --coverage",
-    "deploy": "npx ts-node ./src/deploy-commands.ts",
+    "deploy": "cross-env NODE_ENV=development npx ts-node ./src/deploy-commands.ts",
     "dev": "cross-env NODE_ENV=development nodemon",
     "test": "jest"
   },

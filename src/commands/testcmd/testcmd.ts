@@ -1,9 +1,14 @@
 //import * as LogChamp from "../../scripts/logchamp";
-import {Message} from "discord.js";
+import {Message, CommandInteraction} from "discord.js";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 export class TestCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("test")
+    .setDescription("Test command for bot development");
+    data = this.commandBuilder;
     name = Localizer.translate("test.name");
     aliases = Localizer.translateArray("test.aliases");
     description = Localizer.translate("test.description");
@@ -18,5 +23,9 @@ export class TestCommand implements CreativeCommand {
 
     execute(message: Message, args: string[]): void {
         //Nothing to test.
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+        await interaction.reply("Test!");
     }
 }

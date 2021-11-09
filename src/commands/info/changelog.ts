@@ -1,11 +1,16 @@
 import {CreativeCommand} from "../../scripts/def/commanddef";
-import {Message, MessageEmbed} from "discord.js";
+import {Message, MessageEmbed, CommandInteraction} from "discord.js";
 import * as Localizer from "../../scripts/localizer";
 import {LogChamp, Category} from "../../scripts/logchamp";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 var logChampProcInst = new LogChamp(Category.TextProcessing);
 
 export class ChangelogCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("changelog")
+    .setDescription("Displays changes over different versions of Creative Bot");
+    data = this.commandBuilder;
     name = Localizer.translate("changelog.name");
     aliases = Localizer.translateArray("changelog.aliases");
     description = Localizer.translate("changelog.description");
@@ -17,6 +22,10 @@ export class ChangelogCommand implements CreativeCommand {
     execute(message: Message, args: string[]): void {
         //@ts-ignore
         message.channel.send({embeds: [this.constructChangelogEmbed()]});
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 
     constructChangelogEmbed(): MessageEmbed {

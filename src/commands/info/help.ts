@@ -1,10 +1,11 @@
-import {MessageEmbed, Message, Collection, ColorResolvable} from "discord.js";
+import {MessageEmbed, Message, Collection, ColorResolvable, CommandInteraction} from "discord.js";
 import * as config from "../../config.json";
 import * as AdminCheck from "../../scripts/database/admincheck";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import {createStringFromArrayWithSeparator} from "../../scripts/uifunctions";
 import {LogChamp, Category} from "../../scripts/logchamp";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 var logChampInst = new LogChamp(Category.TextProcessing);
 
@@ -13,6 +14,10 @@ export class HelpCommand implements CreativeCommand {
         this.commandCollection = _commandCollection;
     }
 
+    commandBuilder = new SlashCommandBuilder()
+    .setName("help")
+    .setDescription("Standard help command, what more is there to say?");
+    data = this.commandBuilder;
     name = Localizer.translate("help.name");
     aliases = Localizer.translateArray("help.aliases");
     description = Localizer.translate("help.description");
@@ -29,6 +34,10 @@ export class HelpCommand implements CreativeCommand {
         var helpEmbed = this.createCorrectHelpEmbed(message, args);
         //@ts-ignore
         message.channel.send({embeds: [helpEmbed]});
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 
     createCorrectHelpEmbed(message: Message, args: string[]): MessageEmbed {

@@ -1,4 +1,4 @@
-import {Message, User} from "discord.js";
+import {Message, User, CommandInteraction} from "discord.js";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import * as DiscordUtil from "../../scripts/discordutil";
@@ -7,10 +7,15 @@ import * as RoleManager from "../../scripts/tokensystem/rolemanager";
 import {client} from "../../index";
 import * as UIFunctions from "../../scripts/uifunctions";
 import {LogChamp, Category} from "../../scripts/logchamp";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 var logChampInst = new LogChamp(Category.TextProcessing);
 
 export class VouchCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("vouch")
+    .setDescription("Vouches for other users");
+    data = this.commandBuilder;
     name = Localizer.translate("vouch.name");
     description = Localizer.translate("vouch.description");
     syntax = Localizer.translate("vouch.syntax");
@@ -76,6 +81,10 @@ export class VouchCommand implements CreativeCommand {
         else {
             message.channel.send(Localizer.translate("vouch.vouchAnnouncementSingular", {voucher: message.author.username, target: specifiedUser?.username}));
         }
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 
     async getUserFromVaryingInput(message: Message, args: string[]): Promise<User | undefined> {

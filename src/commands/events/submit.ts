@@ -1,14 +1,19 @@
 import * as Index from "../../index";
-import {MessageEmbed, TextChannel, Message, User} from "discord.js";
+import {MessageEmbed, TextChannel, Message, User, CommandInteraction} from "discord.js";
 import * as EventHandler from "../../scripts/database/eventhandler";
 import * as UIFunctions from "../../scripts/uifunctions";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import {LogChamp, Category} from "../../scripts/logchamp";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 var logChampInst = new LogChamp(Category.BotMessage);
 
 export class SubmitCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("submit")
+    .setDescription("Adds a submission for the current event");
+    data = this.commandBuilder;
     name = Localizer.translate("submit.name");
     description = Localizer.translate("submit.description");
     syntax = Localizer.translate("submit.syntax");
@@ -33,6 +38,10 @@ export class SubmitCommand implements CreativeCommand {
         const channelEntry = await EventHandler.getEventChannel(BigInt(message.guild.id));
         this.constructAndSendSubmissionEmbed(message, args, channelEntry.eventChannelID);
         message.channel.send(Localizer.translate("submit.successfulPost"));
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 
     constructAndSendSubmissionEmbed(message: Message, args: string[], channelID: bigint): void {

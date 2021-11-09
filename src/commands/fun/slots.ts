@@ -1,12 +1,17 @@
-import {Message} from "discord.js";
+import {Message, CommandInteraction} from "discord.js";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import {LogChamp, Category} from "../../scripts/logchamp";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 var logChampInst = new LogChamp(Category.TextProcessing);
 var logChampMessageInst = new LogChamp(Category.BotMessage);
 
 export class SlotsCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("slots")
+    .setDescription("Simulates a slot machine");
+    data = this.commandBuilder;
     name = Localizer.translate("slots.name");
     description = Localizer.translate("slots.description");
     syntax = Localizer.translate("slots.syntax");
@@ -36,6 +41,10 @@ export class SlotsCommand implements CreativeCommand {
     async execute(message: Message, args: string[]): Promise<void> {
         var bet = parseInt(args[0]);
         await this.createAndEditMessageOverTime(message, bet);
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 
     async createAndEditMessageOverTime(message: Message, bet: number): Promise<void> {

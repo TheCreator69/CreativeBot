@@ -12,7 +12,7 @@ var logChampProcInst = new LogChamp(Category.TextProcessing);
 var logChampCmdInst = new LogChamp(Category.BotMessage);
 
 export var info: EventAttributes = {
-    name: "message",
+    name: "messageCreate",
 }
 
 export async function execute(client: Client, message: Message): Promise<void> {

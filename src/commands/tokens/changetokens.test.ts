@@ -1,8 +1,11 @@
 import * as ChangeCredits from "./changetokens";
-import {User, Client} from "discord.js";
+import {User, Client, Intents, SnowflakeUtil} from "discord.js";
 
 function getFakeUserFromMention(argument: string): User | undefined {
-    return new User(new Client(), {});
+    return new User(
+        new Client({intents: Intents.FLAGS.GUILD_MESSAGES}),
+        {id: SnowflakeUtil.generate(), username: "Dummy", discriminator: "1337", avatar: "bd7128ac32f"}
+    );
 }
 var changeTokensCommand = new ChangeCredits.ChangeTokensCommand(getFakeUserFromMention);
 

@@ -1,13 +1,18 @@
 import * as TokenTableAccessor from "../../scripts/database/tokentableaccessor";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
-import {Message, User} from "discord.js";
+import {Message, User, CommandInteraction} from "discord.js";
 import * as Localizer from "../../scripts/localizer";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 export class ChangeTokensCommand implements CreativeCommand {
     constructor(_userFromMentionCallback: (argument: string) => User | undefined) {
         this.userFromMentionCallback = _userFromMentionCallback;
     }
 
+    commandBuilder = new SlashCommandBuilder()
+    .setName("changetokens")
+    .setDescription("Changes tokens of a given user");
+    data = this.commandBuilder;
     name = Localizer.translate("changetokens.name");
     description = Localizer.translate("changetokens.description");
     syntax = Localizer.translate("changetokens.syntax");
@@ -56,6 +61,10 @@ export class ChangeTokensCommand implements CreativeCommand {
             await this.setTokensAndNotifyUser(message, amount, mention);
             return;
         }
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 
     async addTokensAndNotifyUser(message: Message, amount: number, mention: User): Promise<void> {

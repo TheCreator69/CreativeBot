@@ -1,6 +1,7 @@
 import * as Help from "./help";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import {Message, Collection} from "discord.js";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 const mockCollection = new Collection<string, CreativeCommand>();
 var helpCommand = new Help.HelpCommand(mockCollection);
@@ -9,16 +10,19 @@ var helpCommand = new Help.HelpCommand(mockCollection);
 
 beforeAll(() => {
     mockCollection.set("Banana", {
+        data: new SlashCommandBuilder(),
         name: "Banana", description: "", syntax: "", minArgs: 0, adminOnly: false, guildOnly: false,
         async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {return {valid: true};},
         execute(message: Message, args: string[]): void {}
     });
     mockCollection.set("Cherry", {
+        data: new SlashCommandBuilder(),
         name: "Cherry", description: "", syntax: "", minArgs: 0, adminOnly: true, guildOnly: false,
         async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {return {valid: true};},
         execute(message: Message, args: string[]): void {}
     });
     mockCollection.set("Apple", {
+        data: new SlashCommandBuilder(),
         name: "Apple", description: "", syntax: "", minArgs: 0, adminOnly: false, guildOnly: false,
         async checkRequiredArgs(args: string[]): Promise<ArgsCheckResult> {return {valid: true};},
         execute(message: Message, args: string[]): void {}
@@ -30,17 +34,17 @@ beforeAll(() => {
 
 describe("Sort Command Array", () => {
     test("Sorted array of commands 'Apple', 'Banana' and 'Cherry' should return 'Apple' at index '0'", () => {
-        const sortedArray = helpCommand.sortCommandsAlphabetically(mockCollection.array());
+        const sortedArray = helpCommand.sortCommandsAlphabetically(Array.from(mockCollection.values()));
         expect(sortedArray[0].name).toBe("Apple");
     });
 
     test("Sorted array of commands 'Apple', 'Banana' and 'Cherry' should return 'Banana' at index '1'", () => {
-        const sortedArray = helpCommand.sortCommandsAlphabetically(mockCollection.array());
+        const sortedArray = helpCommand.sortCommandsAlphabetically(Array.from(mockCollection.values()));
         expect(sortedArray[1].name).toBe("Banana");
     });
 
     test("Sorted array of commands 'Apple', 'Banana' and 'Cherry' should return 'Cherry' at index '2'", () => {
-        const sortedArray = helpCommand.sortCommandsAlphabetically(mockCollection.array());
+        const sortedArray = helpCommand.sortCommandsAlphabetically(Array.from(mockCollection.values()));
         expect(sortedArray[2].name).toBe("Cherry");
     });
 });

@@ -1,9 +1,14 @@
 import * as EventHandler from "../../scripts/database/eventhandler";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
-import {Message} from "discord.js";
+import {Message, CommandInteraction} from "discord.js";
 import * as Localizer from "../../scripts/localizer";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 export class SetEventCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("setevent")
+    .setDescription("Changes the current event channel");
+    data = this.commandBuilder;
     name = Localizer.translate("setevent.name");
     description = Localizer.translate("setevent.description");
     syntax = Localizer.translate("setevent.syntax");
@@ -50,5 +55,9 @@ export class SetEventCommand implements CreativeCommand {
         await EventHandler.changeEventChannel(serverID, channelID);
         message.channel.send(Localizer.translate("setevent.changedChannel"));
         return;
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 }

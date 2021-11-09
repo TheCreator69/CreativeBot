@@ -1,11 +1,16 @@
-import {MessageEmbed, Message} from "discord.js";
+import {MessageEmbed, Message, CommandInteraction} from "discord.js";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import {LogChamp, Category} from "../../scripts/logchamp";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 var logChampInst = new LogChamp(Category.BotMessage);
 
 export class SocialsCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("socials")
+    .setDescription("Lists Creator's social accounts");
+    data = this.commandBuilder;
     name = Localizer.translate("socials.name");
     description = Localizer.translate("socials.description");
     syntax = Localizer.translate("socials.syntax");
@@ -16,6 +21,10 @@ export class SocialsCommand implements CreativeCommand {
     execute(message: Message, args: string[]): void {
         //@ts-ignore
         message.channel.send({embeds: [this.constructEmbed()]});
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 
     constructEmbed(): MessageEmbed {

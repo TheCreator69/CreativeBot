@@ -1,14 +1,19 @@
-import {Message, MessageAttachment, User} from "discord.js";
+import {Message, MessageAttachment, User, CommandInteraction} from "discord.js";
 import * as Canvas from "canvas";
 import * as TTA from "../../scripts/database/tokentableaccessor";
 import {CreativeCommand} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import {client} from "../../index";
 import {LogChamp, Category} from "../../scripts/logchamp";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 var logChampInst = new LogChamp(Category.ImageProcessing);
 
 export class LeaderboardCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("leaderboard")
+    .setDescription("Displays top 10 users with the most tokens");
+    data = this.commandBuilder;
     name = Localizer.translate("leaderboard.name");
     aliases = Localizer.translateArray("leaderboard.aliases");
     description = Localizer.translate("leaderboard.description");
@@ -23,6 +28,10 @@ export class LeaderboardCommand implements CreativeCommand {
         let leaderboardAttachment = new MessageAttachment(leaderboardImageBuffer, "leaderboard.png");
         //@ts-ignore
         message.channel.send({embeds: [leaderboardAttachment]});
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 
     async drawLeaderboard(topUserEntries: TTA.UserEntry[]): Promise<Buffer> {

@@ -1,12 +1,17 @@
-import {Message, User} from "discord.js";
+import {Message, User, CommandInteraction} from "discord.js";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import {getUserFromMention} from "../../scripts/discordutil";
 import * as Localizer from "../../scripts/localizer";
 import {LogChamp, Category} from "../../scripts/logchamp";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 var logChampInst = new LogChamp(Category.TextProcessing);
 
 export class ThumbsupCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("thumbsup")
+    .setDescription("Gives the last message of the user a thumbs up");
+    data = this.commandBuilder;
     name = Localizer.translate("thumbsup.name");
     description = Localizer.translate("thumbsup.description");
     syntax = Localizer.translate("thumbsup.syntax");
@@ -26,6 +31,10 @@ export class ThumbsupCommand implements CreativeCommand {
         var mentionedUser = getUserFromMention(args[0]);
         if(mentionedUser === undefined) return;
         this.reactToLastMessageFromMentionedUser(message, mentionedUser);
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 
     reactToLastMessageFromMentionedUser(message: Message, mentionedUser: User): void {

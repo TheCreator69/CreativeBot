@@ -1,14 +1,19 @@
-import {MessageAttachment, Message} from "discord.js";
+import {MessageAttachment, Message, CommandInteraction} from "discord.js";
 import * as Canvas from "canvas";
 import * as UIFunctions from "../../scripts/uifunctions";
 import * as fs from "fs";
 import {CreativeCommand, ArgsCheckResult} from "../../scripts/def/commanddef";
 import * as Localizer from "../../scripts/localizer";
 import {LogChamp, Category} from "../../scripts/logchamp";
+import {SlashCommandBuilder} from "@discordjs/builders";
 
 var logChampInst = new LogChamp(Category.ImageProcessing);
 
 export class ObamaCommand implements CreativeCommand {
+    commandBuilder = new SlashCommandBuilder()
+    .setName("obama")
+    .setDescription("Creates an Obama image with custom text");
+    data = this.commandBuilder;
     name = Localizer.translate("obama.name");
     description = Localizer.translate("obama.description");
     syntax = Localizer.translate("obama.syntax");
@@ -25,6 +30,10 @@ export class ObamaCommand implements CreativeCommand {
         var attachment = new MessageAttachment(obamaImageBuffer, Localizer.translate("obama.imageName") + ".png");
         //@ts-ignore
         message.channel.send({embeds: [attachment]});
+    }
+
+    async executeInteraction(interaction: CommandInteraction): Promise<void> {
+
     }
 
     async createObamaImageBuffer(args: string[]): Promise<Buffer> {
