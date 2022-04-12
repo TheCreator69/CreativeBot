@@ -9,6 +9,7 @@ export function createCommand(file: string, commandModule: any): CreativeCommand
     file = file.substr(0, file.length - 3);
     var createdCommand: CreativeCommand | undefined;
     switch(file) {
+        case "react": createdCommand = new commandModule.ReactionCommand(); break;
         case "setevent": createdCommand = new commandModule.SetEventCommand(); break;
         case "submit": createdCommand = new commandModule.SubmitCommand(); break;
         case "toggleevent": createdCommand = new commandModule.ToggleEventCommand(); break;

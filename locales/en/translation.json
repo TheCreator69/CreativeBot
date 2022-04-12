@@ -1,4 +1,9 @@
 {
+    "react": {
+        "name": "react",
+        "description": "Reacts to a message with a number of emotes.",
+        "syntax": "react <messageID> <list of emotes, separated by spaces>"
+    },
     "setevent": {
         "name": "setevent",
         "description": "Sets a server's event channel or deletes the event association of the current event channel",
