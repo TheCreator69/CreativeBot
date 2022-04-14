@@ -1,6 +1,0 @@
-{
-    "watch": ["src", "locales"],
-    "ext": ".ts,.js,.json",
-    "ignore": ["*.test.ts"],
-    "exec": "npx ts-node ./src/index.ts"
-}
