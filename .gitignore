@@ -1,0 +1,8 @@
+# Super Secret Credentials File
+credentials.txt
+
+# Additional Visual Studio Files & Folders
+.vs/
+x64/
+*.vcxproj
+*.vcxproj.*
