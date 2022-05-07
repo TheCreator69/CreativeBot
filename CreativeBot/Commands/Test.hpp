@@ -29,11 +29,11 @@ namespace DiscordCoreAPI
 		{
 			DiscordCoreAPI::InputEvents::deleteInputEventResponseAsync(args.eventData);
 
-			DiscordCoreAPI::RespondToInputEventData dataPackage{*args.eventData};
+			DiscordCoreAPI::RespondToInputEventData dataPackage{args.eventData};
 			dataPackage.addContent("Test Message!");
 			dataPackage.setResponseType(DiscordCoreAPI::InputEventResponseType::Interaction_Response);
 
-			InputEvents::respondToEvent(dataPackage);
+			DiscordCoreAPI::InputEvents::respondToEventAsync(dataPackage);
 		}
 	};
 }

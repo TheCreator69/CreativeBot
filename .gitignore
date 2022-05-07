@@ -1,5 +1,5 @@
-# Super Secret Credentials File
-credentials.txt
+# Super Secret Credentials Header
+Credentials.hpp
 
 # Additional Visual Studio Files & Folders
 .vs/
