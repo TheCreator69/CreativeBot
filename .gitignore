@@ -9,7 +9,5 @@ Debug/
 *.vcxproj
 *.vcxproj.*
 
-# CMake Stuff
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
+# Recommended CMake Build Folder
+Build/
